@@ -1,0 +1,105 @@
+---
+// PurchaseProcess.astro
+
+const steps = [
+  {
+    step: '01',
+    icon: '🔍',
+    title: 'Browse & Select',
+    description: 'Browse our collection and select the template you want. You can preview it before making a purchase.',
+    detail: 'Browse the templates section',
+  },
+  {
+    step: '02',
+    icon: '💳',
+    title: 'Send Payment',
+    description: 'Send your payment using GCash or Maya. Make sure to pay the exact amount shown for the template.',
+    detail: 'GCash or Maya accepted',
+  },
+  {
+    step: '03',
+    icon: '📸',
+    title: 'Submit Screenshot',
+    description: 'Once your payment is verified, we will send your template directly to your email. Most orders are delivered within 1–2 hours.',
+    detail: 'Send proof of payment',
+  },
+  {
+    step: '04',
+    icon: '📦',
+    title: 'Receive via Email',
+    description: 'After we verify your payment (usually within 1–2 hours), we\'ll send your templates directly to your email.',
+    detail: 'Delivered within 1–2 hours',
+  },
+];
+---
+
+<section id="how-to-purchase" class="py-24 lg:py-32 relative overflow-hidden">
+  <div class="absolute inset-0 bg-navy-800/30 pointer-events-none"></div>
+  <div class="absolute top-1/2 right-0 w-[500px] h-[500px] bg-indigo-600/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 reveal">
+      <span class="section-label">
+        <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M1 6h2l2-4 2 8 2-4 2 4 2-3h1"/>
+        </svg>
+        How It Works
+      </span>
+      <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl mt-3 mb-4">
+        Get your template in<br />
+        <span class="text-gradient">4 simple steps</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        Our process is simple, secure, and designed to get your templates to you as fast as possible.
+      </p>
+    </div>
+
+    <!-- Steps grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
+
+      <!-- Connector line (desktop only) -->
+      <div class="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-indigo-500/30 via-cyan-400/50 to-indigo-500/30 z-0" style="top: 3rem;"></div>
+
+      {steps.map((step, i) => (
+        <div class={`reveal reveal-delay-${i + 1} relative glass rounded-2xl p-6 border border-white/8 card-hover group text-center z-10`}>
+          <!-- Step number badge -->
+          <div class="relative mx-auto w-14 h-14 mb-5">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500/30 to-cyan-500/20 border border-indigo-500/40 flex items-center justify-center mx-auto">
+              <span class="text-2xl">{step.icon}</span>
+            </div>
+            <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-navy-900 border border-indigo-500/60 flex items-center justify-center">
+              <span class="text-[9px] font-display font-bold text-indigo-400">{i + 1}</span>
+            </div>
+          </div>
+
+          <h3 class="font-display font-semibold text-white mb-2 text-sm">{step.title}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">{step.description}</p>
+
+          <!-- Detail chip -->
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+            <div class="w-1 h-1 rounded-full bg-cyan-400 flex-shrink-0"></div>
+            <span class="text-xs font-display font-medium text-slate-300">{step.detail}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA banner -->
+    <div class="mt-12 reveal">
+      <div class="glass rounded-2xl border border-indigo-500/20 p-8 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/10 via-transparent to-cyan-600/10 pointer-events-none"></div>
+        <div class="relative">
+          <p class="text-white font-display font-semibold text-xl mb-2">Ready to get started?</p>
+          <p class="text-slate-400 mb-6">Browse our templates and find the perfect one for your needs.</p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="#templates" class="btn-primary">Browse Templates</a>
+            <a href="#payment" class="btn-secondary">View Payment Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

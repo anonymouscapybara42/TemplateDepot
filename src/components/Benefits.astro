@@ -1,0 +1,90 @@
+---
+// Benefits.astro
+
+const benefits = [
+  {
+    icon: '⚡',
+    title: 'Instant Delivery',
+    description: 'Once your payment is verified, your templates are delivered straight to your inbox — no waiting days or weeks.',
+    highlight: 'Usually within 1–2 hours',
+  },
+  {
+    icon: '🎨',
+    title: 'Professional Designs',
+    description: 'Every template is crafted by experienced designers with real-world business use cases in mind.',
+    highlight: 'Designer-quality',
+  },
+  {
+    icon: '💼',
+    title: 'Business Ready',
+    description: 'Templates are formatted for immediate professional use — no heavy editing required before sending to clients.',
+    highlight: 'Send-ready',
+  },
+  {
+    icon: '📱',
+    title: 'Fully Responsive',
+    description: 'Digital and web templates are built for all screen sizes, so your work looks great on desktop and mobile.',
+    highlight: 'All devices',
+  },
+];
+---
+
+<section id="benefits" class="py-24 lg:py-32 relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <!-- Left: text -->
+      <div class="reveal">
+        <span class="section-label">
+          <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 1l1.5 3h3L8 6l1 3.5L6 8l-3 1.5L4 6 1.5 4h3L6 1z"/>
+          </svg>
+          Why Choose Us
+        </span>
+        <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl mt-3 mb-6">
+          Everything you need,<br />
+          <span class="text-gradient">nothing you don't</span>
+        </h2>
+        <p class="text-slate-400 text-lg leading-relaxed mb-8">
+          We cut out the fluff and give you exactly what professionals need — clean, ready-to-use templates that actually save you time.
+        </p>
+
+        <!-- Stats row -->
+        <div class="grid grid-cols-3 gap-6">
+          {[
+            { num: '500+', label: 'Templates Sold' },
+            { num: '4.9★', label: 'Avg. Rating' },
+            { num: '< 2h', label: 'Delivery Time' },
+          ].map(stat => (
+            <div class="text-center lg:text-left">
+              <p class="font-display font-bold text-2xl text-white">{stat.num}</p>
+              <p class="text-xs text-slate-500 mt-0.5">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: benefit cards -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        {benefits.map((b, i) => (
+          <div class={`reveal reveal-delay-${i + 1} glass rounded-2xl p-5 border border-white/8 card-hover group`}>
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500/20 to-cyan-500/10 border border-indigo-500/20 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+              {b.icon}
+            </div>
+            <h3 class="font-display font-semibold text-white mb-2">{b.title}</h3>
+            <p class="text-sm text-slate-400 leading-relaxed mb-3">{b.description}</p>
+            <div class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-cyan-400">
+              <div class="w-1 h-1 rounded-full bg-cyan-400"></div>
+              {b.highlight}
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+</section>

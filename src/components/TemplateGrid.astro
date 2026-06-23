@@ -1,0 +1,242 @@
+---
+// TemplateGrid.astro
+
+const templates = [
+  {
+    id: 1,
+    title: 'Business Proposal Kit',
+    description: 'Complete 15-page proposal template with cover letter, pricing table, and terms section.',
+    category: 'Business',
+    price: '₱299',
+    tag: 'Best Seller',
+    tagColor: 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
+    gradient: 'from-indigo-600/30 to-violet-600/20',
+    accent: 'bg-indigo-500',
+    icon: '📄',
+  },
+  {
+    id: 2,
+    title: 'VA Client Dashboard',
+    description: 'Notion-ready dashboard for virtual assistants to manage clients, tasks, and invoices.',
+    category: 'Productivity',
+    price: '₱249',
+    tag: 'New',
+    tagColor: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
+    gradient: 'from-cyan-600/30 to-teal-600/20',
+    accent: 'bg-cyan-500',
+    icon: '🗂️',
+  },
+  {
+    id: 3,
+    title: 'Real Estate Brochure Set',
+    description: 'Canva-ready property listings, flyers, and social posts for realtors.',
+    category: 'Marketing',
+    price: '₱279',
+    tag: 'Popular',
+    tagColor: 'bg-violet-500/20 text-violet-300 border border-violet-500/30',
+    gradient: 'from-violet-600/30 to-purple-600/20',
+    accent: 'bg-violet-500',
+    icon: '🏡',
+  },
+  {
+    id: 4,
+    title: 'Financial Advisor Deck',
+    description: 'Professional PowerPoint presentation deck for FA client pitches and onboarding.',
+    category: 'Presentation',
+    price: '₱349',
+    tag: 'Premium',
+    tagColor: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+    gradient: 'from-amber-600/20 to-orange-600/20',
+    accent: 'bg-amber-500',
+    icon: '📊',
+  },
+  {
+    id: 5,
+    title: 'Freelancer Resume Pack',
+    description: 'ATS-friendly resume + cover letter templates for creatives and tech professionals.',
+    category: 'Resume',
+    price: '₱229',
+    tag: '',
+    tagColor: '',
+    gradient: 'from-pink-600/25 to-rose-600/15',
+    accent: 'bg-pink-500',
+    icon: '📝',
+  },
+  {
+    id: 6,
+    title: 'Social Media Content Kit',
+    description: '60+ Canva templates for Instagram, Facebook, and LinkedIn — posts, stories, and reels.',
+    category: 'Social Media',
+    price: '₱399',
+    tag: 'Best Seller',
+    tagColor: 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
+    gradient: 'from-fuchsia-600/25 to-pink-600/20',
+    accent: 'bg-fuchsia-500',
+    icon: '📱',
+  },
+  {
+    id: 7,
+    title: 'Portfolio Website Template',
+    description: 'Clean HTML/CSS portfolio with a dark theme — perfect for designers and developers.',
+    category: 'Website',
+    price: '₱499',
+    tag: 'New',
+    tagColor: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
+    gradient: 'from-teal-600/25 to-cyan-600/20',
+    accent: 'bg-teal-500',
+    icon: '🌐',
+  },
+  {
+    id: 8,
+    title: 'Small Business Starter Pack',
+    description: 'Everything a small business needs: logo guide, invoices, receipts, and social templates.',
+    category: 'Business',
+    price: '₱599',
+    tag: 'Bundle',
+    tagColor: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+    gradient: 'from-green-600/20 to-emerald-600/15',
+    accent: 'bg-emerald-500',
+    icon: '🚀',
+  },
+];
+---
+
+<section id="templates" class="py-24 lg:py-32 relative overflow-hidden">
+  <!-- BG accent -->
+  <div class="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-800/50 to-navy-900 pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-600/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 reveal">
+      <span class="section-label">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 12 12"><rect width="5" height="5" rx="1"/><rect x="7" width="5" height="5" rx="1"/><rect y="7" width="5" height="5" rx="1"/><rect x="7" y="7" width="5" height="5" rx="1"/></svg>
+        Our Templates
+      </span>
+      <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl mt-3 mb-4">
+        Ready-Made Templates<br />
+        <span class="text-gradient">Built for Professionals</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        Each template is crafted by designers who understand what Filipino professionals actually need.
+      </p>
+    </div>
+
+    <!-- Category filter pills -->
+    <div class="flex flex-wrap items-center justify-center gap-2 mb-12 reveal reveal-delay-1">
+      {['All', 'Business', 'Marketing', 'Resume', 'Social Media', 'Website', 'Presentation', 'Productivity'].map((cat, i) => (
+        <button
+          class={`filter-btn px-4 py-2 rounded-full text-sm font-display font-medium transition-all duration-200 border ${i === 0 ? 'bg-indigo-500 text-white border-indigo-500' : 'text-slate-400 border-white/10 hover:border-white/30 hover:text-white'}`}
+          data-filter={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- Template grid -->
+    <div id="template-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      {templates.map((t, i) => (
+        <div
+          class={`template-card reveal reveal-delay-${Math.min(i % 4 + 1, 4)} relative glass rounded-2xl border border-white/8 overflow-hidden card-hover group cursor-pointer ticket-stub`}
+          data-category={t.category}
+        >
+          <!-- Preview area -->
+          <div class={`relative h-44 bg-gradient-to-br ${t.gradient} flex items-center justify-center overflow-hidden`}>
+            <!-- Grid lines decoration -->
+            <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <!-- Icon -->
+            <div class="relative text-5xl select-none filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+              {t.icon}
+            </div>
+
+            <!-- Category badge -->
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-display font-medium text-white/70 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full border border-white/10">
+                {t.category}
+              </span>
+            </div>
+
+            {t.tag && (
+              <div class="absolute top-3 right-3">
+                <span class={`text-xs font-display font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm ${t.tagColor}`}>
+                  {t.tag}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <!-- Card body -->
+          <div class="p-4">
+            <h3 class="font-display font-semibold text-white text-sm mb-1.5 group-hover:text-gradient transition-all">
+              {t.title}
+            </h3>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4">
+              {t.description}
+            </p>
+          </div>
+
+          <!-- Ticket stub bottom — price + CTA -->
+          <div class="px-4 pb-4 pt-3 border-t border-dashed border-white/10">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-display">Starting at</p>
+                <p class="text-lg font-display font-bold text-cyan-400">{t.price}</p>
+              </div>
+              <a
+                href="#how-to-purchase"
+                class="text-xs font-display font-semibold px-3.5 py-2 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500 hover:text-white transition-all duration-200"
+              >
+                Buy Now →
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="text-center mt-12 reveal">
+      <p class="text-slate-400 mb-4">Don't see what you need? We can create custom templates.</p>
+      <a href="#contact" class="btn-secondary inline-flex">
+        Request a Custom Template
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const templateCards = document.querySelectorAll('.template-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+
+      // Update active state
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500');
+        b.classList.add('text-slate-400', 'border-white/10');
+      });
+      btn.classList.add('bg-indigo-500', 'text-white', 'border-indigo-500');
+      btn.classList.remove('text-slate-400', 'border-white/10');
+
+      // Filter cards
+      templateCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const el = card as HTMLElement;
+        if (filter === 'All' || cat === filter) {
+          el.style.display = '';
+          el.style.opacity = '1';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
