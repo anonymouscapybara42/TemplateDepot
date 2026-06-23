@@ -9,9 +9,10 @@ const templates = [
     category: 'Business',
     price: '₱299',
     tag: 'Best Seller',
-    tagColor: 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
-    gradient: 'from-indigo-600/30 to-violet-600/20',
-    accent: 'bg-indigo-500',
+    tagBg: 'rgba(0,95,115,0.10)',
+    tagColor: '#005F73',
+    gradientFrom: 'rgba(0,95,115,0.12)',
+    gradientTo: 'rgba(10,147,150,0.08)',
     icon: '📄',
   },
   {
@@ -21,9 +22,10 @@ const templates = [
     category: 'Productivity',
     price: '₱249',
     tag: 'New',
-    tagColor: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-    gradient: 'from-cyan-600/30 to-teal-600/20',
-    accent: 'bg-cyan-500',
+    tagBg: 'rgba(10,147,150,0.12)',
+    tagColor: '#0A9396',
+    gradientFrom: 'rgba(10,147,150,0.12)',
+    gradientTo: 'rgba(0,95,115,0.06)',
     icon: '🗂️',
   },
   {
@@ -33,9 +35,10 @@ const templates = [
     category: 'Marketing',
     price: '₱279',
     tag: 'Popular',
-    tagColor: 'bg-violet-500/20 text-violet-300 border border-violet-500/30',
-    gradient: 'from-violet-600/30 to-purple-600/20',
-    accent: 'bg-violet-500',
+    tagBg: 'rgba(47,62,70,0.10)',
+    tagColor: '#2F3E46',
+    gradientFrom: 'rgba(47,62,70,0.10)',
+    gradientTo: 'rgba(0,95,115,0.06)',
     icon: '🏡',
   },
   {
@@ -45,9 +48,10 @@ const templates = [
     category: 'Presentation',
     price: '₱349',
     tag: 'Premium',
-    tagColor: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-    gradient: 'from-amber-600/20 to-orange-600/20',
-    accent: 'bg-amber-500',
+    tagBg: 'rgba(238,155,0,0.15)',
+    tagColor: '#B87200',
+    gradientFrom: 'rgba(238,155,0,0.10)',
+    gradientTo: 'rgba(0,95,115,0.06)',
     icon: '📊',
   },
   {
@@ -57,9 +61,10 @@ const templates = [
     category: 'Resume',
     price: '₱229',
     tag: '',
+    tagBg: '',
     tagColor: '',
-    gradient: 'from-pink-600/25 to-rose-600/15',
-    accent: 'bg-pink-500',
+    gradientFrom: 'rgba(10,147,150,0.10)',
+    gradientTo: 'rgba(232,245,233,0.80)',
     icon: '📝',
   },
   {
@@ -69,21 +74,23 @@ const templates = [
     category: 'Social Media',
     price: '₱399',
     tag: 'Best Seller',
-    tagColor: 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
-    gradient: 'from-fuchsia-600/25 to-pink-600/20',
-    accent: 'bg-fuchsia-500',
+    tagBg: 'rgba(0,95,115,0.10)',
+    tagColor: '#005F73',
+    gradientFrom: 'rgba(0,95,115,0.10)',
+    gradientTo: 'rgba(10,147,150,0.06)',
     icon: '📱',
   },
   {
     id: 7,
     title: 'Portfolio Website Template',
-    description: 'Clean HTML/CSS portfolio with a dark theme — perfect for designers and developers.',
+    description: 'Clean HTML/CSS portfolio with a light theme — perfect for designers and developers.',
     category: 'Website',
     price: '₱499',
     tag: 'New',
-    tagColor: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-    gradient: 'from-teal-600/25 to-cyan-600/20',
-    accent: 'bg-teal-500',
+    tagBg: 'rgba(10,147,150,0.12)',
+    tagColor: '#0A9396',
+    gradientFrom: 'rgba(10,147,150,0.12)',
+    gradientTo: 'rgba(232,245,233,0.80)',
     icon: '🌐',
   },
   {
@@ -93,18 +100,17 @@ const templates = [
     category: 'Business',
     price: '₱599',
     tag: 'Bundle',
-    tagColor: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-    gradient: 'from-green-600/20 to-emerald-600/15',
-    accent: 'bg-emerald-500',
+    tagBg: 'rgba(238,155,0,0.15)',
+    tagColor: '#B87200',
+    gradientFrom: 'rgba(232,245,233,0.90)',
+    gradientTo: 'rgba(0,95,115,0.08)',
     icon: '🚀',
   },
 ];
 ---
 
-<section id="templates" class="py-24 lg:py-32 relative overflow-hidden">
-  <!-- BG accent -->
-  <div class="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-800/50 to-navy-900 pointer-events-none"></div>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-600/5 rounded-full blur-3xl pointer-events-none"></div>
+<section id="templates" class="py-24 lg:py-32 relative overflow-hidden" style="background:#F9FAFB;">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-3xl pointer-events-none" style="background:rgba(0,95,115,0.04);"></div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -118,7 +124,7 @@ const templates = [
         Ready-Made Templates<br />
         <span class="text-gradient">Built for Professionals</span>
       </h2>
-      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+      <p class="text-lg max-w-2xl mx-auto" style="color:#4A5568;">
         Each template is crafted by designers who understand what Filipino professionals actually need.
       </p>
     </div>
@@ -127,7 +133,10 @@ const templates = [
     <div class="flex flex-wrap items-center justify-center gap-2 mb-12 reveal reveal-delay-1">
       {['All', 'Business', 'Marketing', 'Resume', 'Social Media', 'Website', 'Presentation', 'Productivity'].map((cat, i) => (
         <button
-          class={`filter-btn px-4 py-2 rounded-full text-sm font-display font-medium transition-all duration-200 border ${i === 0 ? 'bg-indigo-500 text-white border-indigo-500' : 'text-slate-400 border-white/10 hover:border-white/30 hover:text-white'}`}
+          class="filter-btn px-4 py-2 rounded-full text-sm font-display font-medium transition-all duration-200"
+          style={i === 0
+            ? 'background:#005F73; color:#ffffff; border:1.5px solid #005F73;'
+            : 'background:transparent; color:#4A5568; border:1.5px solid #D0EDF0;'}
           data-filter={cat}
         >
           {cat}
@@ -139,29 +148,24 @@ const templates = [
     <div id="template-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {templates.map((t, i) => (
         <div
-          class={`template-card reveal reveal-delay-${Math.min(i % 4 + 1, 4)} relative glass rounded-2xl border border-white/8 overflow-hidden card-hover group cursor-pointer ticket-stub`}
+          class={`template-card reveal reveal-delay-${Math.min(i % 4 + 1, 4)} relative card-surface rounded-2xl overflow-hidden card-hover group cursor-pointer ticket-stub`}
           data-category={t.category}
         >
           <!-- Preview area -->
-          <div class={`relative h-44 bg-gradient-to-br ${t.gradient} flex items-center justify-center overflow-hidden`}>
-            <!-- Grid lines decoration -->
-            <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
-
-            <!-- Icon -->
-            <div class="relative text-5xl select-none filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+          <div class="relative h-44 flex items-center justify-center overflow-hidden" style={`background:linear-gradient(135deg, ${t.gradientFrom}, ${t.gradientTo});`}>
+            <div class="absolute inset-0 opacity-15" style="background-image: linear-gradient(rgba(0,95,115,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,95,115,0.15) 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="relative text-5xl select-none filter drop-shadow-md group-hover:scale-110 transition-transform duration-300">
               {t.icon}
             </div>
-
             <!-- Category badge -->
             <div class="absolute top-3 left-3">
-              <span class="text-xs font-display font-medium text-white/70 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full border border-white/10">
+              <span class="text-xs font-display font-medium px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,0.85); color:#005F73; backdrop-filter:blur(4px);">
                 {t.category}
               </span>
             </div>
-
             {t.tag && (
               <div class="absolute top-3 right-3">
-                <span class={`text-xs font-display font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm ${t.tagColor}`}>
+                <span class="text-xs font-display font-semibold px-2 py-0.5 rounded-full" style={`background:${t.tagBg}; color:${t.tagColor};`}>
                   {t.tag}
                 </span>
               </div>
@@ -169,25 +173,23 @@ const templates = [
           </div>
 
           <!-- Card body -->
-          <div class="p-4">
-            <h3 class="font-display font-semibold text-white text-sm mb-1.5 group-hover:text-gradient transition-all">
-              {t.title}
-            </h3>
-            <p class="text-xs text-slate-500 leading-relaxed mb-4">
-              {t.description}
-            </p>
+          <div class="p-4" style="background:#ffffff;">
+            <h3 class="font-display font-semibold text-sm mb-1.5" style="color:#2F3E46;">{t.title}</h3>
+            <p class="text-xs leading-relaxed mb-4" style="color:#718096;">{t.description}</p>
           </div>
 
-          <!-- Ticket stub bottom — price + CTA -->
-          <div class="px-4 pb-4 pt-3 border-t border-dashed border-white/10">
+          <!-- Ticket stub bottom -->
+          <div class="px-4 pb-4 pt-3" style="background:#ffffff; border-top:1px dashed rgba(0,95,115,0.2);">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs text-slate-500 font-display">Starting at</p>
-                <p class="text-lg font-display font-bold text-cyan-400">{t.price}</p>
+                <p class="text-xs font-display" style="color:#94A3B8;">Starting at</p>
+                <p class="text-lg font-display font-bold" style="color:#0A9396;">{t.price}</p>
               </div>
+              <!-- AMBER CTA — conversion action -->
               <a
-                href="#how-to-purchase"
-                class="text-xs font-display font-semibold px-3.5 py-2 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500 hover:text-white transition-all duration-200"
+                href="/submit-payment"
+                class="btn-cta text-xs px-3.5 py-2 rounded-lg"
+                style="font-size:0.75rem; padding:0.5rem 0.875rem; border-radius:0.5rem;"
               >
                 Buy Now →
               </a>
@@ -199,7 +201,7 @@ const templates = [
 
     <!-- Bottom CTA -->
     <div class="text-center mt-12 reveal">
-      <p class="text-slate-400 mb-4">Don't see what you need? We can create custom templates.</p>
+      <p class="mb-4" style="color:#4A5568;">Don't see what you need? We can create custom templates.</p>
       <a href="#contact" class="btn-secondary inline-flex">
         Request a Custom Template
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -217,25 +219,21 @@ const templates = [
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const filter = btn.getAttribute('data-filter');
-
-      // Update active state
       filterBtns.forEach(b => {
-        b.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500');
-        b.classList.add('text-slate-400', 'border-white/10');
+        const el = b as HTMLElement;
+        el.style.background = 'transparent';
+        el.style.color = '#4A5568';
+        el.style.border = '1.5px solid #D0EDF0';
       });
-      btn.classList.add('bg-indigo-500', 'text-white', 'border-indigo-500');
-      btn.classList.remove('text-slate-400', 'border-white/10');
+      const active = btn as HTMLElement;
+      active.style.background = '#005F73';
+      active.style.color = '#ffffff';
+      active.style.border = '1.5px solid #005F73';
 
-      // Filter cards
       templateCards.forEach(card => {
         const cat = card.getAttribute('data-category');
         const el = card as HTMLElement;
-        if (filter === 'All' || cat === filter) {
-          el.style.display = '';
-          el.style.opacity = '1';
-        } else {
-          el.style.display = 'none';
-        }
+        el.style.display = (filter === 'All' || cat === filter) ? '' : 'none';
       });
     });
   });

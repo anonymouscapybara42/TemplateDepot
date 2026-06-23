@@ -24,7 +24,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://template
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
@@ -32,7 +31,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://template
     <meta name="author" content="Template Depot" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -41,14 +39,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://template
     <meta property="og:site_name" content="Template Depot" />
     <meta property="og:locale" content="en_PH" />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
 
-    <!-- Structured Data -->
     <script type="application/ld+json">
       {JSON.stringify({
         "@context": "https://schema.org",
@@ -71,13 +67,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://template
       })}
     </script>
 
-    <!-- Theme color -->
-    <meta name="theme-color" content="#0A0F1E" />
+    <meta name="theme-color" content="#005F73" />
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <slot />
 
-    <!-- Scroll reveal script -->
     <script>
       const observer = new IntersectionObserver(
         (entries) => {
@@ -89,7 +83,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://template
         },
         { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
       );
-
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
   </body>

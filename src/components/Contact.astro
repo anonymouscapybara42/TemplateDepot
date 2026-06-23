@@ -2,9 +2,9 @@
 // Contact.astro
 ---
 
-<section id="contact" class="py-24 lg:py-32 relative overflow-hidden">
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
-  <div class="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-cyan-600/6 rounded-full blur-3xl pointer-events-none"></div>
+<section id="contact" class="py-24 lg:py-32 relative overflow-hidden" style="background:#F9FAFB;">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, rgba(10,147,150,0.25), transparent);"></div>
+  <div class="absolute top-1/2 right-1/4 w-[350px] h-[350px] rounded-full blur-3xl pointer-events-none" style="background:rgba(0,95,115,0.05);"></div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -21,28 +21,28 @@
           Need help choosing<br />
           <span class="text-gradient">the right template?</span>
         </h2>
-        <p class="text-slate-400 text-lg leading-relaxed mb-8">
-          Our team is always happy to help you find the perfect template for your needs. Reach out anytime — we typically respond within a few hours.
+        <p class="text-lg leading-relaxed mb-8" style="color:#4A5568;">
+          Our team is always happy to help you find the perfect template. Reach out anytime — we typically respond within a few hours.
         </p>
 
-        <!-- Response time indicator -->
-        <div class="inline-flex items-center gap-3 px-4 py-3 glass rounded-xl border border-white/10 mb-8">
+        <!-- Response time -->
+        <div class="inline-flex items-center gap-3 px-4 py-3 rounded-xl mb-8 card-surface">
           <div class="flex items-center gap-1.5">
-            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-            <span class="text-xs font-display font-semibold text-green-400">Online</span>
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span class="text-xs font-display font-semibold text-green-600">Online</span>
           </div>
-          <div class="w-px h-4 bg-white/10"></div>
-          <span class="text-xs text-slate-400">Usually responds within <span class="text-white font-semibold">1–2 hours</span></span>
+          <div class="w-px h-4" style="background:#E8F5E9;"></div>
+          <span class="text-xs" style="color:#4A5568;">Usually responds within <strong style="color:#2F3E46;">1–2 hours</strong></span>
         </div>
 
         <!-- Business hours -->
         <div class="space-y-2">
-          <p class="text-xs font-display font-semibold text-slate-500 uppercase tracking-wider">Business Hours</p>
+          <p class="text-xs font-display font-semibold uppercase tracking-wider" style="color:#94A3B8;">Business Hours</p>
           <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#0A9396" stroke-width="1.5">
               <circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/>
             </svg>
-            <span class="text-sm text-slate-400">Monday – Saturday, 9:00 AM – 6:00 PM (PHT)</span>
+            <span class="text-sm" style="color:#4A5568;">Monday – Saturday, 9:00 AM – 6:00 PM (PHT)</span>
           </div>
         </div>
       </div>
@@ -50,66 +50,76 @@
       <!-- Right: Contact cards -->
       <div class="space-y-4 reveal reveal-delay-1">
 
-        <!-- Email -->
-        <a
-          href="mailto:hello@templatedepot.com"
-          class="flex items-center gap-4 glass rounded-2xl border border-white/8 p-5 card-hover group block"
-        >
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/30 to-indigo-600/20 border border-indigo-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        <!-- Upload Payment Form — Amber CTA -->
+        <a href="/submit-payment" class="flex items-center gap-4 rounded-2xl p-5 card-hover group" style="background:rgba(238,155,0,0.08); border:1.5px solid rgba(238,155,0,0.30);">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style="background:rgba(238,155,0,0.15); border:1px solid rgba(238,155,0,0.30);">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#B87200" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs font-display font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Email Us</p>
-            <p class="font-display font-semibold text-white group-hover:text-indigo-400 transition-colors text-sm">hello@templatedepot.com</p>
-            <p class="text-xs text-slate-500 mt-0.5">Best for order inquiries and payment verification</p>
+            <p class="text-xs font-display font-semibold uppercase tracking-wider mb-0.5" style="color:#94A3B8;">Submit Payment Proof</p>
+            <p class="font-display font-semibold text-sm" style="color:#B87200;">Upload your payment screenshot</p>
+            <p class="text-xs mt-0.5" style="color:#718096;">Fastest way to complete your order</p>
           </div>
-          <svg class="w-4 h-4 text-slate-600 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </a>
-
-        <!-- Facebook Page -->
-        <a
-          href="https://facebook.com/templatedepot"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-4 glass rounded-2xl border border-white/8 p-5 card-hover group block"
-        >
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/30 to-blue-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-xs font-display font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Facebook Page</p>
-            <p class="font-display font-semibold text-white group-hover:text-blue-400 transition-colors text-sm">Template Depot PH</p>
-            <p class="text-xs text-slate-500 mt-0.5">Follow us for updates and new template drops</p>
-          </div>
-          <svg class="w-4 h-4 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="#B87200" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
         </a>
 
         <!-- Messenger -->
-        <a
-          href="https://m.me/templatedepot"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-4 glass rounded-2xl border border-white/8 p-5 card-hover group block"
-        >
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/30 to-purple-600/20 border border-violet-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-5 h-5 text-violet-400" fill="currentColor" viewBox="0 0 24 24">
+        <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 card-surface rounded-2xl p-5 card-hover group">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style="background:linear-gradient(135deg, rgba(0,132,255,0.15), rgba(155,89,182,0.15)); border:1px solid rgba(0,132,255,0.25);">
+            <svg class="w-5 h-5" fill="url(#msgrGrad)" viewBox="0 0 24 24">
+              <defs>
+                <linearGradient id="msgrGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0084FF"/>
+                  <stop offset="100%" stop-color="#9B59B6"/>
+                </linearGradient>
+              </defs>
               <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs font-display font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Messenger</p>
-            <p class="font-display font-semibold text-white group-hover:text-violet-400 transition-colors text-sm">Message us on Messenger</p>
-            <p class="text-xs text-slate-500 mt-0.5">Fastest way to send payment proof and ask questions</p>
+            <p class="text-xs font-display font-semibold uppercase tracking-wider mb-0.5" style="color:#94A3B8;">Messenger</p>
+            <p class="font-display font-semibold text-sm" style="color:#2F3E46;">Message us on Messenger</p>
+            <p class="text-xs mt-0.5" style="color:#718096;">Ask questions, send payment proof, get updates</p>
           </div>
-          <svg class="w-4 h-4 text-slate-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="#0084FF" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+
+        <!-- Facebook Page -->
+        <a href="https://facebook.com/templatedepot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 card-surface rounded-2xl p-5 card-hover group">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style="background:rgba(0,119,212,0.10); border:1px solid rgba(0,119,212,0.20);">
+            <svg class="w-5 h-5" fill="#0077D4" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-display font-semibold uppercase tracking-wider mb-0.5" style="color:#94A3B8;">Facebook Page</p>
+            <p class="font-display font-semibold text-sm" style="color:#2F3E46;">Template Depot PH</p>
+            <p class="text-xs mt-0.5" style="color:#718096;">Follow us for updates and new template drops</p>
+          </div>
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="#0077D4" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:hello@templatedepot.com" class="flex items-center gap-4 card-surface rounded-2xl p-5 card-hover group">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style="background:rgba(0,95,115,0.10); border:1px solid rgba(0,95,115,0.20);">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-display font-semibold uppercase tracking-wider mb-0.5" style="color:#94A3B8;">Email Us</p>
+            <p class="font-display font-semibold text-sm" style="color:#2F3E46;">hello@templatedepot.com</p>
+            <p class="text-xs mt-0.5" style="color:#718096;">For order inquiries and payment verification</p>
+          </div>
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
         </a>

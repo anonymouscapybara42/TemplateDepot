@@ -5,17 +5,18 @@
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
   <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <nav class="flex items-center justify-between h-16 lg:h-20">
+
       <!-- Logo -->
       <a href="#home" class="flex items-center gap-2.5 group">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md" style="background: linear-gradient(135deg,#005F73,#0A9396);">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.9"/>
             <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.7"/>
             <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.7"/>
             <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.5"/>
           </svg>
         </div>
-        <span class="font-display font-bold text-white text-lg tracking-tight">
+        <span class="font-display font-bold text-lg tracking-tight" style="color:#2F3E46;">
           Template<span class="text-gradient">Depot</span>
         </span>
       </a>
@@ -25,7 +26,8 @@
         {['Home', 'Templates', 'How to Buy', 'Testimonials', 'FAQ', 'Contact'].map((item) => (
           <a
             href={`#${item.toLowerCase().replace(/\s+/g, '-').replace('how-to-buy', 'how-to-purchase')}`}
-            class="nav-link px-4 py-2 text-sm font-display font-medium text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200 relative"
+            class="nav-link px-4 py-2 text-sm font-display font-medium rounded-lg transition-all duration-200"
+            style="color:#2F3E46;"
           >
             {item}
           </a>
@@ -37,7 +39,7 @@
         <a href="#contact" class="hidden sm:inline-flex btn-primary text-sm py-2 px-4">
           Get Templates
         </a>
-        <button id="menu-toggle" class="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all" aria-label="Toggle menu">
+        <button id="menu-toggle" class="lg:hidden p-2 rounded-lg transition-all" style="color:#005F73;" aria-label="Toggle menu">
           <svg id="menu-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <line x1="3" y1="6" x2="19" y2="6"/>
             <line x1="3" y1="11" x2="19" y2="11"/>
@@ -53,12 +55,13 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-navy-900/98 backdrop-blur-xl">
+  <div id="mobile-menu" class="hidden lg:hidden border-t" style="background:#ffffff; border-color:#E8F5E9;">
     <div class="px-4 py-4 space-y-1 max-w-7xl mx-auto">
       {['Home', 'Templates', 'How to Buy', 'Testimonials', 'FAQ', 'Contact'].map((item) => (
         <a
           href={`#${item.toLowerCase().replace(/\s+/g, '-').replace('how-to-buy', 'how-to-purchase')}`}
-          class="mobile-nav-link block px-4 py-3 text-sm font-display font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+          class="mobile-nav-link block px-4 py-3 text-sm font-display font-medium rounded-xl transition-all"
+          style="color:#2F3E46;"
         >
           {item}
         </a>
@@ -71,32 +74,34 @@
 </header>
 
 <script>
-  const navbar = document.getElementById('navbar');
+  const navbar   = document.getElementById('navbar');
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
-  const menuIcon = document.getElementById('menu-icon');
-  const closeIcon = document.getElementById('close-icon');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const menuIcon   = document.getElementById('menu-icon');
+  const closeIcon  = document.getElementById('close-icon');
+  const navLinks   = document.querySelectorAll('.nav-link');
   const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-  // Navbar scroll effect
   window.addEventListener('scroll', () => {
     if (window.scrollY > 20) {
-      navbar?.classList.add('bg-navy-900/95', 'backdrop-blur-xl', 'border-b', 'border-white/8', 'shadow-xl', 'shadow-black/20');
+      navbar?.classList.add('shadow-md');
+      navbar?.style.setProperty('background', 'rgba(255,255,255,0.97)');
+      navbar?.style.setProperty('backdrop-filter', 'blur(16px)');
+      navbar?.style.setProperty('border-bottom', '1px solid #E8F5E9');
     } else {
-      navbar?.classList.remove('bg-navy-900/95', 'backdrop-blur-xl', 'border-b', 'border-white/8', 'shadow-xl', 'shadow-black/20');
+      navbar?.classList.remove('shadow-md');
+      navbar?.style.removeProperty('background');
+      navbar?.style.removeProperty('backdrop-filter');
+      navbar?.style.removeProperty('border-bottom');
     }
   });
 
-  // Mobile menu toggle
   menuToggle?.addEventListener('click', () => {
-    const isOpen = !mobileMenu?.classList.contains('hidden');
     mobileMenu?.classList.toggle('hidden');
     menuIcon?.classList.toggle('hidden');
     closeIcon?.classList.toggle('hidden');
   });
 
-  // Close mobile menu on link click
   mobileNavLinks.forEach((link) => {
     link.addEventListener('click', () => {
       mobileMenu?.classList.add('hidden');
@@ -105,27 +110,27 @@
     });
   });
 
-  // Active section highlighting
   const sections = document.querySelectorAll('section[id]');
-  const observerOptions = { rootMargin: '-40% 0px -55% 0px' };
-
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
         navLinks.forEach((link) => {
           const href = link.getAttribute('href')?.replace('#', '');
+          const el = link as HTMLElement;
           if (href === id) {
-            link.classList.add('text-white', 'bg-white/5');
-            link.classList.remove('text-slate-400');
+            el.style.color = '#005F73';
+            el.style.background = 'rgba(0,95,115,0.07)';
+            el.style.fontWeight = '600';
           } else {
-            link.classList.remove('text-white', 'bg-white/5');
-            link.classList.add('text-slate-400');
+            el.style.color = '#2F3E46';
+            el.style.background = '';
+            el.style.fontWeight = '500';
           }
         });
       }
     });
-  }, observerOptions);
+  }, { rootMargin: '-40% 0px -55% 0px' });
 
   sections.forEach((s) => sectionObserver.observe(s));
 </script>

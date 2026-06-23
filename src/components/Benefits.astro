@@ -29,8 +29,8 @@ const benefits = [
 ];
 ---
 
-<section id="benefits" class="py-24 lg:py-32 relative overflow-hidden">
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+<section id="benefits" class="py-24 lg:py-32 relative overflow-hidden" style="background:#ffffff;">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, rgba(0,95,115,0.2), transparent);"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -47,44 +47,51 @@ const benefits = [
           Everything you need,<br />
           <span class="text-gradient">nothing you don't</span>
         </h2>
-        <p class="text-slate-400 text-lg leading-relaxed mb-8">
+        <p class="text-lg leading-relaxed mb-8" style="color:#4A5568;">
           We cut out the fluff and give you exactly what professionals need — clean, ready-to-use templates that actually save you time.
         </p>
 
-        <!-- Stats row -->
-        <div class="grid grid-cols-3 gap-6">
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-6 mb-8">
           {[
             { num: '500+', label: 'Templates Sold' },
             { num: '4.9★', label: 'Avg. Rating' },
             { num: '< 2h', label: 'Delivery Time' },
           ].map(stat => (
             <div class="text-center lg:text-left">
-              <p class="font-display font-bold text-2xl text-white">{stat.num}</p>
-              <p class="text-xs text-slate-500 mt-0.5">{stat.label}</p>
+              <p class="font-display font-bold text-2xl" style="color:#005F73;">{stat.num}</p>
+              <p class="text-xs mt-0.5" style="color:#718096;">{stat.label}</p>
             </div>
           ))}
         </div>
+
+        <!-- Messenger CTA -->
+        <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn-messenger inline-flex">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
+          </svg>
+          Ask Us on Messenger
+        </a>
       </div>
 
       <!-- Right: benefit cards -->
       <div class="grid sm:grid-cols-2 gap-4">
         {benefits.map((b, i) => (
-          <div class={`reveal reveal-delay-${i + 1} glass rounded-2xl p-5 border border-white/8 card-hover group`}>
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500/20 to-cyan-500/10 border border-indigo-500/20 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          <div class={`reveal reveal-delay-${i + 1} card-surface rounded-2xl p-5 card-hover group`}>
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300" style="background:rgba(0,95,115,0.08); border:1px solid rgba(0,95,115,0.12);">
               {b.icon}
             </div>
-            <h3 class="font-display font-semibold text-white mb-2">{b.title}</h3>
-            <p class="text-sm text-slate-400 leading-relaxed mb-3">{b.description}</p>
-            <div class="inline-flex items-center gap-1.5 text-xs font-display font-semibold text-cyan-400">
-              <div class="w-1 h-1 rounded-full bg-cyan-400"></div>
+            <h3 class="font-display font-semibold mb-2" style="color:#2F3E46;">{b.title}</h3>
+            <p class="text-sm leading-relaxed mb-3" style="color:#4A5568;">{b.description}</p>
+            <div class="inline-flex items-center gap-1.5 text-xs font-display font-semibold" style="color:#0A9396;">
+              <div class="w-1 h-1 rounded-full" style="background:#0A9396;"></div>
               {b.highlight}
             </div>
           </div>
         ))}
       </div>
-
     </div>
   </div>
 
-  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, rgba(0,95,115,0.2), transparent);"></div>
 </section>
