@@ -1,128 +1,139 @@
 ---
 // PaymentSection.astro
+
+const paymentMethods = [
+  {
+    name: 'GCash',
+    label: 'Recommended',
+    image: '/GCASH.jpg',
+    numberLabel: 'GCash Number',
+    accountNumber: '09XX XXX XXXX',
+    accent: '#0077D4',
+  },
+  {
+    name: 'BDO',
+    label: 'Bank Transfer',
+    image: '/BDO.jpg',
+    numberLabel: 'Account Number',
+    accountNumber: '0000 0000 0000',
+    accent: '#004EA8',
+  },
+  {
+    name: 'BPI',
+    label: 'Bank Transfer',
+    image: '/BPI.jpg',
+    numberLabel: 'Account Number',
+    accountNumber: '0000 0000 0000',
+    accent: '#B11116',
+  },
+  {
+    name: 'GoTyme',
+    label: 'Bank Transfer',
+    image: '/GOTHYME.jpg',
+    numberLabel: 'Account Number',
+    accountNumber: '0000 0000 0000',
+    accent: '#00A651',
+  },
+];
 ---
 
 <section id="payment" class="py-24 lg:py-32 relative overflow-hidden" style="background:#ffffff;">
   <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, rgba(10,147,150,0.25), transparent);"></div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
     <div class="text-center mb-16 reveal">
       <span class="section-label">
         <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
-          <circle cx="6" cy="6" r="5"/><path stroke-linecap="round" d="M6 3.5v2.5l2 1.5"/>
+          <circle cx="6" cy="6" r="5" />
+          <path stroke-linecap="round" d="M6 3.5v2.5l2 1.5" />
         </svg>
         Payment
       </span>
+
       <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl mt-3 mb-4">
         Easy & secure<br />
         <span class="text-gradient">payment options</span>
       </h2>
+
       <p class="text-lg max-w-2xl mx-auto" style="color:#4A5568;">
-        We accept GCash and Maya payments. Scan the QR code, complete the transaction, then send us your screenshot.
+        We accept GCash, BDO, BPI, and GoTyme payments. Scan the QR code, complete the transaction, then send us your screenshot.
       </p>
     </div>
 
     <div class="grid lg:grid-cols-3 gap-6 items-start">
+      <!-- Payment methods -->
+      <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+        {paymentMethods.map((method, index) => (
+          <div class={`reveal reveal-delay-${index + 1}`}>
+            <div class="card-surface rounded-2xl overflow-hidden card-hover group">
+              <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid #E8F5E9;">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-xl flex items-center justify-center overflow-hidden"
+                    style={`background:${method.accent}15; border:1px solid ${method.accent}33;`}
+                  >
+                    <img
+                      src={method.image}
+                      alt={`${method.name} logo`}
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
 
-      <!-- GCash -->
-      <div class="reveal reveal-delay-1">
-        <div class="card-surface rounded-2xl overflow-hidden card-hover group">
-          <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid #E8F5E9;">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,119,212,0.10); border:1px solid rgba(0,119,212,0.20);">
-                <span class="text-lg">💙</span>
-              </div>
-              <div>
-                <p class="font-display font-semibold text-sm" style="color:#2F3E46;">GCash</p>
-                <p class="text-xs" style="color:#94A3B8;">Recommended</p>
-              </div>
-            </div>
-            <span class="text-xs font-display font-semibold px-2 py-1 rounded-lg" style="background:rgba(0,119,212,0.10); color:#0077D4;">Available</span>
-          </div>
-          <div class="p-5">
-            <div class="aspect-square rounded-xl flex flex-col items-center justify-center gap-3 mb-4" style="background:#F9FAFB; border:2px dashed #D0EDF0;">
-              <div class="w-16 h-16 rounded-lg flex items-center justify-center" style="background:#E8F5E9;">
-                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"/>
-                </svg>
-              </div>
-              <div class="text-center">
-                <p class="text-sm font-display font-semibold" style="color:#2F3E46;">GCash QR Code</p>
-                <p class="text-xs" style="color:#94A3B8;">Replace with your QR image</p>
-              </div>
-            </div>
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
-                <span class="text-xs" style="color:#94A3B8;">Account Name</span>
-                <span class="text-xs font-display font-semibold" style="color:#2F3E46;">Your Name Here</span>
-              </div>
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
-                <span class="text-xs" style="color:#94A3B8;">GCash Number</span>
-                <span class="text-xs font-display font-semibold" style="color:#2F3E46;">09XX XXX XXXX</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                  <div>
+                    <p class="font-display font-semibold text-sm" style="color:#2F3E46;">{method.name}</p>
+                    <p class="text-xs" style="color:#94A3B8;">{method.label}</p>
+                  </div>
+                </div>
 
-      <!-- Maya -->
-      <div class="reveal reveal-delay-2">
-        <div class="card-surface rounded-2xl overflow-hidden card-hover group">
-          <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid #E8F5E9;">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,153,77,0.10); border:1px solid rgba(0,153,77,0.20);">
-                <span class="text-lg">💚</span>
+                <span
+                  class="text-xs font-display font-semibold px-2 py-1 rounded-lg"
+                  style={`background:${method.accent}15; color:${method.accent};`}
+                >
+                  Available
+                </span>
               </div>
-              <div>
-                <p class="font-display font-semibold text-sm" style="color:#2F3E46;">Maya</p>
-                <p class="text-xs" style="color:#94A3B8;">Also accepted</p>
-              </div>
-            </div>
-            <span class="text-xs font-display font-semibold px-2 py-1 rounded-lg" style="background:rgba(0,153,77,0.10); color:#00994D;">Available</span>
-          </div>
-          <div class="p-5">
-            <div class="aspect-square rounded-xl flex flex-col items-center justify-center gap-3 mb-4" style="background:#F9FAFB; border:2px dashed #D0EDF0;">
-              <div class="w-16 h-16 rounded-lg flex items-center justify-center" style="background:#E8F5E9;">
-                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"/>
-                </svg>
-              </div>
-              <div class="text-center">
-                <p class="text-sm font-display font-semibold" style="color:#2F3E46;">Maya QR Code</p>
-                <p class="text-xs" style="color:#94A3B8;">Replace with your QR image</p>
-              </div>
-            </div>
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
-                <span class="text-xs" style="color:#94A3B8;">Account Name</span>
-                <span class="text-xs font-display font-semibold" style="color:#2F3E46;">Your Name Here</span>
-              </div>
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
-                <span class="text-xs" style="color:#94A3B8;">Maya Number</span>
-                <span class="text-xs font-display font-semibold" style="color:#2F3E46;">09XX XXX XXXX</span>
+
+              <div class="p-5">
+                <div class="aspect-square rounded-xl flex items-center justify-center mb-4 overflow-hidden" style="background:#F9FAFB; border:2px dashed #D0EDF0;">
+                  <img
+                    src={method.image}
+                    alt={`${method.name} QR code`}
+                    class="w-full h-full object-contain p-3"
+                  />
+                </div>
+
+                <div class="space-y-2.5">
+                  <div class="flex items-center justify-between gap-4 px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
+                    <span class="text-xs" style="color:#94A3B8;">Account Name</span>
+                    <span class="text-xs font-display font-semibold text-right" style="color:#2F3E46;">Your Name Here</span>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-4 px-3 py-2.5 rounded-lg" style="background:#F9FAFB; border:1px solid #E8F5E9;">
+                    <span class="text-xs" style="color:#94A3B8;">{method.numberLabel}</span>
+                    <span class="text-xs font-display font-semibold text-right" style="color:#2F3E46;">{method.accountNumber}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
 
       <!-- Instructions + action buttons -->
-      <div class="reveal reveal-delay-3 space-y-4">
+      <div class="reveal reveal-delay-5 space-y-4">
         <!-- Instructions card -->
         <div class="card-surface rounded-2xl overflow-hidden">
           <div class="px-5 py-4" style="border-bottom:1px solid #E8F5E9;">
             <p class="font-display font-semibold text-sm" style="color:#2F3E46;">Payment Instructions</p>
             <p class="text-xs mt-0.5" style="color:#94A3B8;">Follow these steps carefully</p>
           </div>
+
           <div class="p-5 space-y-4">
             {[
-              'Complete payment via GCash or Maya to the details above.',
+              'Complete payment using your preferred payment option above.',
               'Take a clear screenshot of your payment confirmation.',
               'Send the screenshot using the Upload Form below, or via Messenger.',
-              'Wait for our team to verify your payment (1–2 hours, business hours).',
+              'Wait for our team to verify your payment, usually within 1-2 hours during business hours.',
               'Once verified, your templates will be sent to your email.',
             ].map((inst, idx) => (
               <div class="flex items-start gap-3">
@@ -133,6 +144,7 @@
               </div>
             ))}
           </div>
+
           <!-- Warning -->
           <div class="mx-5 mb-5 p-4 rounded-xl" style="background:rgba(238,155,0,0.08); border:1px solid rgba(238,155,0,0.25);">
             <div class="flex items-start gap-2.5">
@@ -148,19 +160,99 @@
         <!-- Action buttons -->
         <a href="/submit-payment" class="btn-cta w-full justify-center">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
           </svg>
           Upload Payment Screenshot
         </a>
+
         <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn-messenger w-full justify-center">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
+            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z" />
           </svg>
           Send via Messenger Instead
         </a>
       </div>
-
     </div>
   </div>
+
   <div class="absolute bottom-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, rgba(10,147,150,0.25), transparent);"></div>
 </section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 700ms ease,
+      transform 700ms ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 {
+    transition-delay: 100ms;
+  }
+
+  .reveal-delay-2 {
+    transition-delay: 200ms;
+  }
+
+  .reveal-delay-3 {
+    transition-delay: 300ms;
+  }
+
+  .reveal-delay-4 {
+    transition-delay: 400ms;
+  }
+
+  .reveal-delay-5 {
+    transition-delay: 500ms;
+  }
+
+  .card-hover {
+    transition:
+      transform 250ms ease,
+      box-shadow 250ms ease,
+      border-color 250ms ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 45px rgba(0, 95, 115, 0.12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .card-hover {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const paymentRevealItems = document.querySelectorAll('#payment .reveal');
+
+  const paymentRevealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          paymentRevealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: '0px 0px -80px 0px',
+    }
+  );
+
+  paymentRevealItems.forEach((item) => {
+    paymentRevealObserver.observe(item);
+  });
+</script>

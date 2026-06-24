@@ -224,3 +224,51 @@
   box-shadow: 0 0 0 3px rgba(10,147,150,0.12);
 }
 .form-input::placeholder { color: #94A3B8; }
+
+/* Initial states */
+.animate-fade-up,
+.animate-slide-right {
+  opacity: 0;
+}
+
+/* Fade Up */
+.animate-fade-up {
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+/* Slide Right */
+.animate-slide-right {
+  animation: slideRight 1s ease-out forwards;
+}
+
+/* Delays */
+.delay-200 { animation-delay: .2s; }
+.delay-400 { animation-delay: .4s; }
+.delay-500 { animation-delay: .5s; }
+.delay-600 { animation-delay: .6s; }
+.delay-800 { animation-delay: .8s; }
+
+/* Keyframes */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
