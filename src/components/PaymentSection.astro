@@ -1,8 +1,98 @@
 ---
 // PaymentSection.astro
+// Click a payment method on the left → its QR code + account details
+// swap in on the right panel. No external libraries needed.
+
+const paymentMethods = [
+  {
+    id: 'gcash',
+    name: 'GCash',
+    sub: 'Recommended',
+    badge: 'Recommended',
+    badgeBg: 'rgba(0,119,212,0.08)',
+    badgeColor: '#0077D4',
+    badgeBorder: 'rgba(0,119,212,0.18)',
+    iconBg: 'rgba(0,119,212,0.10)',
+    iconBorder: 'rgba(0,119,212,0.18)',
+    emoji: '💙',
+    accountName: 'Your Name Here',
+    accountLabel: 'GCash Number',
+    accountValue: '09XX XXX XXXX',
+    qrAlt: 'GCash QR Code',
+    qrSrc: '', // ← put e.g. "/payment/gcash-qr.png" here once you have the real QR
+  },
+  {
+    id: 'maya',
+    name: 'Maya',
+    sub: 'Also accepted',
+    badge: 'Available',
+    badgeBg: 'rgba(0,153,77,0.08)',
+    badgeColor: '#007A33',
+    badgeBorder: 'rgba(0,153,77,0.18)',
+    iconBg: 'rgba(0,153,77,0.10)',
+    iconBorder: 'rgba(0,153,77,0.18)',
+    emoji: '💚',
+    accountName: 'Your Name Here',
+    accountLabel: 'Maya Number',
+    accountValue: '09XX XXX XXXX',
+    qrAlt: 'Maya QR Code',
+    qrSrc: '',
+  },
+  {
+    id: 'bdo',
+    name: 'BDO',
+    sub: 'Bank transfer',
+    badge: 'Available',
+    badgeBg: 'rgba(0,61,165,0.08)',
+    badgeColor: '#003DA5',
+    badgeBorder: 'rgba(0,61,165,0.18)',
+    iconBg: 'rgba(0,61,165,0.10)',
+    iconBorder: 'rgba(0,61,165,0.18)',
+    emoji: '🏦',
+    accountName: 'Your Name Here',
+    accountLabel: 'BDO Account No.',
+    accountValue: 'XXXX XXXX XXXX',
+    qrAlt: 'BDO QR Code',
+    qrSrc: '',
+  },
+  {
+    id: 'bpi',
+    name: 'BPI',
+    sub: 'Bank transfer',
+    badge: 'Available',
+    badgeBg: 'rgba(178,34,52,0.08)',
+    badgeColor: '#B22234',
+    badgeBorder: 'rgba(178,34,52,0.18)',
+    iconBg: 'rgba(178,34,52,0.10)',
+    iconBorder: 'rgba(178,34,52,0.18)',
+    emoji: '🏦',
+    accountName: 'Your Name Here',
+    accountLabel: 'BPI Account No.',
+    accountValue: 'XXXX XXXX XXXX',
+    qrAlt: 'BPI QR Code',
+    qrSrc: '',
+  },
+  {
+    id: 'gotyme',
+    name: 'GoTyme',
+    sub: 'Digital bank',
+    badge: 'Available',
+    badgeBg: 'rgba(124,58,237,0.08)',
+    badgeColor: '#7C3AED',
+    badgeBorder: 'rgba(124,58,237,0.18)',
+    iconBg: 'rgba(124,58,237,0.10)',
+    iconBorder: 'rgba(124,58,237,0.18)',
+    emoji: '💜',
+    accountName: 'Your Name Here',
+    accountLabel: 'GoTyme Account No.',
+    accountValue: 'XXXX XXXX XXXX',
+    qrAlt: 'GoTyme QR Code',
+    qrSrc: '',
+  },
+];
 ---
 
-<section id="payment" class="py-20 lg:py-28" style="background:#ffffff;">
+<section id="payment" class="py-20 lg:py-28 relative" style="background:#ffffff;">
   <div class="divider absolute inset-x-0" style="top:0;"></div>
 
   <div class="container-xl">
@@ -20,103 +110,63 @@
         <span class="text-teal-gradient">payment options</span>
       </h2>
       <p class="text-lg max-w-xl mx-auto" style="color:var(--text-secondary);">
-        Scan the QR, pay the exact amount, then send us your screenshot.
+        Pick a payment method, scan the QR, pay the exact amount, then send us your screenshot.
       </p>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-5 items-start">
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
 
-      <!-- GCash card -->
-      <div class="reveal reveal-delay-1 card overflow-hidden">
-        <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid var(--border);">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,119,212,0.10); border:1px solid rgba(0,119,212,0.18);">
-              <span class="text-lg" aria-hidden="true">💙</span>
-            </div>
-            <div>
-              <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">GCash</p>
-              <p class="text-xs" style="color:var(--text-muted);">Recommended</p>
-            </div>
-          </div>
-          <span class="badge" style="background:rgba(0,119,212,0.08); color:#0077D4; border:1px solid rgba(0,119,212,0.18);">Available</span>
-        </div>
-        <div class="p-5">
-          <!-- QR placeholder — swap in <img> tag when you have the real QR -->
-          <div
-            class="aspect-square rounded-xl flex flex-col items-center justify-center gap-3 mb-4"
-            style="background:var(--bg); border:2px dashed var(--border-mid);"
-            aria-label="GCash QR Code placeholder"
-          >
-            <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:var(--mint);">
-              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="color:var(--teal-primary);">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"/>
-              </svg>
-            </div>
-            <p class="text-sm font-display font-semibold text-center" style="color:var(--charcoal);">GCash QR Code</p>
-            <p class="text-xs text-center" style="color:var(--text-faint);">Replace with your QR image</p>
+      <!-- ════════════════════════════════════════════════════════
+           LEFT — Method picker + instructions
+      ════════════════════════════════════════════════════════ -->
+      <div class="reveal reveal-delay-1 space-y-4">
+
+        <!-- Method buttons -->
+        <div class="card overflow-hidden">
+          <div class="px-5 py-4" style="border-bottom:1px solid var(--border);">
+            <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">Choose a Payment Method</p>
+            <p class="text-xs mt-0.5" style="color:var(--text-muted);">Tap a method to view its QR code</p>
           </div>
 
-          <div class="space-y-2">
-            {[
-              { label: 'Account Name', val: 'Your Name Here' },
-              { label: 'GCash Number', val: '09XX XXX XXXX' },
-            ].map(row => (
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
-                <span class="text-xs" style="color:var(--text-faint);">{row.label}</span>
-                <span class="text-xs font-display font-semibold" style="color:var(--charcoal);">{row.val}</span>
-              </div>
+          <div class="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-3" role="tablist" aria-label="Payment methods">
+            {paymentMethods.map((m, i) => (
+              <button
+                type="button"
+                class="payment-method-btn flex items-center gap-3 px-4 py-3.5 rounded-xl text-left transition-all duration-200"
+                style={i === 0
+                  ? 'background:rgba(0,95,115,0.06); border:1.5px solid var(--teal-primary); box-shadow:0 2px 10px rgba(0,95,115,0.10);'
+                  : 'background:var(--bg); border:1.5px solid var(--border);'}
+                data-method={m.id}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-controls="qr-panel"
+              >
+                <div
+                  class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                  style={`background:${m.iconBg}; border:1px solid ${m.iconBorder};`}
+                  aria-hidden="true"
+                >
+                  <span class="text-base">{m.emoji}</span>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">{m.name}</p>
+                  <p class="text-xs truncate" style="color:var(--text-muted);">{m.sub}</p>
+                </div>
+                <!-- Selected checkmark -->
+                <svg
+                  class="method-check w-4 h-4 ml-auto shrink-0"
+                  style={`color:var(--teal-primary); opacity:${i === 0 ? '1' : '0'};`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 13l4 4L19 7"/>
+                </svg>
+              </button>
             ))}
           </div>
         </div>
-      </div>
 
-      <!-- Maya card -->
-      <div class="reveal reveal-delay-2 card overflow-hidden">
-        <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid var(--border);">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,153,77,0.10); border:1px solid rgba(0,153,77,0.18);">
-              <span class="text-lg" aria-hidden="true">💚</span>
-            </div>
-            <div>
-              <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">Maya</p>
-              <p class="text-xs" style="color:var(--text-muted);">Also accepted</p>
-            </div>
-          </div>
-          <span class="badge" style="background:rgba(0,153,77,0.08); color:#007A33; border:1px solid rgba(0,153,77,0.18);">Available</span>
-        </div>
-        <div class="p-5">
-          <div
-            class="aspect-square rounded-xl flex flex-col items-center justify-center gap-3 mb-4"
-            style="background:var(--bg); border:2px dashed var(--border-mid);"
-            aria-label="Maya QR Code placeholder"
-          >
-            <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:var(--mint);">
-              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="color:var(--teal-primary);">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"/>
-              </svg>
-            </div>
-            <p class="text-sm font-display font-semibold text-center" style="color:var(--charcoal);">Maya QR Code</p>
-            <p class="text-xs text-center" style="color:var(--text-faint);">Replace with your QR image</p>
-          </div>
-
-          <div class="space-y-2">
-            {[
-              { label: 'Account Name', val: 'Your Name Here' },
-              { label: 'Maya Number', val: '09XX XXX XXXX' },
-            ].map(row => (
-              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
-                <span class="text-xs" style="color:var(--text-faint);">{row.label}</span>
-                <span class="text-xs font-display font-semibold" style="color:var(--charcoal);">{row.val}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <!-- Instructions + action buttons -->
-      <div class="reveal reveal-delay-3 space-y-4">
+        <!-- Instructions -->
         <div class="card overflow-hidden">
           <div class="px-5 py-4" style="border-bottom:1px solid var(--border);">
             <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">Payment Instructions</p>
@@ -124,11 +174,11 @@
           </div>
           <ol class="p-5 space-y-4" aria-label="Payment steps">
             {[
-              'Complete payment via GCash or Maya using the details above.',
+              'Choose your payment method above and scan the QR code shown.',
+              'Complete payment using the account details provided.',
               'Take a clear screenshot of your payment confirmation.',
               'Use the Upload Form or Messenger to send your screenshot and your name.',
               'We\'ll verify your payment within 1–2 hours (business hours).',
-              'Your templates will be sent to your email after verification.',
             ].map((step, i) => (
               <li class="flex items-start gap-3">
                 <div
@@ -170,6 +220,166 @@
         </a>
       </div>
 
+      <!-- ════════════════════════════════════════════════════════
+           RIGHT — QR display panel (swaps content via JS)
+      ════════════════════════════════════════════════════════ -->
+      <div class="reveal reveal-delay-2 lg:sticky lg:top-24">
+        <div id="qr-panel" class="card overflow-hidden" role="tabpanel" aria-live="polite">
+
+          <!-- Panel header — swapped by JS -->
+          <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid var(--border);">
+            <div class="flex items-center gap-3">
+              <div
+                id="qr-panel-icon"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-colors duration-200"
+                style="background:rgba(0,119,212,0.10); border:1px solid rgba(0,119,212,0.18);"
+              >
+                <span id="qr-panel-emoji" class="text-lg">💙</span>
+              </div>
+              <div>
+                <p id="qr-panel-name" class="font-display font-semibold text-sm" style="color:var(--charcoal);">GCash</p>
+                <p id="qr-panel-sub" class="text-xs" style="color:var(--text-muted);">Recommended</p>
+              </div>
+            </div>
+            <span id="qr-panel-badge" class="badge" style="background:rgba(0,119,212,0.08); color:#0077D4; border:1px solid rgba(0,119,212,0.18);">Recommended</span>
+          </div>
+
+          <!-- QR + account details -->
+          <div class="p-5 sm:p-6">
+            <div
+              id="qr-display"
+              class="aspect-square max-w-xs mx-auto rounded-xl flex flex-col items-center justify-center gap-3 mb-5 transition-all duration-300"
+              style="background:var(--bg); border:2px dashed var(--border-mid);"
+            >
+              <!-- Placeholder icon (shown when no real qrSrc is set) -->
+              <div id="qr-placeholder-icon" class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:var(--mint);">
+                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="color:var(--teal-primary);">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"/>
+                </svg>
+              </div>
+
+              <!-- Real QR image (hidden until qrSrc is set) -->
+              <img id="qr-real-image" src="" alt="" class="hidden w-full h-full object-contain rounded-lg" />
+
+              <p id="qr-display-title" class="text-sm font-display font-semibold text-center" style="color:var(--charcoal);">GCash QR Code</p>
+              <p id="qr-display-hint" class="text-xs text-center px-4" style="color:var(--text-faint);">Replace with your QR image</p>
+            </div>
+
+            <!-- Account detail rows -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
+                <span class="text-xs" style="color:var(--text-faint);">Account Name</span>
+                <span id="qr-account-name" class="text-xs font-display font-semibold" style="color:var(--charcoal);">Your Name Here</span>
+              </div>
+              <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
+                <span id="qr-account-label" class="text-xs" style="color:var(--text-faint);">GCash Number</span>
+                <span id="qr-account-value" class="text-xs font-display font-semibold" style="color:var(--charcoal);">09XX XXX XXXX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
+
+<script define:vars={{ paymentMethods }}>
+  const methods   = paymentMethods;
+  const buttons   = document.querySelectorAll('.payment-method-btn');
+
+  const panelIcon       = document.getElementById('qr-panel-icon');
+  const panelEmoji      = document.getElementById('qr-panel-emoji');
+  const panelName       = document.getElementById('qr-panel-name');
+  const panelSub        = document.getElementById('qr-panel-sub');
+  const panelBadge      = document.getElementById('qr-panel-badge');
+
+  const qrDisplay        = document.getElementById('qr-display');
+  const qrPlaceholderIcon = document.getElementById('qr-placeholder-icon');
+  const qrRealImage      = document.getElementById('qr-real-image');
+  const qrDisplayTitle   = document.getElementById('qr-display-title');
+  const qrDisplayHint    = document.getElementById('qr-display-hint');
+
+  const qrAccountName  = document.getElementById('qr-account-name');
+  const qrAccountLabel = document.getElementById('qr-account-label');
+  const qrAccountValue = document.getElementById('qr-account-value');
+
+  function selectMethod(id, animate) {
+    const m = methods.find(x => x.id === id);
+    if (!m) return;
+
+    // Update button active states
+    buttons.forEach(btn => {
+      const isActive = btn.getAttribute('data-method') === id;
+      btn.style.background  = isActive ? 'rgba(0,95,115,0.06)' : 'var(--bg)';
+      btn.style.border      = isActive ? '1.5px solid var(--teal-primary)' : '1.5px solid var(--border)';
+      btn.style.boxShadow   = isActive ? '0 2px 10px rgba(0,95,115,0.10)' : 'none';
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      const check = btn.querySelector('.method-check');
+      if (check) check.style.opacity = isActive ? '1' : '0';
+    });
+
+    function applyContent() {
+      // Panel header
+      if (panelIcon)  { panelIcon.style.background = m.iconBg; panelIcon.style.borderColor = m.iconBorder; }
+      if (panelEmoji) panelEmoji.textContent = m.emoji;
+      if (panelName)  panelName.textContent  = m.name;
+      if (panelSub)   panelSub.textContent   = m.sub;
+      if (panelBadge) {
+        panelBadge.textContent = m.badge;
+        panelBadge.style.background  = m.badgeBg;
+        panelBadge.style.color       = m.badgeColor;
+        panelBadge.style.borderColor = m.badgeBorder;
+      }
+
+      // QR image vs placeholder
+      if (m.qrSrc) {
+        qrPlaceholderIcon?.classList.add('hidden');
+        qrDisplayTitle?.classList.add('hidden');
+        qrDisplayHint?.classList.add('hidden');
+        if (qrRealImage) {
+          qrRealImage.src = m.qrSrc;
+          qrRealImage.alt = m.qrAlt;
+          qrRealImage.classList.remove('hidden');
+        }
+      } else {
+        qrPlaceholderIcon?.classList.remove('hidden');
+        qrDisplayTitle?.classList.remove('hidden');
+        qrDisplayHint?.classList.remove('hidden');
+        qrRealImage?.classList.add('hidden');
+        if (qrDisplayTitle) qrDisplayTitle.textContent = m.qrAlt;
+        if (qrDisplayHint)  qrDisplayHint.textContent  = 'Replace with your QR image';
+      }
+
+      // Account details
+      if (qrAccountName)  qrAccountName.textContent  = m.accountName;
+      if (qrAccountLabel) qrAccountLabel.textContent = m.accountLabel;
+      if (qrAccountValue) qrAccountValue.textContent = m.accountValue;
+    }
+
+    if (animate && qrDisplay) {
+      // Quick fade/scale transition on the QR box when switching methods
+      qrDisplay.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+      qrDisplay.style.opacity    = '0';
+      qrDisplay.style.transform  = 'scale(0.97)';
+      setTimeout(() => {
+        applyContent();
+        qrDisplay.style.opacity   = '1';
+        qrDisplay.style.transform = 'scale(1)';
+      }, 140);
+    } else {
+      applyContent();
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-method');
+      if (id) selectMethod(id, true);
+    });
+  });
+
+  // Initialize with the first method (GCash) — no animation on load
+  if (methods.length > 0) selectMethod(methods[0].id, false);
+</script>

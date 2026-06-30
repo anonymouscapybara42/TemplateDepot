@@ -13,18 +13,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   >
     <div class="container-xl h-full flex items-center justify-between">
       <a href="/" class="flex items-center gap-2.5" aria-label="Back to Template Depot home">
-        <div
-          class="w-7 h-7 rounded-lg flex items-center justify-center"
-          style="background:linear-gradient(135deg,var(--teal-primary),var(--teal-mid));"
+        <img
+          src="/logo.png"
+          alt=""
+          width="28"
+          height="28"
+          class="w-7 h-7 rounded-lg"
           aria-hidden="true"
-        >
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.95"/>
-            <rect x="9"   y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
-            <rect x="1.5" y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
-            <rect x="9"   y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.55"/>
-          </svg>
-        </div>
+        />
         <span class="font-display font-bold" style="font-size:1rem; color:var(--charcoal); letter-spacing:-0.02em;">
           Template<span class="text-teal-gradient">Depot</span>
         </span>
@@ -98,7 +94,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                   name="fullName"
                   required
                   autocomplete="name"
-                  placeholder="e.g. Juan Dela Cruz"
+                  placeholder="e.g. Maria Santos"
                   class="input"
                 />
                 <p id="fullName-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
@@ -141,30 +137,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 <p id="templateName-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
               </div>
 
-              <!-- Payment method -->
-              <fieldset>
-                <legend class="block font-display font-semibold text-sm mb-2" style="color:var(--charcoal);">
-                  Payment Method <span style="color:var(--amber);" aria-label="required">*</span>
-                </legend>
-                <div class="flex gap-3">
-                  {['GCash', 'Maya'].map(method => (
-                    <label
-                      class="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-xl cursor-pointer transition-all duration-150"
-                      style="border:1.5px solid var(--border); background:var(--bg);"
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value={method}
-                        class="accent-teal-600 w-4 h-4"
-                        required
-                      />
-                      <span class="font-display font-medium text-sm" style="color:var(--charcoal);">{method}</span>
-                    </label>
-                  ))}
-                </div>
-                <p id="paymentMethod-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
-              </fieldset>
+<!-- Payment method -->
+<fieldset>
+  <legend class="block font-display font-semibold text-sm mb-2" style="color:var(--charcoal);">
+    Payment Method <span style="color:var(--amber);" aria-label="required">*</span>
+  </legend>
+
+  <div class="grid grid-cols-2 gap-3">
+    {[
+      { name: 'GCash', image: '/GCASH.jpg' },
+      { name: 'BDO', image: '/BDO.jpg' },
+      { name: 'BPI', image: '/BPI.jpg' },
+      { name: 'GoTyme', image: '/GOTHYME.jpg' },
+    ].map(method => (
+      <label
+        class="payment-method-option flex items-center gap-2.5 px-4 py-3 rounded-xl cursor-pointer transition-all duration-150"
+        style="border:1.5px solid var(--border); background:var(--bg);"
+        data-method={method.name}
+        data-qr={method.image}
+      >
+        <input
+          type="radio"
+          name="paymentMethod"
+          value={method.name}
+          class="accent-teal-600 w-4 h-4"
+          required
+        />
+        <span class="font-display font-medium text-sm" style="color:var(--charcoal);">{method.name}</span>
+      </label>
+    ))}
+  </div>
+
+  <p id="paymentMethod-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+</fieldset>
 
               <!-- Amount -->
               <div>
@@ -318,8 +323,91 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </main>
 </BaseLayout>
+<!-- Payment QR side modal -->
+<div
+  id="payment-qr-modal"
+  class="hidden fixed inset-0 z-[60]"
+  aria-hidden="true"
+>
+  <button
+    id="payment-qr-backdrop"
+    type="button"
+    class="absolute inset-0 bg-black/30"
+    aria-label="Close payment QR preview"
+  ></button>
+
+  <aside
+    class="absolute right-0 top-0 h-full w-full max-w-sm p-5 shadow-2xl"
+    style="background:#ffffff;"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="payment-qr-title"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="text-xs font-display font-semibold uppercase tracking-wider" style="color:var(--text-faint);">
+          Payment QR
+        </p>
+        <h2 id="payment-qr-title" class="font-display font-bold text-xl" style="color:var(--charcoal);">
+          Payment Method
+        </h2>
+      </div>
+
+      <button
+        id="payment-qr-close"
+        type="button"
+        class="w-9 h-9 rounded-xl flex items-center justify-center transition-all"
+        style="background:var(--bg); color:var(--charcoal); border:1px solid var(--border);"
+        aria-label="Close payment QR preview"
+      >
+        ×
+      </button>
+    </div>
+
+    <div
+      class="rounded-2xl p-4 mb-4"
+      style="background:var(--bg); border:1.5px solid var(--border);"
+    >
+      <img
+        id="payment-qr-image"
+        src=""
+        alt=""
+        class="w-full aspect-square object-contain rounded-xl"
+      />
+    </div>
+
+    <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">
+      Scan this QR code, complete your payment, then upload the payment screenshot in the form.
+    </p>
+  </aside>
+</div>
 
 <script>
+  /* ── Pre-fill from URL query params (?template=...&price=...) ── */
+  (function prefillFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const tpl    = params.get('template');
+    const price  = params.get('price');
+
+    if (tpl) {
+      const nameInput = document.getElementById('templateName') as HTMLInputElement | null;
+      if (nameInput) nameInput.value = tpl;
+    }
+
+    if (price) {
+      // Strip the ₱ sign and any spaces, keep only digits
+      const raw = price.replace(/[^\d]/g, '');
+      const amtInput = document.getElementById('amount') as HTMLInputElement | null;
+      if (amtInput && raw) amtInput.value = raw;
+    }
+
+    // If we got a template name, scroll the heading into view smoothly
+    if (tpl || price) {
+      const heading = document.querySelector('h1');
+      heading?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  })();
+
   /* ── DOM refs ── */
   const form        = document.getElementById('payment-form') as HTMLFormElement;
   const submitBtn   = document.getElementById('submit-btn') as HTMLButtonElement;
@@ -330,6 +418,47 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const previewDiv  = document.getElementById('file-preview')!;
   const previewImg  = document.getElementById('preview-img') as HTMLImageElement;
   const fileName    = document.getElementById('file-name')!;
+
+  /* ── Payment QR side modal ── */
+const paymentOptions = document.querySelectorAll('.payment-method-option');
+const paymentQrModal = document.getElementById('payment-qr-modal')!;
+const paymentQrBackdrop = document.getElementById('payment-qr-backdrop')!;
+const paymentQrClose = document.getElementById('payment-qr-close')!;
+const paymentQrTitle = document.getElementById('payment-qr-title')!;
+const paymentQrImage = document.getElementById('payment-qr-image') as HTMLImageElement;
+
+function openPaymentQr(method: string, image: string) {
+  paymentQrTitle.textContent = `${method} QR Code`;
+  paymentQrImage.src = image;
+  paymentQrImage.alt = `${method} payment QR code`;
+  paymentQrModal.classList.remove('hidden');
+  paymentQrModal.setAttribute('aria-hidden', 'false');
+}
+
+function closePaymentQr() {
+  paymentQrModal.classList.add('hidden');
+  paymentQrModal.setAttribute('aria-hidden', 'true');
+}
+
+paymentOptions.forEach((option) => {
+  option.addEventListener('click', () => {
+    const method = option.getAttribute('data-method') || '';
+    const image = option.getAttribute('data-qr') || '';
+
+    if (method && image) {
+      openPaymentQr(method, image);
+    }
+  });
+});
+
+paymentQrBackdrop.addEventListener('click', closePaymentQr);
+paymentQrClose.addEventListener('click', closePaymentQr);
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closePaymentQr();
+  }
+});
 
   /* ── File preview ── */
   function showPreview(file: File) {
