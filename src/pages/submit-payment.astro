@@ -4,289 +4,436 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Submit Payment Screenshot — Template Depot"
-  description="Upload your GCash or Maya payment screenshot and send it directly to Template Depot to complete your order."
+  description="Upload your GCash or Maya payment screenshot to complete your Template Depot order."
 >
-  <!-- Navbar (minimal inline for this page) -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b" style="border-color:#E8F5E9;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#005F73,#0A9396);">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.9"/>
-              <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity="0.7"/>
-              <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.7"/>
-              <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity="0.5"/>
-            </svg>
-          </div>
-          <span class="font-display font-bold text-lg tracking-tight" style="color:#2F3E46;">
-            Template<span style="background:linear-gradient(135deg,#005F73,#0A9396); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Depot</span>
-          </span>
-        </a>
-        <a href="/" class="btn-secondary text-sm py-2 px-4">← Back to Home</a>
-      </div>
+  <!-- Minimal sticky header for this page -->
+  <header
+    class="fixed inset-x-0 top-0 z-50"
+    style="background:rgba(255,255,255,0.97); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); height:var(--nav-h-mobile);"
+  >
+    <div class="container-xl h-full flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5" aria-label="Back to Template Depot home">
+        <div
+          class="w-7 h-7 rounded-lg flex items-center justify-center"
+          style="background:linear-gradient(135deg,var(--teal-primary),var(--teal-mid));"
+          aria-hidden="true"
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.95"/>
+            <rect x="9"   y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
+            <rect x="1.5" y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
+            <rect x="9"   y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.55"/>
+          </svg>
+        </div>
+        <span class="font-display font-bold" style="font-size:1rem; color:var(--charcoal); letter-spacing:-0.02em;">
+          Template<span class="text-teal-gradient">Depot</span>
+        </span>
+      </a>
+      <a href="/" class="btn btn-secondary btn-sm">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Back to Home
+      </a>
     </div>
   </header>
 
-  <main class="min-h-screen pt-24 pb-20" style="background:linear-gradient(160deg,#F0F9FA,#ffffff);">
-    <div class="max-w-lg mx-auto px-4 sm:px-6">
+  <!-- Page body -->
+  <main
+    id="main-content"
+    style="min-height:100vh; padding-top:var(--nav-h-mobile); background:linear-gradient(160deg, #EEF7F8 0%, #ffffff 60%, #EAF5EB 100%);"
+  >
+    <div class="container-xl py-12 sm:py-16">
+      <div class="max-w-lg mx-auto">
 
-      <!-- Header -->
-      <div class="text-center mb-10">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:rgba(238,155,0,0.12); border:1.5px solid rgba(238,155,0,0.30);">
-          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#B87200" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-          </svg>
+        <!-- Page header -->
+        <div class="text-center mb-10">
+          <div
+            class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+            style="background:rgba(238,155,0,0.11); border:1.5px solid rgba(238,155,0,0.28);"
+            aria-hidden="true"
+          >
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.75" style="color:#9A6800;">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            </svg>
+          </div>
+          <h1
+            class="font-display font-bold mb-3"
+            style="font-size:clamp(1.75rem,4vw,2.25rem); color:var(--charcoal); letter-spacing:-0.025em;"
+          >
+            Submit Payment Proof
+          </h1>
+          <p class="text-base sm:text-lg leading-relaxed" style="color:var(--text-secondary); max-width:38ch; margin:0 auto;">
+            Fill in your details and upload your GCash or Maya screenshot.
+            We'll verify and send your templates within
+            <strong style="color:var(--teal-primary);">1–2 hours</strong>.
+          </p>
         </div>
-        <h1 class="font-display font-bold text-3xl mb-3" style="color:#2F3E46;">Submit Payment Proof</h1>
-        <p class="text-base leading-relaxed" style="color:#4A5568;">
-          Upload your GCash or Maya payment screenshot and fill in your details.
-          We'll verify and send your templates within <strong style="color:#005F73;">1–2 hours</strong>.
-        </p>
-      </div>
 
-      <!-- Info strip -->
-      <div class="flex items-center gap-3 px-4 py-3 rounded-xl mb-8" style="background:#E8F5E9; border:1px solid rgba(0,95,115,0.20);">
-        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse flex-shrink-0"></div>
-        <p class="text-sm" style="color:#005F73;">
-          <strong>Secure submission.</strong> Your screenshot is sent directly to our email for verification.
-        </p>
-      </div>
+        <!-- Info strip -->
+        <div
+          class="flex items-center gap-3 px-4 py-3 rounded-xl mb-8"
+          style="background:rgba(0,95,115,0.07); border:1px solid rgba(0,95,115,0.18);"
+          role="note"
+        >
+          <div class="w-2 h-2 rounded-full shrink-0 animate-pulse-soft" style="background:var(--teal-mid);" aria-hidden="true"></div>
+          <p class="text-sm" style="color:var(--teal-primary);">
+            <strong>Secure submission.</strong> Your screenshot is sent directly to our email for manual verification.
+          </p>
+        </div>
 
-      <!-- Form card -->
-      <div class="rounded-2xl p-6 sm:p-8 shadow-lg" style="background:#ffffff; border:1px solid #E8F5E9;">
-        <form id="payment-form" class="space-y-5">
+        <!-- Form card -->
+        <div class="card p-6 sm:p-8">
+          <form id="payment-form" novalidate>
+            <div class="space-y-5">
 
-          <!-- Full name -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-1.5" style="color:#2F3E46;">Full Name <span style="color:#EE9B00;">*</span></label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              required
-              placeholder="e.g. Maria Santos"
-              class="form-input"
-            />
-          </div>
-
-          <!-- Email -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-1.5" style="color:#2F3E46;">Email Address <span style="color:#EE9B00;">*</span></label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              placeholder="you@example.com"
-              class="form-input"
-            />
-            <p class="text-xs mt-1.5" style="color:#94A3B8;">This is where we'll send your templates after verification.</p>
-          </div>
-
-          <!-- Template ordered -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-1.5" style="color:#2F3E46;">Template(s) Ordered <span style="color:#EE9B00;">*</span></label>
-            <input
-              type="text"
-              id="templateName"
-              name="templateName"
-              required
-              placeholder="e.g. VA Client Dashboard, Business Proposal Kit"
-              class="form-input"
-            />
-            <p class="text-xs mt-1.5" style="color:#94A3B8;">List all templates if ordering more than one.</p>
-          </div>
-
-          <!-- Payment method -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-2" style="color:#2F3E46;">Payment Method <span style="color:#EE9B00;">*</span></label>
-            <div class="flex gap-3">
-              {['GCash', 'Maya'].map(method => (
-                <label class="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-xl cursor-pointer transition-all" style="border:1.5px solid #D0EDF0; background:#F9FAFB;">
-                  <input type="radio" name="paymentMethod" value={method} class="accent-teal-600" required />
-                  <span class="text-sm font-display font-medium" style="color:#2F3E46;">{method}</span>
+              <!-- Full name -->
+              <div>
+                <label for="fullName" class="block font-display font-semibold text-sm mb-1.5" style="color:var(--charcoal);">
+                  Full Name <span style="color:var(--amber);" aria-label="required">*</span>
                 </label>
-              ))}
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  required
+                  autocomplete="name"
+                  placeholder="e.g. Juan Dela Cruz"
+                  class="input"
+                />
+                <p id="fullName-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="block font-display font-semibold text-sm mb-1.5" style="color:var(--charcoal);">
+                  Email Address <span style="color:var(--amber);" aria-label="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  class="input"
+                />
+                <p class="text-xs mt-1.5" style="color:var(--text-faint);">
+                  This is where we'll send your templates after verification.
+                </p>
+                <p id="email-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </div>
+
+              <!-- Template ordered -->
+              <div>
+                <label for="templateName" class="block font-display font-semibold text-sm mb-1.5" style="color:var(--charcoal);">
+                  Template(s) Ordered <span style="color:var(--amber);" aria-label="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="templateName"
+                  name="templateName"
+                  required
+                  placeholder="e.g. VA Client Dashboard, Business Proposal Kit"
+                  class="input"
+                />
+                <p class="text-xs mt-1.5" style="color:var(--text-faint);">List all templates if ordering more than one.</p>
+                <p id="templateName-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </div>
+
+              <!-- Payment method -->
+              <fieldset>
+                <legend class="block font-display font-semibold text-sm mb-2" style="color:var(--charcoal);">
+                  Payment Method <span style="color:var(--amber);" aria-label="required">*</span>
+                </legend>
+                <div class="flex gap-3">
+                  {['GCash', 'Maya'].map(method => (
+                    <label
+                      class="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-xl cursor-pointer transition-all duration-150"
+                      style="border:1.5px solid var(--border); background:var(--bg);"
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value={method}
+                        class="accent-teal-600 w-4 h-4"
+                        required
+                      />
+                      <span class="font-display font-medium text-sm" style="color:var(--charcoal);">{method}</span>
+                    </label>
+                  ))}
+                </div>
+                <p id="paymentMethod-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </fieldset>
+
+              <!-- Amount -->
+              <div>
+                <label for="amount" class="block font-display font-semibold text-sm mb-1.5" style="color:var(--charcoal);">
+                  Amount Paid (₱) <span style="color:var(--amber);" aria-label="required">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="amount"
+                  name="amount"
+                  required
+                  min="1"
+                  placeholder="e.g. 299"
+                  class="input"
+                />
+                <p id="amount-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </div>
+
+              <!-- Screenshot upload -->
+              <div>
+                <p class="block font-display font-semibold text-sm mb-2" style="color:var(--charcoal);" id="upload-label">
+                  Payment Screenshot <span style="color:var(--amber);" aria-label="required">*</span>
+                </p>
+                <div
+                  id="drop-zone"
+                  class="relative flex flex-col items-center justify-center gap-3 p-8 rounded-xl cursor-pointer transition-all duration-200"
+                  style="border:2px dashed var(--border-mid); background:var(--bg);"
+                  role="button"
+                  tabindex="0"
+                  aria-labelledby="upload-label"
+                  aria-describedby="upload-hint"
+                >
+                  <input
+                    type="file"
+                    id="screenshot"
+                    name="screenshot"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    required
+                    class="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    aria-hidden="true"
+                  />
+
+                  <!-- Placeholder state -->
+                  <div id="upload-placeholder" class="flex flex-col items-center gap-2 pointer-events-none">
+                    <div
+                      class="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style="background:rgba(0,95,115,0.08);"
+                      aria-hidden="true"
+                    >
+                      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.75" style="color:var(--teal-primary);">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                      </svg>
+                    </div>
+                    <div class="text-center">
+                      <p class="font-display font-semibold text-sm" style="color:var(--teal-primary);">Click to upload or drag & drop</p>
+                      <p class="text-xs mt-0.5" style="color:var(--text-faint);" id="upload-hint">PNG, JPG, JPEG, WEBP — max 10 MB</p>
+                    </div>
+                  </div>
+
+                  <!-- Preview state (hidden by default) -->
+                  <div id="file-preview" class="hidden flex-col items-center gap-2 pointer-events-none w-full">
+                    <img
+                      id="preview-img"
+                      src=""
+                      alt="Payment screenshot preview"
+                      class="max-h-44 rounded-lg object-contain"
+                    />
+                    <p id="file-name" class="text-xs font-display font-medium text-center" style="color:var(--teal-primary);"></p>
+                    <p class="text-xs" style="color:var(--text-faint);">Click to change file</p>
+                  </div>
+                </div>
+                <p id="screenshot-error" class="text-xs mt-1 hidden" style="color:#DC2626;" role="alert"></p>
+              </div>
+
+              <!-- Optional message -->
+              <div>
+                <label for="message" class="block font-display font-semibold text-sm mb-1.5" style="color:var(--charcoal);">
+                  Additional Message
+                  <span class="font-normal" style="color:var(--text-faint);">(optional)</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="3"
+                  placeholder="Any special instructions, questions, or notes for our team..."
+                  class="input resize-none"
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                id="submit-btn"
+                class="btn btn-cta btn-lg w-full justify-center"
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                </svg>
+                Send Payment Proof
+              </button>
+
+              <p class="text-xs text-center" style="color:var(--text-faint);">
+                By submitting, you agree your information will be used solely to process your order.
+              </p>
+
             </div>
-          </div>
+          </form>
 
-          <!-- Amount -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-1.5" style="color:#2F3E46;">Amount Paid (₱) <span style="color:#EE9B00;">*</span></label>
-            <input
-              type="number"
-              id="amount"
-              name="amount"
-              required
-              min="1"
-              placeholder="e.g. 299"
-              class="form-input"
-            />
-          </div>
-
-          <!-- Screenshot upload -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-2" style="color:#2F3E46;">Payment Screenshot <span style="color:#EE9B00;">*</span></label>
+          <!-- Success state (hidden until form submitted) -->
+          <div id="success-state" class="hidden text-center py-8">
             <div
-              id="drop-zone"
-              class="relative flex flex-col items-center justify-center gap-3 p-8 rounded-xl cursor-pointer transition-all"
-              style="border:2px dashed #D0EDF0; background:#F9FAFB;"
+              class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+              style="background:rgba(0,95,115,0.09);"
+              aria-hidden="true"
             >
-              <input type="file" id="screenshot" name="screenshot" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
-              <div id="upload-placeholder" class="flex flex-col items-center gap-2 pointer-events-none">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(0,95,115,0.08);">
-                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                  </svg>
-                </div>
-                <div class="text-center">
-                  <p class="text-sm font-display font-semibold" style="color:#005F73;">Click to upload or drag & drop</p>
-                  <p class="text-xs mt-0.5" style="color:#94A3B8;">PNG, JPG, JPEG, WEBP — max 10MB</p>
-                </div>
-              </div>
-              <div id="file-preview" class="hidden flex-col items-center gap-2 pointer-events-none">
-                <img id="preview-img" src="" alt="Preview" class="max-h-40 rounded-lg object-contain" />
-                <p id="file-name" class="text-xs font-display font-medium" style="color:#005F73;"></p>
-              </div>
+              <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" style="color:var(--teal-primary);">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
             </div>
+            <h2 class="font-display font-bold text-xl mb-2" style="color:var(--charcoal);">Submitted Successfully!</h2>
+            <p class="text-sm mb-6" style="color:var(--text-secondary); max-width:32ch; margin:0 auto 1.5rem;">
+              We've received your payment proof. Expect your templates within
+              <strong style="color:var(--teal-primary);">1–2 hours</strong> during business hours.
+            </p>
+            <a href="/" class="btn btn-primary inline-flex">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+              </svg>
+              Back to Home
+            </a>
           </div>
-
-          <!-- Message -->
-          <div>
-            <label class="block text-sm font-display font-semibold mb-1.5" style="color:#2F3E46;">Additional Message <span style="color:#94A3B8; font-weight:400;">(optional)</span></label>
-            <textarea
-              id="message"
-              name="message"
-              rows="3"
-              placeholder="Any special instructions or questions..."
-              class="form-input resize-none"
-            ></textarea>
-          </div>
-
-          <!-- Submit -->
-          <button type="submit" id="submit-btn" class="btn-cta w-full justify-center text-base py-4">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
-            Send Payment Proof
-          </button>
-
-          <p class="text-xs text-center" style="color:#94A3B8;">
-            By submitting, you agree that your information will be used solely to process your order.
-          </p>
-        </form>
-
-        <!-- Success state -->
-        <div id="success-state" class="hidden text-center py-8">
-          <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(0,95,115,0.10);">
-            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#005F73" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-            </svg>
-          </div>
-          <h3 class="font-display font-bold text-xl mb-2" style="color:#2F3E46;">Submitted Successfully!</h3>
-          <p class="text-sm mb-6" style="color:#4A5568;">
-            We've received your payment proof. Expect your templates within <strong style="color:#005F73;">1–2 hours</strong> during business hours.
-          </p>
-          <a href="/" class="btn-primary inline-flex">← Back to Home</a>
         </div>
-      </div>
 
-      <!-- Messenger fallback -->
-      <div class="mt-6 text-center">
-        <p class="text-sm mb-3" style="color:#94A3B8;">Prefer to send directly?</p>
-        <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn-messenger inline-flex">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
-          </svg>
-          Send via Messenger Instead
-        </a>
-      </div>
+        <!-- Messenger fallback -->
+        <div class="text-center mt-6">
+          <p class="text-sm mb-3" style="color:var(--text-muted);">Prefer to send directly?</p>
+          <a
+            href="https://m.me/templatedepot"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-messenger inline-flex"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
+            </svg>
+            Send via Messenger Instead
+          </a>
+        </div>
 
+      </div>
     </div>
   </main>
 </BaseLayout>
 
 <script>
-  // File preview
-  const fileInput = document.getElementById('screenshot') as HTMLInputElement;
-  const dropZone  = document.getElementById('drop-zone');
-  const placeholder = document.getElementById('upload-placeholder');
-  const previewDiv  = document.getElementById('file-preview');
+  /* ── DOM refs ── */
+  const form        = document.getElementById('payment-form') as HTMLFormElement;
+  const submitBtn   = document.getElementById('submit-btn') as HTMLButtonElement;
+  const successState = document.getElementById('success-state')!;
+  const dropZone    = document.getElementById('drop-zone')!;
+  const fileInput   = document.getElementById('screenshot') as HTMLInputElement;
+  const placeholder = document.getElementById('upload-placeholder')!;
+  const previewDiv  = document.getElementById('file-preview')!;
   const previewImg  = document.getElementById('preview-img') as HTMLImageElement;
-  const fileName    = document.getElementById('file-name');
+  const fileName    = document.getElementById('file-name')!;
 
-  fileInput?.addEventListener('change', () => {
-    const file = fileInput.files?.[0];
-    if (!file) return;
+  /* ── File preview ── */
+  function showPreview(file: File) {
     const url = URL.createObjectURL(file);
-    if (previewImg) previewImg.src = url;
-    if (fileName) fileName.textContent = file.name;
-    placeholder?.classList.add('hidden');
-    previewDiv?.classList.remove('hidden');
-    previewDiv?.classList.add('flex');
-    if (dropZone) {
-      dropZone.style.borderColor = '#0A9396';
-      dropZone.style.background  = 'rgba(10,147,150,0.04)';
+    previewImg.src = url;
+    fileName.textContent = file.name;
+    placeholder.classList.add('hidden');
+    previewDiv.classList.remove('hidden');
+    previewDiv.classList.add('flex');
+    dropZone.style.borderColor = 'var(--teal-mid)';
+    dropZone.style.background  = 'rgba(10,147,150,0.04)';
+  }
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (file) showPreview(file);
+  });
+
+  /* ── Drag & drop visuals ── */
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.style.borderColor = 'var(--teal-primary)'; dropZone.style.background = 'rgba(0,95,115,0.05)'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border-mid)';  dropZone.style.background = 'var(--bg)'; });
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer?.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+      showPreview(file);
     }
   });
 
-  // Drag and drop visual
-  dropZone?.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.style.borderColor = '#005F73';
-    dropZone.style.background  = 'rgba(0,95,115,0.06)';
+  /* ── Keyboard access for drop zone ── */
+  dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
+
+  /* ── Inline validation helper ── */
+  function showError(id: string, msg: string) {
+    const el = document.getElementById(`${id}-error`);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function clearError(id: string) {
+    const el = document.getElementById(`${id}-error`);
+    if (!el) return;
+    el.textContent = '';
+    el.classList.add('hidden');
+  }
+
+  /* Clear errors on change */
+  ['fullName','email','templateName','amount'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', () => clearError(id));
   });
-  dropZone?.addEventListener('dragleave', () => {
-    dropZone.style.borderColor = '#D0EDF0';
-    dropZone.style.background  = '#F9FAFB';
-  });
 
-  // Form submit — builds a mailto: link with details, opens email client
-  const form = document.getElementById('payment-form') as HTMLFormElement;
-  const successState = document.getElementById('success-state');
-  const submitBtn    = document.getElementById('submit-btn') as HTMLButtonElement;
-
-  form?.addEventListener('submit', async (e) => {
+  /* ── Form submit ── */
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
-    const fullName     = (document.getElementById('fullName')     as HTMLInputElement).value;
-    const email        = (document.getElementById('email')        as HTMLInputElement).value;
-    const templateName = (document.getElementById('templateName') as HTMLInputElement).value;
-    const amount       = (document.getElementById('amount')       as HTMLInputElement).value;
-    const method       = (document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement)?.value ?? '';
-    const message      = (document.getElementById('message')      as HTMLTextAreaElement).value;
-    const file         = (document.getElementById('screenshot')   as HTMLInputElement).files?.[0];
+    const fullName     = (document.getElementById('fullName')     as HTMLInputElement).value.trim();
+    const email        = (document.getElementById('email')        as HTMLInputElement).value.trim();
+    const templateName = (document.getElementById('templateName') as HTMLInputElement).value.trim();
+    const amount       = (document.getElementById('amount')       as HTMLInputElement).value.trim();
+    const method       = (document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement | null)?.value ?? '';
+    const message      = (document.getElementById('message')      as HTMLTextAreaElement).value.trim();
+    const file         = fileInput.files?.[0];
 
-    // Button loading state
+    /* Client-side validation */
+    let valid = true;
+    if (!fullName)                        { showError('fullName',     'Please enter your full name.');        valid = false; }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('email', 'Please enter a valid email address.'); valid = false; }
+    if (!templateName)                    { showError('templateName', 'Please enter the template name(s).'); valid = false; }
+    if (!method)                          { showError('paymentMethod','Please select a payment method.');    valid = false; }
+    if (!amount || Number(amount) < 1)    { showError('amount',       'Please enter the amount paid.');      valid = false; }
+    if (!file)                            { showError('screenshot',   'Please upload your payment screenshot.'); valid = false; }
+
+    if (!valid) return;
+
+    /* ── Loading state ── */
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
-      <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="32" stroke-dashoffset="12" opacity="0.3"/>
-        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity="0.8"/>
+      <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25"/>
+        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity="0.85"/>
       </svg>
       Sending…
     `;
 
-    // Build mailto body
-    const subject = encodeURIComponent(`[Template Depot] Payment Proof — ${templateName}`);
-    const body = encodeURIComponent(
+    /* ── Open prefilled mailto (triggers user's mail client) ── */
+    const subject = encodeURIComponent(`[Template Depot Order] ${templateName} — ${fullName}`);
+    const body    = encodeURIComponent(
       `Full Name: ${fullName}\n` +
       `Email: ${email}\n` +
       `Template(s) Ordered: ${templateName}\n` +
       `Payment Method: ${method}\n` +
       `Amount Paid: ₱${amount}\n` +
-      `\nAdditional Message:\n${message || 'None'}\n` +
-      `\n---\nPlease find the payment screenshot attached.`
+      `\nMessage:\n${message || 'None'}\n` +
+      `\n---\nPlease find the payment screenshot attached to this email.`
     );
-
-    // Open email client with prefilled body
     window.location.href = `mailto:hello@templatedepot.com?subject=${subject}&body=${body}`;
 
-    // Show success after brief delay (user opened their mail app)
+    /* ── Show success after short delay (mail client opened) ── */
     setTimeout(() => {
       form.classList.add('hidden');
-      successState?.classList.remove('hidden');
-    }, 1500);
+      successState.classList.remove('hidden');
+    }, 1200);
   });
 </script>

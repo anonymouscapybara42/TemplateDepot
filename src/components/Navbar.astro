@@ -1,135 +1,240 @@
 ---
 // Navbar.astro
+// Sticky, accessible, smooth hover underline, mobile hamburger
 ---
 
-<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-  <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-    <nav class="flex items-center justify-between h-16 lg:h-20">
+<header
+  id="navbar"
+  role="banner"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+  style="height: var(--nav-h-desktop);"
+>
+  <!-- Inner wrapper — max-width + padding -->
+  <div class="container-xl h-full flex items-center justify-between gap-6">
 
-      <!-- Logo -->
-      <a href="#home" class="flex items-center group">
-        <img
-          src="/TD%20transparent.png"
-          alt="Template Depot"
-          class="h-30 lg:h-20 w-auto"
-        />
+    <!-- ── Logo ─────────────────────────────────────────────── -->
+    <a
+      href="/#home"
+      class="flex items-center gap-2.5 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      aria-label="Template Depot — home"
+      style="--tw-ring-color: var(--teal-mid);"
+    >
+      <div
+        class="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm shrink-0"
+        style="background: linear-gradient(135deg, var(--teal-primary), var(--teal-mid));"
+        aria-hidden="true"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.95"/>
+          <rect x="9"   y="1.5" width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
+          <rect x="1.5" y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.75"/>
+          <rect x="9"   y="9"   width="5.5" height="5.5" rx="1.25" fill="white" opacity="0.55"/>
+        </svg>
+      </div>
+      <span
+        class="font-display font-bold tracking-tight"
+        style="font-size: 1.0625rem; color: var(--charcoal); line-height: 1;"
+      >
+        Template<span class="text-teal-gradient">Depot</span>
+      </span>
+    </a>
+
+    <!-- ── Desktop nav links ─────────────────────────────────── -->
+    <nav
+      class="hidden lg:flex items-center gap-0.5"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      {[
+        { label: 'Home',         href: '/#home' },
+        { label: 'Templates',    href: '/#templates' },
+        { label: 'How to Buy',   href: '/#how-to-purchase' },
+        { label: 'Testimonials', href: '/#testimonials' },
+        { label: 'FAQ',          href: '/#faq' },
+        { label: 'Contact',      href: '/#contact' },
+      ].map(({ label, href }) => (
+        <a
+          href={href}
+          class="nav-link px-3 py-2 rounded-lg font-display font-medium transition-colors duration-200"
+          style="font-size: var(--text-sm); color: var(--text-secondary);"
+          data-navhref={href.replace('/#','#')}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- ── Right side actions ────────────────────────────────── -->
+    <div class="flex items-center gap-2.5 shrink-0">
+      <!-- Desktop CTA -->
+      <a
+        href="/submit-payment"
+        class="btn btn-cta btn-sm hidden sm:inline-flex"
+        aria-label="Submit payment and get your template"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M7 1v8M4 6l3 3 3-3"/>
+          <path d="M2 11h10"/>
+        </svg>
+        Submit Payment
       </a>
 
-      <!-- Desktop Nav Links -->
-      <div class="hidden lg:flex items-center gap-1">
-        {['Home', 'Templates', 'How to Buy', 'Testimonials', 'FAQ', 'Contact'].map((item) => (
-          <a
-            href={`#${item.toLowerCase().replace(/\s+/g, '-').replace('how-to-buy', 'how-to-purchase')}`}
-            class="nav-link px-4 py-2 text-sm font-display font-medium rounded-lg transition-all duration-200"
-            style="color:#2F3E46;"
-          >
-            {item}
-          </a>
-        ))}
-      </div>
-
-      <!-- CTA + Hamburger -->
-      <div class="flex items-center gap-3">
-        <a href="#contact" class="hidden sm:inline-flex btn-primary text-sm py-2 px-4">
-          Get Templates
-        </a>
-
-        <button id="menu-toggle" class="lg:hidden p-2 rounded-lg transition-all" style="color:#005F73;" aria-label="Toggle menu">
-          <svg id="menu-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="3" y1="6" x2="19" y2="6"/>
-            <line x1="3" y1="11" x2="19" y2="11"/>
-            <line x1="3" y1="16" x2="19" y2="16"/>
-          </svg>
-
-          <svg id="close-icon" class="hidden" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="4" y1="4" x2="18" y2="18"/>
-            <line x1="18" y1="4" x2="4" y2="18"/>
-          </svg>
-        </button>
-      </div>
-    </nav>
+      <!-- Mobile hamburger -->
+      <button
+        id="menu-toggle"
+        class="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-200"
+        style="color: var(--text-secondary);"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open navigation menu"
+      >
+        <!-- Hamburger icon -->
+        <svg
+          id="icon-menu"
+          width="20" height="20" viewBox="0 0 20 20"
+          fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="2.5" y1="5"  x2="17.5" y2="5"/>
+          <line x1="2.5" y1="10" x2="17.5" y2="10"/>
+          <line x1="2.5" y1="15" x2="17.5" y2="15"/>
+        </svg>
+        <!-- Close icon -->
+        <svg
+          id="icon-close"
+          class="hidden"
+          width="20" height="20" viewBox="0 0 20 20"
+          fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="4" y1="4" x2="16" y2="16"/>
+          <line x1="16" y1="4" x2="4"  y2="16"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden lg:hidden border-t" style="background:#ffffff; border-color:#E8F5E9;">
-    <div class="px-4 py-4 space-y-1 max-w-7xl mx-auto">
-      {['Home', 'Templates', 'How to Buy', 'Testimonials', 'FAQ', 'Contact'].map((item) => (
+  <!-- ── Mobile dropdown ───────────────────────────────────────── -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden"
+    role="navigation"
+    aria-label="Mobile navigation"
+    style="background: var(--surface); border-top: 1px solid var(--border);"
+  >
+    <div class="container-xl py-3 pb-4 space-y-0.5">
+      {[
+        { label: 'Home',         href: '/#home' },
+        { label: 'Templates',    href: '/#templates' },
+        { label: 'How to Buy',   href: '/#how-to-purchase' },
+        { label: 'Testimonials', href: '/#testimonials' },
+        { label: 'FAQ',          href: '/#faq' },
+        { label: 'Contact',      href: '/#contact' },
+      ].map(({ label, href }) => (
         <a
-          href={`#${item.toLowerCase().replace(/\s+/g, '-').replace('how-to-buy', 'how-to-purchase')}`}
-          class="mobile-nav-link block px-4 py-3 text-sm font-display font-medium rounded-xl transition-all"
-          style="color:#2F3E46;"
+          href={href}
+          class="mobile-nav-link flex items-center px-3 py-2.5 rounded-xl font-display font-medium transition-colors duration-150"
+          style="font-size: var(--text-sm); color: var(--text-secondary);"
         >
-          {item}
+          {label}
         </a>
       ))}
 
-      <div class="pt-2 pb-1">
-        <a href="#contact" class="btn-primary w-full justify-center text-sm">Get Templates</a>
+      <!-- Mobile CTAs -->
+      <div class="pt-3 space-y-2 border-t mt-2" style="border-color: var(--border);">
+        <a href="/submit-payment" class="btn btn-cta w-full justify-center">
+          Submit Payment
+        </a>
+        <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn btn-messenger w-full justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
+          </svg>
+          Chat on Messenger
+        </a>
       </div>
     </div>
   </div>
 </header>
 
+<!-- Spacer so content doesn't hide under fixed navbar -->
+<div style="height: var(--nav-h-desktop);" aria-hidden="true"></div>
+
 <script>
-  const navbar = document.getElementById('navbar');
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuIcon = document.getElementById('menu-icon');
-  const closeIcon = document.getElementById('close-icon');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  /* ── Element refs ── */
+  const navbar      = document.getElementById('navbar')!;
+  const menuToggle  = document.getElementById('menu-toggle')!;
+  const mobileMenu  = document.getElementById('mobile-menu')!;
+  const iconMenu    = document.getElementById('icon-menu')!;
+  const iconClose   = document.getElementById('icon-close')!;
+  const navLinks    = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+  const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      navbar?.classList.add('shadow-md');
-      navbar?.style.setProperty('background', 'rgba(255,255,255,0.97)');
-      navbar?.style.setProperty('backdrop-filter', 'blur(16px)');
-      navbar?.style.setProperty('border-bottom', '1px solid #E8F5E9');
-    } else {
-      navbar?.classList.remove('shadow-md');
-      navbar?.style.removeProperty('background');
-      navbar?.style.removeProperty('backdrop-filter');
-      navbar?.style.removeProperty('border-bottom');
-    }
+  /* ── Scroll: add background + shadow ── */
+  const BG   = `rgba(255,255,255,0.97)`;
+  const NONE = '';
+
+  function onScroll() {
+    const scrolled = window.scrollY > 24;
+    navbar.style.background   = scrolled ? BG   : NONE;
+    navbar.style.backdropFilter = scrolled ? 'blur(14px)' : NONE;
+    navbar.style.boxShadow    = scrolled
+      ? '0 1px 0 0 #DDE8EA, 0 4px 16px rgba(0,95,115,0.07)'
+      : 'none';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();   // run once on load
+
+  /* ── Mobile menu toggle ── */
+  function openMenu() {
+    mobileMenu.classList.remove('hidden');
+    iconMenu.classList.add('hidden');
+    iconClose.classList.remove('hidden');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    menuToggle.setAttribute('aria-label', 'Close navigation menu');
+  }
+  function closeMenu() {
+    mobileMenu.classList.add('hidden');
+    iconMenu.classList.remove('hidden');
+    iconClose.classList.add('hidden');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open navigation menu');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.contains('hidden') ? openMenu() : closeMenu();
   });
 
-  menuToggle?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-    menuIcon?.classList.toggle('hidden');
-    closeIcon?.classList.toggle('hidden');
+  // Close on mobile link click
+  mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) closeMenu();
   });
 
-  mobileNavLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
-      menuIcon?.classList.remove('hidden');
-      closeIcon?.classList.add('hidden');
+  /* ── Active section highlight ── */
+  const sections = document.querySelectorAll<HTMLElement>('section[id]');
+
+  const ACTIVE_COLOR = 'var(--teal-primary)';
+  const IDLE_COLOR   = 'var(--text-secondary)';
+
+  function setActive(id: string | null) {
+    navLinks.forEach(link => {
+      const linkId = link.getAttribute('data-navhref')?.replace('#', '');
+      const isActive = linkId === id;
+      link.style.color      = isActive ? ACTIVE_COLOR : IDLE_COLOR;
+      link.style.fontWeight = isActive ? '600' : '500';
+      link.classList.toggle('active', isActive);
     });
-  });
+  }
 
-  const sections = document.querySelectorAll('section[id]');
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-
-        navLinks.forEach((link) => {
-          const href = link.getAttribute('href')?.replace('#', '');
-          const el = link as HTMLElement;
-
-          if (href === id) {
-            el.style.color = '#005F73';
-            el.style.background = 'rgba(0,95,115,0.07)';
-            el.style.fontWeight = '600';
-          } else {
-            el.style.color = '#2F3E46';
-            el.style.background = '';
-            el.style.fontWeight = '500';
-          }
-        });
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-
-  sections.forEach((s) => sectionObserver.observe(s));
+  const sectionIO = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    },
+    { rootMargin: '-35% 0px -60% 0px', threshold: 0 }
+  );
+  sections.forEach(s => sectionIO.observe(s));
 </script>

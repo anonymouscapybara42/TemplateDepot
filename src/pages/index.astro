@@ -16,7 +16,6 @@ import Footer from '../components/Footer.astro';
 <BaseLayout>
   <Navbar />
   <main>
-    <Hero />
     <TemplateGrid />
     <Benefits />
     <PurchaseProcess />
@@ -25,5 +24,98 @@ import Footer from '../components/Footer.astro';
     <FAQ />
     <Contact />
   </main>
+  
+  <!-- Hero Modal (hidden by default) -->
+  <div id="hero-modal" class="hidden fixed inset-0 z-40 overflow-y-auto bg-white">
+    <Navbar />
+    <main>
+      <Hero />
+    </main>
+  </div>
+
   <Footer />
 </BaseLayout>
+
+<script>
+  const heroModal = document.getElementById('hero-modal');
+  const navbarLogo = document.querySelector('a[href="/#home"]');
+  const homeNavLink = document.querySelector('a[data-navhref="#home"]');
+  const mobileHomeLink = Array.from(document.querySelectorAll('.mobile-nav-link')).find(link => link.textContent.includes('Home'));
+
+  function openHeroModal() {
+    heroModal?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeHeroModal() {
+    heroModal?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Add click handlers for logo and home link to open hero
+  navbarLogo?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openHeroModal();
+  });
+
+  homeNavLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openHeroModal();
+  });
+
+  mobileHomeLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openHeroModal();
+    // Close mobile menu
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuToggle = document.getElementById('menu-toggle');
+    const iconMenu = document.getElementById('icon-menu');
+    const iconClose = document.getElementById('icon-close');
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+      iconMenu?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && heroModal && !heroModal.classList.contains('hidden')) {
+      closeHeroModal();
+    }
+  });
+
+  // Close hero modal when clicking other nav links (Templates, How to Buy, etc)
+  const allNavLinks = document.querySelectorAll('a[data-navhref]');
+  const nonHomeNavLinks = Array.from(allNavLinks).filter(link => 
+    !link.getAttribute('data-navhref')?.includes('#home')
+  );
+  
+  nonHomeNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeHeroModal();
+    });
+  });
+
+  // Also close for mobile nav links
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  Array.from(mobileNavLinks).forEach(link => {
+    if (!link.textContent.includes('Home')) {
+      link.addEventListener('click', () => {
+        closeHeroModal();
+        // Close mobile menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuToggle = document.getElementById('menu-toggle');
+        const iconMenu = document.getElementById('icon-menu');
+        const iconClose = document.getElementById('icon-close');
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          iconMenu?.classList.remove('hidden');
+          iconClose?.classList.add('hidden');
+          menuToggle?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  });
+</script>

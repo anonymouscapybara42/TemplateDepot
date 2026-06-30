@@ -1,96 +1,93 @@
 ---
 // PurchaseProcess.astro
-
 const steps = [
-  {
-    icon: '🔍',
-    title: 'Browse & Select',
-    description: 'Explore our catalog and pick the template that fits your needs. Check the preview to make sure it\'s perfect.',
-    detail: 'Browse the templates section',
-  },
-  {
-    icon: '💳',
-    title: 'Send Payment',
-    description: 'Pay via GCash or Maya using our payment details below. The exact amount must match the template price.',
-    detail: 'GCash or Maya accepted',
-  },
-  {
-    icon: '📸',
-    title: 'Submit Screenshot',
-    description: 'Take a clear screenshot of your payment confirmation and send it via our Upload Form, email, or Messenger.',
-    detail: 'Send proof of payment',
-  },
-  {
-    icon: '📦',
-    title: 'Receive via Email',
-    description: 'After we verify your payment (usually within 1–2 hours), we\'ll send your template directly to your email.',
-    detail: 'Delivered within 1–2 hours',
-  },
+  { icon: '🔍', title: 'Browse & Select',     detail: 'Browse our catalog and pick the template that fits your needs.', chip: 'Explore templates' },
+  { icon: '💳', title: 'Send Payment',         detail: 'Pay via GCash or Maya using our account details below.',         chip: 'GCash or Maya' },
+  { icon: '📸', title: 'Submit Screenshot',    detail: 'Take a screenshot of your confirmation and send it via our form or Messenger.', chip: 'Upload form' },
+  { icon: '📦', title: 'Receive via Email',    detail: 'After we verify payment (1–2 hrs), your templates arrive in your inbox.', chip: '1–2 hours' },
 ];
 ---
 
-<section id="how-to-purchase" class="py-24 lg:py-32 relative overflow-hidden" style="background:linear-gradient(160deg, #F0F9FA, #ffffff);">
-  <div class="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none" style="background:rgba(10,147,150,0.05);"></div>
+<section id="how-to-purchase" class="py-20 lg:py-28 relative" style="background: linear-gradient(160deg, var(--surface-tint), #ffffff);">
+  <div class="container-xl">
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    <div class="text-center mb-16 reveal">
-      <span class="section-label">
-        <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
+    <!-- Header -->
+    <div class="text-center mb-12 lg:mb-14 reveal">
+      <span class="eyebrow mb-3">
+        <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M1 6h2l2-4 2 8 2-4 2 4 2-3h1"/>
         </svg>
         How It Works
       </span>
-      <h2 class="section-title text-3xl sm:text-4xl lg:text-5xl mt-3 mb-4">
-        Get your template in<br />
-        <span class="text-gradient">4 simple steps</span>
+      <h2 class="section-heading text-3xl sm:text-4xl lg:text-5xl mt-2 mb-3">
+        Get your template in<br class="hidden sm:block" />
+        <span class="text-teal-gradient">4 simple steps</span>
       </h2>
-      <p class="text-lg max-w-2xl mx-auto" style="color:#4A5568;">
-        Our process is simple, secure, and designed to get your templates to you as fast as possible.
+      <p class="text-lg max-w-xl mx-auto" style="color:var(--text-secondary);">
+        Simple, secure, and designed to get your templates to you fast.
       </p>
     </div>
 
-    <!-- Steps -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
-      <!-- Connector line desktop -->
-      <div class="hidden lg:block absolute h-px left-[12.5%] right-[12.5%] z-0" style="top:3rem; background:linear-gradient(90deg, rgba(0,95,115,0.2), rgba(10,147,150,0.4), rgba(0,95,115,0.2));"></div>
+    <!-- Steps grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative">
+
+      <!-- Desktop connector line -->
+      <div
+        class="hidden lg:block absolute inset-x-0 h-px z-0"
+        style="top: 2.875rem; background: linear-gradient(90deg, transparent 6%, var(--border-mid) 15%, var(--border-mid) 85%, transparent 94%);"
+        aria-hidden="true"
+      ></div>
 
       {steps.map((step, i) => (
-        <div class={`reveal reveal-delay-${i + 1} relative card-surface rounded-2xl p-6 card-hover text-center z-10`}>
-          <div class="relative mx-auto w-14 h-14 mb-5">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto" style="background:rgba(0,95,115,0.08); border:1.5px solid rgba(0,95,115,0.2);">
-              <span class="text-2xl">{step.icon}</span>
-            </div>
-            <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center" style="background:#005F73; border:2px solid #F0F9FA;">
-              <span class="text-[9px] font-display font-bold text-white">{i + 1}</span>
-            </div>
+        <div class={`reveal reveal-delay-${i + 1} card p-6 text-center relative z-10`}>
+          <!-- Icon + step number -->
+          <div class="relative inline-block mb-4">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto"
+              style="background: rgba(0,95,115,0.07); border: 1.5px solid rgba(0,95,115,0.16);"
+              aria-label={`Step ${i + 1}`}
+            >{step.icon}</div>
+            <div
+              class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white"
+              style="background:var(--teal-primary); font-family:'Space Grotesk',sans-serif; font-size:0.65rem; font-weight:700;"
+              aria-hidden="true"
+            >{i + 1}</div>
           </div>
-          <h3 class="font-display font-semibold mb-2 text-sm" style="color:#2F3E46;">{step.title}</h3>
-          <p class="text-xs leading-relaxed mb-4" style="color:#718096;">{step.description}</p>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg" style="background:rgba(0,95,115,0.07); border:1px solid rgba(0,95,115,0.12);">
-            <div class="w-1 h-1 rounded-full flex-shrink-0" style="background:#0A9396;"></div>
-            <span class="text-xs font-display font-medium" style="color:#005F73;">{step.detail}</span>
-          </div>
+
+          <h3 class="font-display font-semibold mb-2" style="font-size:var(--text-sm); color:var(--charcoal);">{step.title}</h3>
+          <p class="text-xs leading-relaxed mb-4" style="color:var(--text-secondary);">{step.detail}</p>
+
+          <span
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-medium"
+            style="background:rgba(0,95,115,0.07); color:var(--teal-primary); border:1px solid rgba(0,95,115,0.14);"
+          >
+            <div class="w-1 h-1 rounded-full" style="background:var(--teal-mid);" aria-hidden="true"></div>
+            {step.chip}
+          </span>
         </div>
       ))}
     </div>
 
     <!-- CTA banner -->
-    <div class="mt-12 reveal">
-      <div class="rounded-2xl p-8 text-center relative overflow-hidden" style="background:linear-gradient(135deg, rgba(0,95,115,0.06), rgba(10,147,150,0.04)); border:1px solid rgba(0,95,115,0.12);">
-        <p class="font-display font-semibold text-xl mb-2" style="color:#2F3E46;">Ready to get started?</p>
-        <p class="mb-6" style="color:#4A5568;">Browse our templates and find the perfect one for your needs.</p>
+    <div class="mt-10 reveal">
+      <div
+        class="rounded-2xl p-8 text-center"
+        style="background:linear-gradient(135deg, rgba(0,95,115,0.05), rgba(10,147,150,0.04)); border:1px solid rgba(0,95,115,0.12);"
+      >
+        <p class="font-display font-semibold text-xl mb-2" style="color:var(--charcoal);">Ready to get started?</p>
+        <p class="mb-6" style="color:var(--text-secondary);">Browse templates and complete your order in minutes.</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href="#templates" class="btn-primary">Browse Templates</a>
-          <!-- Amber CTA — primary conversion -->
-          <a href="/submit-payment" class="btn-cta">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <a href="#templates" class="btn btn-primary btn-lg w-full sm:w-auto justify-center">
+            Browse Templates
+          </a>
+          <a href="/submit-payment" class="btn btn-cta btn-lg w-full sm:w-auto justify-center">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
             </svg>
             Submit Payment Proof
           </a>
-          <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn-messenger">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn btn-messenger btn-lg w-full sm:w-auto justify-center">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
             </svg>
             Chat on Messenger
@@ -98,5 +95,6 @@ const steps = [
         </div>
       </div>
     </div>
+
   </div>
 </section>
