@@ -1,6 +1,6 @@
 ---
 // PaymentSection.astro
-// Click a payment method on the left → its QR code + account details
+// Click a payment method on the left. Its QR code + account details
 // swap in on the right panel. No external libraries needed.
 
 const paymentMethods = [
@@ -14,28 +14,11 @@ const paymentMethods = [
     badgeBorder: 'rgba(0,119,212,0.18)',
     iconBg: 'rgba(0,119,212,0.10)',
     iconBorder: 'rgba(0,119,212,0.18)',
-    emoji: '💙',
+    logoSrc: '/GCASH_LOGO.png',
     accountName: 'Your Name Here',
     accountLabel: 'GCash Number',
     accountValue: '09XX XXX XXXX',
     qrAlt: 'GCash QR Code',
-    qrSrc: '', // ← put e.g. "/payment/gcash-qr.png" here once you have the real QR
-  },
-  {
-    id: 'maya',
-    name: 'Maya',
-    sub: 'Also accepted',
-    badge: 'Available',
-    badgeBg: 'rgba(0,153,77,0.08)',
-    badgeColor: '#007A33',
-    badgeBorder: 'rgba(0,153,77,0.18)',
-    iconBg: 'rgba(0,153,77,0.10)',
-    iconBorder: 'rgba(0,153,77,0.18)',
-    emoji: '💚',
-    accountName: 'Your Name Here',
-    accountLabel: 'Maya Number',
-    accountValue: '09XX XXX XXXX',
-    qrAlt: 'Maya QR Code',
     qrSrc: '',
   },
   {
@@ -48,7 +31,7 @@ const paymentMethods = [
     badgeBorder: 'rgba(0,61,165,0.18)',
     iconBg: 'rgba(0,61,165,0.10)',
     iconBorder: 'rgba(0,61,165,0.18)',
-    emoji: '🏦',
+    logoSrc: '/BDO_LOGO.png',
     accountName: 'Your Name Here',
     accountLabel: 'BDO Account No.',
     accountValue: 'XXXX XXXX XXXX',
@@ -65,7 +48,7 @@ const paymentMethods = [
     badgeBorder: 'rgba(178,34,52,0.18)',
     iconBg: 'rgba(178,34,52,0.10)',
     iconBorder: 'rgba(178,34,52,0.18)',
-    emoji: '🏦',
+    logoSrc: '/BPI_LOGO.png',
     accountName: 'Your Name Here',
     accountLabel: 'BPI Account No.',
     accountValue: 'XXXX XXXX XXXX',
@@ -82,7 +65,7 @@ const paymentMethods = [
     badgeBorder: 'rgba(124,58,237,0.18)',
     iconBg: 'rgba(124,58,237,0.10)',
     iconBorder: 'rgba(124,58,237,0.18)',
-    emoji: '💜',
+    logoSrc: '/GOTHYME_LOGO.png',
     accountName: 'Your Name Here',
     accountLabel: 'GoTyme Account No.',
     accountValue: 'XXXX XXXX XXXX',
@@ -96,31 +79,29 @@ const paymentMethods = [
   <div class="divider absolute inset-x-0" style="top:0;"></div>
 
   <div class="container-xl">
-
     <!-- Header -->
     <div class="text-center mb-12 reveal">
       <span class="eyebrow mb-3">
         <svg class="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <circle cx="6" cy="6" r="5"/><path stroke-linecap="round" d="M6 3.5v2.5l2 1.5"/>
+          <circle cx="6" cy="6" r="5"/>
+          <path stroke-linecap="round" d="M6 3.5v2.5l2 1.5"/>
         </svg>
         Payment
       </span>
+
       <h2 class="section-heading text-3xl sm:text-4xl lg:text-5xl mt-2 mb-3">
         Easy & secure<br class="hidden sm:block" />
         <span class="text-teal-gradient">payment options</span>
       </h2>
+
       <p class="text-lg max-w-xl mx-auto" style="color:var(--text-secondary);">
         Pick a payment method, scan the QR, pay the exact amount, then send us your screenshot.
       </p>
     </div>
 
     <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-
-      <!-- ════════════════════════════════════════════════════════
-           LEFT — Method picker + instructions
-      ════════════════════════════════════════════════════════ -->
+      <!-- Left: Method picker + instructions -->
       <div class="reveal reveal-delay-1 space-y-4">
-
         <!-- Method buttons -->
         <div class="card overflow-hidden">
           <div class="px-5 py-4" style="border-bottom:1px solid var(--border);">
@@ -142,21 +123,31 @@ const paymentMethods = [
                 aria-controls="qr-panel"
               >
                 <div
-                  class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                  class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 overflow-hidden"
                   style={`background:${m.iconBg}; border:1px solid ${m.iconBorder};`}
                   aria-hidden="true"
                 >
-                  <span class="text-base">{m.emoji}</span>
+                  <img
+                    src={m.logoSrc}
+                    alt={`${m.name} logo`}
+                    class="w-6 h-6 object-contain"
+                  />
                 </div>
+
                 <div class="min-w-0">
                   <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">{m.name}</p>
                   <p class="text-xs truncate" style="color:var(--text-muted);">{m.sub}</p>
                 </div>
-                <!-- Selected checkmark -->
+
                 <svg
                   class="method-check w-4 h-4 ml-auto shrink-0"
                   style={`color:var(--teal-primary); opacity:${i === 0 ? '1' : '0'};`}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                   aria-hidden="true"
                 >
                   <path d="M5 13l4 4L19 7"/>
@@ -172,13 +163,14 @@ const paymentMethods = [
             <p class="font-display font-semibold text-sm" style="color:var(--charcoal);">Payment Instructions</p>
             <p class="text-xs mt-0.5" style="color:var(--text-muted);">Follow these steps in order</p>
           </div>
+
           <ol class="p-5 space-y-4" aria-label="Payment steps">
             {[
               'Choose your payment method above and scan the QR code shown.',
               'Complete payment using the account details provided.',
               'Take a clear screenshot of your payment confirmation.',
               'Use the Upload Form or Messenger to send your screenshot and your name.',
-              'We\'ll verify your payment within 1–2 hours (business hours).',
+              'We\'ll verify your payment within 1-2 hours during business hours.',
             ].map((step, i) => (
               <li class="flex items-start gap-3">
                 <div
@@ -193,7 +185,6 @@ const paymentMethods = [
             ))}
           </ol>
 
-          <!-- Warning note -->
           <div class="mx-5 mb-5 p-3.5 rounded-xl" style="background:rgba(238,155,0,0.07); border:1px solid rgba(238,155,0,0.22);">
             <div class="flex items-start gap-2">
               <span aria-hidden="true">⚠️</span>
@@ -212,6 +203,7 @@ const paymentMethods = [
           </svg>
           Upload Payment Screenshot
         </a>
+
         <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn btn-messenger w-full justify-center btn-lg">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
@@ -220,27 +212,31 @@ const paymentMethods = [
         </a>
       </div>
 
-      <!-- ════════════════════════════════════════════════════════
-           RIGHT — QR display panel (swaps content via JS)
-      ════════════════════════════════════════════════════════ -->
+      <!-- Right: QR display panel -->
       <div class="reveal reveal-delay-2 lg:sticky lg:top-24">
         <div id="qr-panel" class="card overflow-hidden" role="tabpanel" aria-live="polite">
-
-          <!-- Panel header — swapped by JS -->
+          <!-- Panel header -->
           <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid var(--border);">
             <div class="flex items-center gap-3">
               <div
                 id="qr-panel-icon"
-                class="w-9 h-9 rounded-xl flex items-center justify-center transition-colors duration-200"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-colors duration-200 overflow-hidden"
                 style="background:rgba(0,119,212,0.10); border:1px solid rgba(0,119,212,0.18);"
               >
-                <span id="qr-panel-emoji" class="text-lg">💙</span>
+                <img
+                  id="qr-panel-logo"
+                  src="/GCASH_LOGO.png"
+                  alt="GCash logo"
+                  class="w-6 h-6 object-contain"
+                />
               </div>
+
               <div>
                 <p id="qr-panel-name" class="font-display font-semibold text-sm" style="color:var(--charcoal);">GCash</p>
                 <p id="qr-panel-sub" class="text-xs" style="color:var(--text-muted);">Recommended</p>
               </div>
             </div>
+
             <span id="qr-panel-badge" class="badge" style="background:rgba(0,119,212,0.08); color:#0077D4; border:1px solid rgba(0,119,212,0.18);">Recommended</span>
           </div>
 
@@ -251,7 +247,6 @@ const paymentMethods = [
               class="aspect-square max-w-xs mx-auto rounded-xl flex flex-col items-center justify-center gap-3 mb-5 transition-all duration-300"
               style="background:var(--bg); border:2px dashed var(--border-mid);"
             >
-              <!-- Placeholder icon (shown when no real qrSrc is set) -->
               <div id="qr-placeholder-icon" class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:var(--mint);">
                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="color:var(--teal-primary);">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
@@ -259,19 +254,18 @@ const paymentMethods = [
                 </svg>
               </div>
 
-              <!-- Real QR image (hidden until qrSrc is set) -->
               <img id="qr-real-image" src="" alt="" class="hidden w-full h-full object-contain rounded-lg" />
 
               <p id="qr-display-title" class="text-sm font-display font-semibold text-center" style="color:var(--charcoal);">GCash QR Code</p>
               <p id="qr-display-hint" class="text-xs text-center px-4" style="color:var(--text-faint);">Replace with your QR image</p>
             </div>
 
-            <!-- Account detail rows -->
             <div class="space-y-2">
               <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
                 <span class="text-xs" style="color:var(--text-faint);">Account Name</span>
                 <span id="qr-account-name" class="text-xs font-display font-semibold" style="color:var(--charcoal);">Your Name Here</span>
               </div>
+
               <div class="flex items-center justify-between px-3 py-2.5 rounded-lg" style="background:var(--bg); border:1px solid var(--border);">
                 <span id="qr-account-label" class="text-xs" style="color:var(--text-faint);">GCash Number</span>
                 <span id="qr-account-value" class="text-xs font-display font-semibold" style="color:var(--charcoal);">09XX XXX XXXX</span>
@@ -280,64 +274,71 @@ const paymentMethods = [
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <script define:vars={{ paymentMethods }}>
-  const methods   = paymentMethods;
-  const buttons   = document.querySelectorAll('.payment-method-btn');
+  const methods = paymentMethods;
+  const buttons = document.querySelectorAll('.payment-method-btn');
 
-  const panelIcon       = document.getElementById('qr-panel-icon');
-  const panelEmoji      = document.getElementById('qr-panel-emoji');
-  const panelName       = document.getElementById('qr-panel-name');
-  const panelSub        = document.getElementById('qr-panel-sub');
-  const panelBadge      = document.getElementById('qr-panel-badge');
+  const panelIcon = document.getElementById('qr-panel-icon');
+  const panelLogo = document.getElementById('qr-panel-logo');
+  const panelName = document.getElementById('qr-panel-name');
+  const panelSub = document.getElementById('qr-panel-sub');
+  const panelBadge = document.getElementById('qr-panel-badge');
 
-  const qrDisplay        = document.getElementById('qr-display');
+  const qrDisplay = document.getElementById('qr-display');
   const qrPlaceholderIcon = document.getElementById('qr-placeholder-icon');
-  const qrRealImage      = document.getElementById('qr-real-image');
-  const qrDisplayTitle   = document.getElementById('qr-display-title');
-  const qrDisplayHint    = document.getElementById('qr-display-hint');
+  const qrRealImage = document.getElementById('qr-real-image');
+  const qrDisplayTitle = document.getElementById('qr-display-title');
+  const qrDisplayHint = document.getElementById('qr-display-hint');
 
-  const qrAccountName  = document.getElementById('qr-account-name');
+  const qrAccountName = document.getElementById('qr-account-name');
   const qrAccountLabel = document.getElementById('qr-account-label');
   const qrAccountValue = document.getElementById('qr-account-value');
 
   function selectMethod(id, animate) {
-    const m = methods.find(x => x.id === id);
+    const m = methods.find((x) => x.id === id);
     if (!m) return;
 
-    // Update button active states
-    buttons.forEach(btn => {
+    buttons.forEach((btn) => {
       const isActive = btn.getAttribute('data-method') === id;
-      btn.style.background  = isActive ? 'rgba(0,95,115,0.06)' : 'var(--bg)';
-      btn.style.border      = isActive ? '1.5px solid var(--teal-primary)' : '1.5px solid var(--border)';
-      btn.style.boxShadow   = isActive ? '0 2px 10px rgba(0,95,115,0.10)' : 'none';
+      btn.style.background = isActive ? 'rgba(0,95,115,0.06)' : 'var(--bg)';
+      btn.style.border = isActive ? '1.5px solid var(--teal-primary)' : '1.5px solid var(--border)';
+      btn.style.boxShadow = isActive ? '0 2px 10px rgba(0,95,115,0.10)' : 'none';
       btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+
       const check = btn.querySelector('.method-check');
       if (check) check.style.opacity = isActive ? '1' : '0';
     });
 
     function applyContent() {
-      // Panel header
-      if (panelIcon)  { panelIcon.style.background = m.iconBg; panelIcon.style.borderColor = m.iconBorder; }
-      if (panelEmoji) panelEmoji.textContent = m.emoji;
-      if (panelName)  panelName.textContent  = m.name;
-      if (panelSub)   panelSub.textContent   = m.sub;
+      if (panelIcon) {
+        panelIcon.style.background = m.iconBg;
+        panelIcon.style.borderColor = m.iconBorder;
+      }
+
+      if (panelLogo) {
+        panelLogo.src = m.logoSrc;
+        panelLogo.alt = `${m.name} logo`;
+      }
+
+      if (panelName) panelName.textContent = m.name;
+      if (panelSub) panelSub.textContent = m.sub;
+
       if (panelBadge) {
         panelBadge.textContent = m.badge;
-        panelBadge.style.background  = m.badgeBg;
-        panelBadge.style.color       = m.badgeColor;
+        panelBadge.style.background = m.badgeBg;
+        panelBadge.style.color = m.badgeColor;
         panelBadge.style.borderColor = m.badgeBorder;
       }
 
-      // QR image vs placeholder
       if (m.qrSrc) {
         qrPlaceholderIcon?.classList.add('hidden');
         qrDisplayTitle?.classList.add('hidden');
         qrDisplayHint?.classList.add('hidden');
+
         if (qrRealImage) {
           qrRealImage.src = m.qrSrc;
           qrRealImage.alt = m.qrAlt;
@@ -348,24 +349,24 @@ const paymentMethods = [
         qrDisplayTitle?.classList.remove('hidden');
         qrDisplayHint?.classList.remove('hidden');
         qrRealImage?.classList.add('hidden');
+
         if (qrDisplayTitle) qrDisplayTitle.textContent = m.qrAlt;
-        if (qrDisplayHint)  qrDisplayHint.textContent  = 'Replace with your QR image';
+        if (qrDisplayHint) qrDisplayHint.textContent = 'Replace with your QR image';
       }
 
-      // Account details
-      if (qrAccountName)  qrAccountName.textContent  = m.accountName;
+      if (qrAccountName) qrAccountName.textContent = m.accountName;
       if (qrAccountLabel) qrAccountLabel.textContent = m.accountLabel;
       if (qrAccountValue) qrAccountValue.textContent = m.accountValue;
     }
 
     if (animate && qrDisplay) {
-      // Quick fade/scale transition on the QR box when switching methods
       qrDisplay.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
-      qrDisplay.style.opacity    = '0';
-      qrDisplay.style.transform  = 'scale(0.97)';
+      qrDisplay.style.opacity = '0';
+      qrDisplay.style.transform = 'scale(0.97)';
+
       setTimeout(() => {
         applyContent();
-        qrDisplay.style.opacity   = '1';
+        qrDisplay.style.opacity = '1';
         qrDisplay.style.transform = 'scale(1)';
       }, 140);
     } else {
@@ -373,13 +374,12 @@ const paymentMethods = [
     }
   }
 
-  buttons.forEach(btn => {
+  buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-method');
       if (id) selectMethod(id, true);
     });
   });
 
-  // Initialize with the first method (GCash) — no animation on load
   if (methods.length > 0) selectMethod(methods[0].id, false);
 </script>
