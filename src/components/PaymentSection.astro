@@ -55,23 +55,23 @@ const paymentMethods = [
     qrAlt: 'BPI QR Code',
     qrSrc: '',
   },
-  {
-    id: 'gotyme',
-    name: 'GoTyme',
-    sub: 'Digital bank',
-    badge: 'Available',
-    badgeBg: 'rgba(124,58,237,0.08)',
-    badgeColor: '#7C3AED',
-    badgeBorder: 'rgba(124,58,237,0.18)',
-    iconBg: 'rgba(124,58,237,0.10)',
-    iconBorder: 'rgba(124,58,237,0.18)',
-    logoSrc: '/GOTHYME_LOGO.png',
-    accountName: 'Your Name Here',
-    accountLabel: 'GoTyme Account No.',
-    accountValue: 'XXXX XXXX XXXX',
-    qrAlt: 'GoTyme QR Code',
-    qrSrc: '',
-  },
+{
+  id: 'gotyme',
+  name: 'GoTyme',
+  sub: 'Digital bank',
+  badge: 'Available',
+  badgeBg: 'rgba(10,147,150,0.08)',
+  badgeColor: '#0A9396',
+  badgeBorder: 'rgba(10,147,150,0.18)',
+  iconBg: 'rgba(10,147,150,0.10)',
+  iconBorder: 'rgba(10,147,150,0.18)',
+  logoSrc: '/GOTHYME_LOGO.png',
+  accountName: 'Your Name Here',
+  accountLabel: 'GoTyme Account No.',
+  accountValue: 'XXXX XXXX XXXX',
+  qrAlt: 'GoTyme QR Code',
+  qrSrc: '',
+},
 ];
 ---
 
@@ -204,7 +204,7 @@ const paymentMethods = [
           Upload Payment Screenshot
         </a>
 
-        <a href="https://m.me/templatedepot" target="_blank" rel="noopener noreferrer" class="btn btn-messenger w-full justify-center btn-lg">
+        <a href="https://m.me/61590735058749" target="_blank" rel="noopener noreferrer" class="btn btn-messenger w-full justify-center btn-lg">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
           </svg>
@@ -278,7 +278,7 @@ const paymentMethods = [
   </div>
 </section>
 
-<script define:vars={{ paymentMethods }}>
+<script is:inline define:vars={{ paymentMethods }}>
   const methods = paymentMethods;
   const buttons = document.querySelectorAll('.payment-method-btn');
 

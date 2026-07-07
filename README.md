@@ -65,7 +65,7 @@ Before going live, update the following placeholders:
 ### Contact Information
 - [ ] Update `hello@templatedepot.com` with your real business email
 - [ ] Update Facebook page URL (`https://facebook.com/templatedepot`)
-- [ ] Update Messenger URL (`https://m.me/templatedepot`)
+- [ ] Update Messenger URL (`https://m.me/61590735058749`)
 
 ### SEO & Meta
 - [ ] Update `site` in `astro.config.mjs` with your real domain

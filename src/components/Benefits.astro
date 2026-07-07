@@ -54,12 +54,21 @@ const benefits = [
         <!-- Stat pills -->
         <div class="grid grid-cols-3 gap-4 mb-8">
           {[
-            { num: '500+', label: 'Templates Sold' },
-            { num: '4.9★', label: 'Avg. Rating' },
-            { num: '< 2h', label: 'Delivery Time' },
+            { label: 'Templates Sold', target: 500, suffix: '+' },
+            { label: 'Avg. Rating', target: 4.9, decimals: 1, suffix: '★' },
+            { label: 'Delivery Time', target: 2, prefix: '< ', suffix: 'h' },
           ].map(stat => (
             <div class="text-center">
-              <p class="font-display font-bold text-2xl" style="color:var(--teal-primary);">{stat.num}</p>
+              <p class="font-display font-bold text-2xl" style="color:var(--teal-primary);">
+                <span
+                  class="tabular-nums"
+                  data-counter
+                  data-counter-target={stat.target}
+                  data-counter-prefix={stat.prefix ?? ''}
+                  data-counter-suffix={stat.suffix ?? ''}
+                  data-counter-decimals={stat.decimals ?? 0}
+                >0</span>
+              </p>
               <p class="text-xs mt-0.5" style="color:var(--text-muted);">{stat.label}</p>
             </div>
           ))}
@@ -79,7 +88,7 @@ const benefits = [
 
       <!-- Right: benefit cards -->
       <div class="grid sm:grid-cols-2 gap-4">
-        {benefits.map((b, i) => (
+        {benefits.map((b, i) => ( 
           <div class={`reveal reveal-delay-${i + 1} card p-5 group`}>
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4 transition-transform duration-300 group-hover:scale-110"
@@ -103,3 +112,46 @@ const benefits = [
 
   <div class="divider absolute bottom-0 inset-x-0"></div>
 </section>
+
+<script>
+  const animateCounter = (element: HTMLElement) => {
+    const target = Number(element.dataset.counterTarget || '0');
+    const prefix = element.dataset.counterPrefix || '';
+    const suffix = element.dataset.counterSuffix || '';
+    const decimals = Number(element.dataset.counterDecimals || '0');
+    const duration = 1600;
+    const startTime = performance.now();
+
+    const formatValue = (value: number) => {
+      const formattedValue = value.toFixed(decimals);
+      return `${prefix}${formattedValue}${suffix}`;
+    };
+
+    const updateValue = (currentTime: number) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = target * easedProgress;
+
+      element.textContent = formatValue(currentValue);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateValue);
+      } else {
+        element.textContent = formatValue(target);
+      }
+    };
+
+    element.textContent = formatValue(0);
+    requestAnimationFrame(updateValue);
+  };
+
+  const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
+
+  if (counters.length) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => counters.forEach(animateCounter), { once: true });
+    } else {
+      counters.forEach(animateCounter);
+    }
+  }
+</script>

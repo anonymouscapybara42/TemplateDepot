@@ -46,7 +46,7 @@
             Browse Templates
           </a>
           <a
-            href="https://m.me/templatedepot"
+            href="https://m.me/61590735058749"
             target="_blank" rel="noopener noreferrer"
             class="btn btn-messenger btn-lg w-full sm:w-auto"
           >
@@ -69,7 +69,10 @@
                 >✓</div>
               ))}
             </div>
-            <span class="text-sm font-medium" style="color: var(--text-secondary);">500+ happy customers</span>
+            <span class="text-sm font-medium" style="color: var(--text-secondary);">
+              <span class="tabular-nums" data-counter data-counter-target="500">0+</span>
+              happy customers
+            </span>
           </div>
 
           <!-- Star rating -->
@@ -207,3 +210,38 @@
     </svg>
   </div>
 </section>
+
+<script>
+  const animateCounter = () => {
+    const counter = document.querySelector('[data-counter]');
+
+    if (!counter) return;
+
+    const target = Number(counter.getAttribute('data-counter-target') || '0');
+    const duration = 1600;
+    const startTime = performance.now();
+
+    const updateValue = (currentTime: number) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.round(target * easedProgress);
+
+      counter.textContent = `${currentValue}+`;
+
+      if (progress < 1) {
+        requestAnimationFrame(updateValue);
+      } else {
+        counter.textContent = `${target}+`;
+      }
+    };
+
+    counter.textContent = '0+';
+    requestAnimationFrame(updateValue);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateCounter, { once: true });
+  } else {
+    animateCounter();
+  }
+</script>
