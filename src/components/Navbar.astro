@@ -217,7 +217,7 @@
     navLinks.forEach(link => {
       const linkId = link.getAttribute('data-navhref')?.replace('#', '');
       const isActive = linkId === id;
-      link.style.color      = isActive ? ACTIVE_COLOR : IDLE_COLOR;
+      link.style.color = isActive ? ACTIVE_COLOR : IDLE_COLOR;
       link.style.fontWeight = isActive ? '600' : '500';
       link.classList.toggle('active', isActive);
     });

@@ -145,10 +145,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <div class="grid grid-cols-2 gap-3">
     {[
-      { name: 'GCash', image: '/GCASH.jpg' },
-      { name: 'BDO', image: '/BDO.jpg' },
-      { name: 'BPI', image: '/BPI.jpg' },
-      { name: 'GoTyme', image: '/GOTHYME.jpg' },
+      { name: 'GCash', image: '/GCASH-2.jpg' },
+      { name: 'BDO', image: '/BDO-2.jpg' },
+      { name: 'BPI', image: '/BPI-2.jpg' },
+      { name: 'GoTyme', image: '/GOTHYME-2.jpg' },
     ].map(method => (
       <label
         class="payment-method-option flex items-center gap-2.5 px-4 py-3 rounded-xl cursor-pointer transition-all duration-150"
@@ -364,17 +364,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </button>
     </div>
 
-    <div
-      class="rounded-2xl p-4 mb-4"
-      style="background:var(--bg); border:1.5px solid var(--border);"
-    >
-      <img
-        id="payment-qr-image"
-        src=""
-        alt=""
-        class="w-full aspect-square object-contain rounded-xl"
-      />
-    </div>
+<!-- Replaced Image Container -->
+<div
+  class="rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center"
+  style="background:#ffffff; border:1.5px solid var(--border); box-shadow: 0 4px 14px rgba(0,0,0,0.03);"
+>
+  <img
+    id="payment-qr-image"
+    src=""
+    alt=""
+    class="w-full max-w-[220px] aspect-square object-contain p-4 mix-blend-multiply bg-white"
+  />
+</div>
 
     <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">
       Scan this QR code, complete your payment, then upload the payment screenshot in the form.
