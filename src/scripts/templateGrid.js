@@ -1,0 +1,328 @@
+// src/scripts/templateGrid.js
+// ─────────────────────────────────────────────────────────────
+// Client-side behaviour for the template grid + product modal:
+//   • category filter buttons
+//   • live search
+//   • product detail modal (open/close, animation, focus trap)
+//   • image gallery (thumbnails, prev/next, keyboard, swipe)
+//
+// Imports `templates` directly from the shared data module — no
+// server-to-client data bridge is needed since templates.js is a
+// plain ESM module usable in both contexts.
+//
+// This file preserves the original inline-script behaviour exactly;
+// it has only been moved out of TemplateGrid.astro and given an
+// import statement.
+// ─────────────────────────────────────────────────────────────
+
+import templates, { MESSENGER_URL, CONTACT_EMAIL } from '../data/templates.js';
+
+const MSGR = MESSENGER_URL;
+const EMAIL = CONTACT_EMAIL;
+
+/* ── DOM refs ── */
+const modal      = document.getElementById('product-modal');
+const backdrop    = document.getElementById('modal-backdrop');
+const panel       = document.getElementById('modal-panel');
+const closeBtn    = document.getElementById('modal-close');
+const mainImg     = document.getElementById('modal-main-image');
+const thumbsWrap  = document.getElementById('modal-thumbs');
+const prevBtn     = document.getElementById('gallery-prev');
+const nextBtn     = document.getElementById('gallery-next');
+const noResults   = document.getElementById('no-results');
+
+/* ── Filter + search ── */
+const filterBtns    = document.querySelectorAll('.filter-btn');
+const templateCards = document.querySelectorAll('.template-card');
+const searchInput   = document.getElementById('template-search');
+let activeFilter    = 'All';
+
+function applyFilters() {
+  const q   = (searchInput?.value ?? '').toLowerCase().trim();
+  let count = 0;
+  templateCards.forEach((card) => {
+    const cat  = card.getAttribute('data-category') ?? '';
+    const txt  = card.getAttribute('data-search')   ?? '';
+    const show = (activeFilter === 'All' || cat === activeFilter) && (!q || txt.includes(q));
+    card.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+  if (noResults) noResults.style.display = count === 0 ? 'block' : 'none';
+}
+
+filterBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.getAttribute('data-filter') ?? 'All';
+    filterBtns.forEach((b) => {
+      b.style.background  = 'transparent';
+      b.style.color       = 'var(--text-secondary)';
+      b.style.borderColor = 'var(--border-mid)';
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.style.background  = 'var(--teal-primary)';
+    btn.style.color       = '#fff';
+    btn.style.borderColor = 'var(--teal-primary)';
+    btn.setAttribute('aria-pressed', 'true');
+    applyFilters();
+  });
+});
+
+searchInput?.addEventListener('input', applyFilters);
+
+/* ── Gallery state ── */
+let galleryImages = [];
+let galleryIndex  = 0;
+
+function renderGallery(images) {
+  galleryImages = images;
+  galleryIndex  = 0;
+  showSlide(0, false);
+  buildThumbs(images);
+}
+
+function showSlide(idx, animate = true) {
+  galleryIndex = (idx + galleryImages.length) % galleryImages.length;
+
+  if (!mainImg) return;
+
+  if (animate) {
+    mainImg.style.opacity   = '0';
+    mainImg.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      mainImg.src             = galleryImages[galleryIndex];
+      mainImg.style.opacity   = '1';
+      mainImg.style.transform = 'scale(1)';
+    }, 110);
+  } else {
+    mainImg.src             = galleryImages[galleryIndex];
+    mainImg.style.opacity   = '1';
+    mainImg.style.transform = 'scale(1)';
+  }
+
+  // Sync thumbnail active states
+  document.querySelectorAll('.gallery-thumb').forEach((th, i) => {
+    const active = i === galleryIndex;
+    th.style.opacity   = active ? '1' : '0.5';
+    th.style.transform = active ? 'scale(1.1)' : 'scale(1)';
+    th.style.outline   = active ? '2px solid var(--teal-primary)' : '2px solid transparent';
+    th.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+}
+
+function buildThumbs(images) {
+  if (!thumbsWrap) return;
+  thumbsWrap.innerHTML = '';
+  images.forEach((src, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'gallery-thumb w-10 h-10 rounded-lg overflow-hidden transition-all duration-200';
+    btn.style.cssText = `
+      opacity: ${i === 0 ? '1' : '0.5'};
+      outline: 2px solid ${i === 0 ? 'var(--teal-primary)' : 'transparent'};
+      outline-offset: 2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.20);
+    `;
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.setAttribute('aria-label', `View image ${i + 1}`);
+
+    const img     = document.createElement('img');
+    img.src       = src;
+    img.alt       = '';
+    img.className = 'w-full h-full object-cover';
+    btn.appendChild(img);
+
+    btn.addEventListener('click', () => showSlide(i));
+    thumbsWrap.appendChild(btn);
+  });
+}
+
+prevBtn?.addEventListener('click', () => showSlide(galleryIndex - 1));
+nextBtn?.addEventListener('click', () => showSlide(galleryIndex + 1));
+
+// Keyboard nav inside open modal
+document.addEventListener('keydown', (e) => {
+  if (!modal || modal.style.display === 'none') return;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); showSlide(galleryIndex - 1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); showSlide(galleryIndex + 1); }
+  if (e.key === 'Escape')     closeModal();
+});
+
+// Touch swipe inside gallery
+let touchStartX = 0;
+document.getElementById('modal-gallery')?.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('modal-gallery')?.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 48) showSlide(galleryIndex + (dx < 0 ? 1 : -1));
+});
+
+/* ── Populate modal with a specific template's data ── */
+function populateModal(t) {
+  renderGallery(t.images);
+  if (mainImg) mainImg.alt = t.title;
+
+  // Category + tag badges
+  const catEl = document.getElementById('modal-category');
+  const tagEl = document.getElementById('modal-tag');
+  if (catEl) catEl.textContent = t.category;
+  if (tagEl) {
+    if (t.tag) {
+      tagEl.textContent      = t.tag;
+      tagEl.style.background  = t.tagBg   || 'rgba(238,155,0,0.12)';
+      tagEl.style.color       = t.tagColor || '#9A6800';
+      tagEl.style.borderColor = t.tagColor || '#9A6800';
+      tagEl.classList.remove('hidden');
+    } else {
+      tagEl.classList.add('hidden');
+    }
+  }
+
+  // Title
+  const titleEl = document.getElementById('modal-title');
+  if (titleEl) titleEl.textContent = t.title;
+
+  // Description
+  const descEl = document.getElementById('modal-desc');
+  if (descEl) descEl.textContent = t.longDescription;
+
+  // Includes list
+  const incEl = document.getElementById('modal-includes');
+  if (incEl) {
+    incEl.innerHTML = t.includes.map(item => `
+      <li class="flex items-start gap-2.5">
+        <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" style="color:var(--teal-mid);" aria-hidden="true">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span class="text-sm" style="color:var(--text-secondary);">${item}</span>
+      </li>
+    `).join('');
+  }
+
+  // Formats
+  const fmtEl = document.getElementById('modal-formats');
+  if (fmtEl) {
+    fmtEl.innerHTML = t.formats
+      .map(f => `<span class="badge badge-teal">${f}</span>`)
+      .join('');
+  }
+
+  // Price
+  const priceEl = document.getElementById('modal-price');
+  if (priceEl) priceEl.textContent = t.price;
+
+  // Buy Now — deep-links to submit-payment with template + price pre-filled
+  const buyBtn = document.getElementById('modal-buy-btn');
+  if (buyBtn) {
+    buyBtn.href = `/submit-payment?template=${encodeURIComponent(t.title)}&price=${encodeURIComponent(t.price)}`;
+    buyBtn.setAttribute('aria-label', `Buy ${t.title} for ${t.price}`);
+  }
+
+  // Messenger
+  const msgrBtn = document.getElementById('modal-messenger-btn');
+  if (msgrBtn) {
+    msgrBtn.href = MSGR;
+    msgrBtn.setAttribute('aria-label', `Ask about ${t.title} on Messenger`);
+  }
+
+  // Email — product-specific mailto with pre-filled subject + body
+  const emailBtn = document.getElementById('modal-email-btn');
+  if (emailBtn) {
+    const subject = encodeURIComponent(`[Template Depot] Interested in: ${t.title} (${t.price})`);
+    const body    = encodeURIComponent(
+      `Hi Template Depot!\n\nI'm interested in purchasing:\n\n` +
+      `Template: ${t.title}\nPrice:    ${t.price}\n\n` +
+      `Please send me the payment details.\n\nThank you!`
+    );
+    emailBtn.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    emailBtn.setAttribute('aria-label', `Send email about ${t.title}`);
+  }
+}
+
+/* ── Open / close modal ── */
+let previouslyFocused = null;
+
+function openModal(id) {
+  const t = templates.find(x => x.id === id);
+  if (!t || !modal) return;
+
+  previouslyFocused = document.activeElement;
+  populateModal(t);
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Animate panel in
+  requestAnimationFrame(() => {
+    if (panel) {
+      panel.style.transition = 'transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease';
+      panel.style.transform  = 'translateY(100%)';
+      panel.style.opacity    = '0';
+      requestAnimationFrame(() => {
+        panel.style.transform = 'translateY(0)';
+        panel.style.opacity   = '1';
+      });
+    }
+    if (backdrop) {
+      backdrop.style.transition = 'opacity 0.28s ease';
+      backdrop.style.opacity    = '0';
+      requestAnimationFrame(() => { backdrop.style.opacity = '1'; });
+    }
+  });
+
+  setTimeout(() => closeBtn?.focus(), 60);
+}
+
+function closeModal() {
+  if (!modal || !panel) return;
+
+  panel.style.transform = 'translateY(40px)';
+  panel.style.opacity   = '0';
+  if (backdrop) backdrop.style.opacity = '0';
+
+  setTimeout(() => {
+    modal.style.display          = 'none';
+    panel.style.transform        = '';
+    panel.style.opacity          = '';
+    document.body.style.overflow = '';
+    previouslyFocused?.focus();
+  }, 280);
+}
+
+// Trigger: card body click
+templateCards.forEach((card) => {
+  const id = parseInt(card.getAttribute('data-id') ?? '0', 10);
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.open-modal-btn')) return; // Buy Now has its own handler
+    openModal(id);
+  });
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(id); }
+  });
+});
+
+// Trigger: Buy Now button
+document.querySelectorAll('.open-modal-btn').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = parseInt(btn.getAttribute('data-id') ?? '0', 10);
+    openModal(id);
+  });
+});
+
+// Close triggers
+closeBtn?.addEventListener('click', closeModal);
+backdrop?.addEventListener('click', closeModal);
+
+/* ── Focus trap ── */
+modal?.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || !modal || modal.style.display === 'none') return;
+  const focusable = Array.from(
+    modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+  ).filter(el => !el.closest('[aria-hidden="true"]'));
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last  = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first)      { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});

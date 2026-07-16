@@ -1,0 +1,230 @@
+---
+// ProductModal.astro
+// ─────────────────────────────────────────────────────────────
+// The single, shared product-detail modal. It renders once per page
+// as an empty shell — all content (gallery, title, description,
+// includes, formats, price, CTA links) is populated client-side by
+// scripts/templateGrid.js whenever a card or "Buy Now" button is
+// activated.
+//
+// Markup, element IDs, classes, and inline styles are unchanged from
+// the original inline version — templateGrid.js relies on these exact
+// IDs (#modal-panel, #modal-title, #modal-buy-btn, etc.), so nothing
+// here may be renamed without also updating the script.
+//
+// Props:
+//   messengerUrl — Facebook Messenger link used as the initial href
+//                  for the "Message on Messenger" CTA. The client
+//                  script overwrites this with the same value again
+//                  once a product is opened, matching original behaviour.
+// ─────────────────────────────────────────────────────────────
+
+export interface Props {
+  messengerUrl: string;
+}
+
+const { messengerUrl } = Astro.props;
+---
+
+<div
+  id="product-modal"
+  class="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4"
+  style="display:none;"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <!-- Backdrop -->
+  <div
+    id="modal-backdrop"
+    class="absolute inset-0"
+    style="background:rgba(0,0,0,0.55); backdrop-filter:blur(4px);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Panel -->
+  <div
+    id="modal-panel"
+    class="relative w-full sm:max-w-3xl lg:max-w-4xl max-h-[92dvh] sm:max-h-[88dvh] overflow-hidden flex flex-col"
+    style="background:var(--surface); box-shadow:0 24px 80px rgba(0,0,0,0.25);"
+  >
+    <!-- Close button -->
+    <button
+      id="modal-close"
+      class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+      style="background:rgba(255,255,255,0.95); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.15);"
+      aria-label="Close product details"
+    >
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- Scrollable body -->
+    <div class="overflow-y-auto flex-1 scrollbar-hide">
+
+      <!-- Gallery -->
+      <div
+        id="modal-gallery"
+        class="relative w-full overflow-hidden"
+        style="background:#e8f5f6; min-height:260px; max-height:380px;"
+      >
+        <!-- Main image -->
+        <img
+          id="modal-main-image"
+          src=""
+          alt=""
+          class="w-full object-cover"
+          style="height:320px; transition:opacity 0.12s ease, transform 0.12s ease;"
+          aria-live="polite"
+        />
+
+        <!-- Thumbnail strip -->
+        <div
+          id="modal-thumbs"
+          class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10"
+          role="tablist"
+          aria-label="Product image gallery"
+        ></div>
+
+        <!-- Prev arrow -->
+        <button
+          id="gallery-prev"
+          class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+          style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
+          aria-label="Previous image"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <!-- Next arrow -->
+        <button
+          id="gallery-next"
+          class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+          style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
+          aria-label="Next image"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Info + actions -->
+      <div class="p-5 sm:p-8">
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10">
+
+          <!-- Left: details -->
+          <div class="flex-1 min-w-0">
+
+            <!-- Badges -->
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+              <span id="modal-category" class="badge badge-teal">—</span>
+              <span id="modal-tag" class="badge badge-amber hidden">—</span>
+            </div>
+
+            <!-- Title -->
+            <h3
+              id="modal-title"
+              class="font-display font-bold mb-3"
+              style="font-size:clamp(1.25rem,3vw,1.75rem); color:var(--charcoal); letter-spacing:-0.02em; line-height:1.2;"
+            >Product Title</h3>
+
+            <!-- Long description -->
+            <div
+              id="modal-desc"
+              class="text-sm leading-relaxed mb-6"
+              style="color:var(--text-secondary); white-space:pre-line;"
+            >Description</div>
+
+            <!-- What's included -->
+            <div class="mb-5">
+              <p class="eyebrow mb-3">What's Included</p>
+              <ul id="modal-includes" class="space-y-2"></ul>
+            </div>
+
+            <!-- File formats -->
+            <div>
+              <p class="eyebrow mb-2">File Formats</p>
+              <div id="modal-formats" class="flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+
+          <!-- Right: price + CTA -->
+          <aside
+            class="lg:w-56 xl:w-64 shrink-0"
+            aria-label="Pricing and purchase options"
+          >
+            <div
+              class="rounded-2xl p-5 lg:sticky lg:top-4"
+              style="background:var(--bg); border:1px solid var(--border);"
+            >
+              <!-- Price -->
+              <div class="mb-5 pb-4" style="border-bottom:1px solid var(--border);">
+                <p class="font-display" style="font-size:0.65rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em;">Price</p>
+                <p
+                  id="modal-price"
+                  class="font-display font-bold mt-1"
+                  style="font-size:2rem; color:var(--teal-mid); letter-spacing:-0.02em;"
+                >₱—</p>
+                <p class="text-xs mt-0.5" style="color:var(--text-faint);">One-time payment</p>
+              </div>
+
+              <!-- CTA buttons -->
+              <div class="space-y-2.5">
+
+                <!-- Amber: primary conversion -->
+                <a
+                  id="modal-buy-btn"
+                  href="/submit-payment"
+                  class="btn btn-cta btn-lg w-full justify-center"
+                  aria-label="Submit payment to buy this template"
+                >
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                  </svg>
+                  Buy Now
+                </a>
+
+                <!-- Messenger -->
+                <a
+                  id="modal-messenger-btn"
+                  href={messengerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-messenger w-full justify-center"
+                  aria-label="Message us on Messenger about this template"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
+                  </svg>
+                  Message on Messenger
+                </a>
+
+                <!-- Email -->
+                <a
+                  id="modal-email-btn"
+                  href="#"
+                  class="btn btn-secondary w-full justify-center"
+                  aria-label="Send us an email about this template"
+                >
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  Send Email
+                </a>
+              </div>
+
+              <p class="text-center mt-4" style="font-size:0.7rem; color:var(--text-faint); line-height:1.5;">
+                Delivered to your email within 1–2 hours of payment verification.
+              </p>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

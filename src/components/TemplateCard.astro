@@ -1,0 +1,120 @@
+---
+// TemplateCard.astro
+// ─────────────────────────────────────────────────────────────
+// Renders a single product card in the template grid. Extracted from
+// TemplateGrid.astro so each card is defined once and reused via
+// `templates.map()`, instead of the markup being inlined per-item.
+//
+// Markup, classes, and inline styles are unchanged from the original —
+// only `t` has been renamed to the `template` prop for clarity.
+//
+// Props:
+//   template          — a hydrated template object from src/data/templates.js
+//   revealDelayIndex  — 1-4, staggers the scroll-reveal animation
+//                        (mirrors the original `Math.min(i % 4 + 1, 4)`)
+// ─────────────────────────────────────────────────────────────
+
+export interface Props {
+  template: {
+    id: number;
+    title: string;
+    description: string;
+    category: string;
+    price: string;
+    tag: string;
+    tagColor: string;
+    thumbnail: string;
+  };
+  revealDelayIndex: number;
+}
+
+const { template, revealDelayIndex } = Astro.props;
+
+// Same search-index string the original build inlined per-card.
+const searchIndex = `${template.title} ${template.description} ${template.category}`.toLowerCase();
+---
+
+<article
+  class={`template-card reveal reveal-delay-${revealDelayIndex} relative card overflow-hidden cursor-pointer group`}
+  data-category={template.category}
+  data-search={searchIndex}
+  data-id={template.id}
+  role="button"
+  tabindex="0"
+  aria-label={`View details for ${template.title} — ${template.price}`}
+>
+  <!-- Thumbnail — real image -->
+  <div class="relative h-48 overflow-hidden">
+    <img
+      src={template.thumbnail}
+      alt={template.title}
+      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      loading="lazy"
+      decoding="async"
+      width="400"
+      height="300"
+    />
+
+    <!-- Hover overlay -->
+    <div
+      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      style="background:rgba(0,95,115,0.60);"
+      aria-hidden="true"
+    >
+      <div class="flex flex-col items-center gap-1.5">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        <span class="text-white font-display font-semibold text-xs tracking-wide">View Details</span>
+      </div>
+    </div>
+
+    <!-- Category pill -->
+    <div class="absolute top-3 left-3 z-10">
+      <span
+        class="text-xs font-display font-medium px-2 py-0.5 rounded-full"
+        style="background:rgba(255,255,255,0.92); color:var(--teal-primary); backdrop-filter:blur(6px);"
+      >{template.category}</span>
+    </div>
+
+    {template.tag && (
+      <div class="absolute top-3 right-3 z-10">
+        <span
+          class="text-xs font-display font-semibold px-2 py-0.5 rounded-full"
+          style={`background:rgba(255,255,255,0.92); color:${template.tagColor}; backdrop-filter:blur(6px);`}
+        >{template.tag}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Card body -->
+  <div class="p-4 pb-3" style="background:var(--surface);">
+    <h3
+      class="font-display font-semibold mb-1.5"
+      style="font-size:var(--text-sm); color:var(--charcoal); line-height:1.35;"
+    >{template.title}</h3>
+    <p class="text-xs leading-relaxed" style="color:var(--text-muted);">{template.description}</p>
+  </div>
+
+  <!-- Ticket-stub footer -->
+  <div
+    class="px-4 pb-4 pt-3"
+    style="background:var(--surface); border-top:1px dashed var(--border-mid);"
+  >
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="font-display" style="font-size:0.65rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.06em;">Starting at</p>
+        <p class="font-display font-bold mt-0.5" style="font-size:var(--text-lg); color:var(--teal-mid);">{template.price}</p>
+      </div>
+      <!-- Amber CTA — conversion action -->
+      <button
+        class="btn btn-cta btn-sm open-modal-btn shrink-0"
+        data-id={template.id}
+        aria-label={`Buy ${template.title} for ${template.price}`}
+      >
+        Buy Now
+      </button>
+    </div>
+  </div>
+</article>

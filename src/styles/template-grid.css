@@ -1,0 +1,58 @@
+/* src/styles/template-grid.css
+   ─────────────────────────────────────────────────────────────
+   Component-specific styles for TemplateGrid.astro / ProductModal.astro.
+
+   These rules were originally an Astro-scoped <style> block inside
+   TemplateGrid.astro. All selectors below target IDs and classes that
+   are unique to this feature (#modal-panel, .gallery-thumb, etc.), so
+   moving them into a plain, globally-loaded stylesheet produces the
+   exact same visual result — no scoping attribute is needed because
+   nothing elsewhere in the app uses these selectors.
+   ───────────────────────────────────────────────────────────── */
+
+/* Mobile: modal slides up from the bottom */
+@media (max-width: 639px) {
+  #modal-panel {
+    border-radius: 1.5rem 1.5rem 0 0 !important;
+    max-height: 92dvh !important;
+  }
+}
+
+/* Desktop: modal floats as a centered card */
+@media (min-width: 640px) {
+  #modal-panel {
+    border-radius: 1.5rem !important;
+  }
+}
+
+/* Gallery main image smooth crossfade */
+#modal-main-image {
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Gallery thumbnail hover lift */
+.gallery-thumb:hover {
+  opacity: 1 !important;
+  transform: scale(1.08) !important;
+}
+
+/* Modal close button hover */
+#modal-close:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+  transform: scale(1.05);
+}
+
+/* Gallery prev/next arrow hover */
+#gallery-prev:hover,
+#gallery-next:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* Smooth scroll for the modal's scrollable body */
+#modal-panel > div {
+  scroll-behavior: smooth;
+}
