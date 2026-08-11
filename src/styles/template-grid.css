@@ -25,12 +25,37 @@
   }
 }
 
-/* Gallery main image smooth crossfade */
+/* Gallery container sizing — generous enough to show the full
+   template preview (including tall portrait/story formats) without
+   forcing excessive scroll on mobile. */
+#modal-gallery {
+  min-height: 300px;
+  max-height: 420px;
+}
+
+@media (min-width: 640px) {
+  #modal-gallery {
+    min-height: 380px;
+    max-height: 520px;
+  }
+}
+
+/* Gallery main image smooth crossfade.
+   object-fit: contain (not cover) ensures the ENTIRE image is always
+   visible — nothing gets cropped off the top/bottom/sides, regardless
+   of whether the source is a tall story, a square post, or landscape. */
 #modal-main-image {
   transition: opacity 0.12s ease, transform 0.12s ease;
   display: block;
   width: 100%;
-  object-fit: cover;
+  height: 300px;
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  #modal-main-image {
+    height: 380px;
+  }
 }
 
 /* Gallery thumbnail hover lift */

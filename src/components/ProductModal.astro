@@ -67,15 +67,14 @@ const { messengerUrl } = Astro.props;
       <div
         id="modal-gallery"
         class="relative w-full overflow-hidden"
-        style="background:#e8f5f6; min-height:260px; max-height:380px;"
+        style="background:#e8f5f6;"
       >
         <!-- Main image -->
         <img
           id="modal-main-image"
           src=""
           alt=""
-          class="w-full object-cover"
-          style="height:320px; transition:opacity 0.12s ease, transform 0.12s ease;"
+          class="w-full object-contain"
           aria-live="polite"
         />
 
