@@ -1,21 +1,5 @@
 // src/scripts/templateGrid.js
-// ─────────────────────────────────────────────────────────────
-// Client-side behaviour for the template grid + product modal:
-//   • category filter buttons
-//   • live search
-//   • product detail modal (open/close, animation, focus trap)
-//   • image gallery (thumbnails, prev/next, keyboard, swipe)
-//
-// Imports `templates` directly from the shared data module — no
-// server-to-client data bridge is needed since templates.js is a
-// plain ESM module usable in both contexts.
-//
-// This file preserves the original inline-script behaviour exactly;
-// it has only been moved out of TemplateGrid.astro and given an
-// import statement.
-// ─────────────────────────────────────────────────────────────
-
-import templates, { MESSENGER_URL, CONTACT_EMAIL } from '../data/templates.js';
+import templates, { MESSENGER_URL, CONTACT_EMAIL, computeDiscountPercent } from '../data/templates.js';
 
 const MSGR = MESSENGER_URL;
 const EMAIL = CONTACT_EMAIL;
@@ -99,7 +83,6 @@ function showSlide(idx, animate = true) {
     mainImg.style.transform = 'scale(1)';
   }
 
-  // Sync thumbnail active states
   document.querySelectorAll('.gallery-thumb').forEach((th, i) => {
     const active = i === galleryIndex;
     th.style.opacity   = active ? '1' : '0.5';
@@ -139,7 +122,6 @@ function buildThumbs(images) {
 prevBtn?.addEventListener('click', () => showSlide(galleryIndex - 1));
 nextBtn?.addEventListener('click', () => showSlide(galleryIndex + 1));
 
-// Keyboard nav inside open modal
 document.addEventListener('keydown', (e) => {
   if (!modal || modal.style.display === 'none') return;
   if (e.key === 'ArrowLeft')  { e.preventDefault(); showSlide(galleryIndex - 1); }
@@ -147,7 +129,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape')     closeModal();
 });
 
-// Touch swipe inside gallery
 let touchStartX = 0;
 document.getElementById('modal-gallery')?.addEventListener('touchstart', (e) => {
   touchStartX = e.touches[0].clientX;
@@ -157,12 +138,11 @@ document.getElementById('modal-gallery')?.addEventListener('touchend', (e) => {
   if (Math.abs(dx) > 48) showSlide(galleryIndex + (dx < 0 ? 1 : -1));
 });
 
-/* ── Populate modal with a specific template's data ── */
+/* ── Populate modal ── */
 function populateModal(t) {
   renderGallery(t.images);
   if (mainImg) mainImg.alt = t.title;
 
-  // Category + tag badges
   const catEl = document.getElementById('modal-category');
   const tagEl = document.getElementById('modal-tag');
   if (catEl) catEl.textContent = t.category;
@@ -178,15 +158,12 @@ function populateModal(t) {
     }
   }
 
-  // Title
   const titleEl = document.getElementById('modal-title');
   if (titleEl) titleEl.textContent = t.title;
 
-  // Description
   const descEl = document.getElementById('modal-desc');
   if (descEl) descEl.textContent = t.longDescription;
 
-  // Includes list
   const incEl = document.getElementById('modal-includes');
   if (incEl) {
     incEl.innerHTML = t.includes.map(item => `
@@ -199,7 +176,6 @@ function populateModal(t) {
     `).join('');
   }
 
-  // Formats
   const fmtEl = document.getElementById('modal-formats');
   if (fmtEl) {
     fmtEl.innerHTML = t.formats
@@ -207,25 +183,35 @@ function populateModal(t) {
       .join('');
   }
 
-  // Price
+  const regularPriceEl = document.getElementById('modal-regular-price');
+  if (regularPriceEl) regularPriceEl.textContent = t.regularPrice;
+
+  const discountBadgeEl = document.getElementById('modal-discount-badge');
+  if (discountBadgeEl) {
+    const percentOff = computeDiscountPercent(t.regularPrice, t.price);
+    if (percentOff > 0) {
+      discountBadgeEl.textContent = `-${percentOff}%`;
+      discountBadgeEl.style.display = '';
+    } else {
+      discountBadgeEl.style.display = 'none';
+    }
+  }
+
   const priceEl = document.getElementById('modal-price');
   if (priceEl) priceEl.textContent = t.price;
 
-  // Buy Now — deep-links to submit-payment with template + price pre-filled
   const buyBtn = document.getElementById('modal-buy-btn');
   if (buyBtn) {
     buyBtn.href = `/submit-payment?template=${encodeURIComponent(t.title)}&price=${encodeURIComponent(t.price)}`;
     buyBtn.setAttribute('aria-label', `Buy ${t.title} for ${t.price}`);
   }
 
-  // Messenger
   const msgrBtn = document.getElementById('modal-messenger-btn');
   if (msgrBtn) {
     msgrBtn.href = MSGR;
     msgrBtn.setAttribute('aria-label', `Ask about ${t.title} on Messenger`);
   }
 
-  // Email — product-specific mailto with pre-filled subject + body
   const emailBtn = document.getElementById('modal-email-btn');
   if (emailBtn) {
     const subject = encodeURIComponent(`[Template Depot] Interested in: ${t.title} (${t.price})`);
@@ -252,7 +238,6 @@ function openModal(id) {
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 
-  // Animate panel in
   requestAnimationFrame(() => {
     if (panel) {
       panel.style.transition = 'transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease';
@@ -289,11 +274,10 @@ function closeModal() {
   }, 280);
 }
 
-// Trigger: card body click
 templateCards.forEach((card) => {
   const id = parseInt(card.getAttribute('data-id') ?? '0', 10);
   card.addEventListener('click', (e) => {
-    if (e.target.closest('.open-modal-btn')) return; // Buy Now has its own handler
+    if (e.target.closest('.open-modal-btn')) return;
     openModal(id);
   });
   card.addEventListener('keydown', (e) => {
@@ -301,7 +285,6 @@ templateCards.forEach((card) => {
   });
 });
 
-// Trigger: Buy Now button
 document.querySelectorAll('.open-modal-btn').forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -310,11 +293,9 @@ document.querySelectorAll('.open-modal-btn').forEach((btn) => {
   });
 });
 
-// Close triggers
 closeBtn?.addEventListener('click', closeModal);
 backdrop?.addEventListener('click', closeModal);
 
-/* ── Focus trap ── */
 modal?.addEventListener('keydown', (e) => {
   if (e.key !== 'Tab' || !modal || modal.style.display === 'none') return;
   const focusable = Array.from(

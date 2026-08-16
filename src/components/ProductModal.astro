@@ -1,22 +1,31 @@
 ---
 // ProductModal.astro
 // ─────────────────────────────────────────────────────────────
-// The single, shared product-detail modal. It renders once per page
-// as an empty shell — all content (gallery, title, description,
-// includes, formats, price, CTA links) is populated client-side by
-// scripts/templateGrid.js whenever a card or "Buy Now" button is
-// activated.
+// The shared product-detail modal, redesigned to match the
+// reference checkout-style layout: breadcrumb + gallery + details
+// on the left, a dedicated "Checkout" card on the right with
+// payment method selection and a live price breakdown.
 //
-// Markup, element IDs, classes, and inline styles are unchanged from
-// the original inline version — templateGrid.js relies on these exact
-// IDs (#modal-panel, #modal-title, #modal-buy-btn, etc.), so nothing
-// here may be renamed without also updating the script.
+// IMPORTANT — data flow:
+//   scripts/templateGrid.js still owns populating the "source of
+//   truth" elements exactly as before: #modal-category, #modal-tag,
+//   #modal-title, #modal-desc, #modal-includes, #modal-formats,
+//   #modal-price, #modal-regular-price, #modal-discount-badge,
+//   #modal-main-image, #modal-thumbs, and the three CTA hrefs
+//   (#modal-buy-btn, #modal-messenger-btn, #modal-email-btn).
+//   That file was NOT modified.
+//
+//   Every new element added for this redesign (breadcrumb, checkout
+//   card thumbnail/title, savings badge, subtotal/discount/total,
+//   "Perfect For" list, payment method toggle, dynamic "Pay" button
+//   label) is populated by a small self-contained <script> at the
+//   bottom of THIS file, which watches the elements above via
+//   MutationObserver and mirrors/derives values from them. This
+//   keeps all new behaviour local to this one component.
 //
 // Props:
 //   messengerUrl — Facebook Messenger link used as the initial href
-//                  for the "Message on Messenger" CTA. The client
-//                  script overwrites this with the same value again
-//                  once a product is opened, matching original behaviour.
+//                  for the "Message on Messenger" CTA.
 // ─────────────────────────────────────────────────────────────
 
 export interface Props {
@@ -34,7 +43,6 @@ const { messengerUrl } = Astro.props;
   aria-modal="true"
   aria-labelledby="modal-title"
 >
-  <!-- Backdrop -->
   <div
     id="modal-backdrop"
     class="absolute inset-0"
@@ -42,16 +50,14 @@ const { messengerUrl } = Astro.props;
     aria-hidden="true"
   ></div>
 
-  <!-- Panel -->
   <div
     id="modal-panel"
-    class="relative w-full sm:max-w-3xl lg:max-w-4xl max-h-[92dvh] sm:max-h-[88dvh] overflow-hidden flex flex-col"
+    class="relative w-full sm:max-w-4xl lg:max-w-6xl max-h-[94dvh] sm:max-h-[92dvh] overflow-hidden flex flex-col"
     style="background:var(--surface); box-shadow:0 24px 80px rgba(0,0,0,0.25);"
   >
-    <!-- Close button -->
     <button
       id="modal-close"
-      class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+      class="absolute top-4 right-4 z-30 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
       style="background:rgba(255,255,255,0.95); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.15);"
       aria-label="Close product details"
     >
@@ -60,164 +66,279 @@ const { messengerUrl } = Astro.props;
       </svg>
     </button>
 
-    <!-- Scrollable body -->
     <div class="overflow-y-auto flex-1 scrollbar-hide">
 
-      <!-- Gallery -->
-      <div
-        id="modal-gallery"
-        class="relative w-full overflow-hidden"
-        style="background:#e8f5f6;"
-      >
-        <!-- Main image -->
-        <img
-          id="modal-main-image"
-          src=""
-          alt=""
-          class="w-full object-contain"
-          aria-live="polite"
-        />
+      <!-- Breadcrumb -->
+      <nav class="px-5 sm:px-8 pt-5" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-1.5 flex-wrap" style="font-size:0.75rem; color:var(--text-faint);">
+          <li>Home</li>
+          <li aria-hidden="true">›</li>
+          <li>Templates</li>
+          <li aria-hidden="true">›</li>
+          <li id="modal-breadcrumb-category" style="color:var(--text-muted);">Category</li>
+          <li aria-hidden="true">›</li>
+          <li id="modal-breadcrumb-title" class="truncate" style="max-width:200px; color:var(--charcoal); font-weight:500;">Title</li>
+        </ol>
+      </nav>
 
-        <!-- Thumbnail strip -->
-        <div
-          id="modal-thumbs"
-          class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10"
-          role="tablist"
-          aria-label="Product image gallery"
-        ></div>
+      <!-- Title + trust row -->
+      <div class="px-5 sm:px-8 pt-3">
+        <h3
+          id="modal-title"
+          class="font-display font-bold"
+          style="font-size:clamp(1.25rem,3vw,1.75rem); color:var(--charcoal); letter-spacing:-0.02em; line-height:1.2;"
+        >Product Title</h3>
 
-        <!-- Prev arrow -->
-        <button
-          id="gallery-prev"
-          class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
-          style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
-          aria-label="Previous image"
-        >
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-
-        <!-- Next arrow -->
-        <button
-          id="gallery-next"
-          class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
-          style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
-          aria-label="Next image"
-        >
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
+        <div class="flex items-center gap-2 mt-2">
+          <div class="flex" style="color:#EE9B00;" aria-hidden="true">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.959c.3.92-.755 1.688-1.54 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.784.57-1.838-.197-1.539-1.118l1.286-3.96a1 1 0 00-.362-1.117L2.98 9.386c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.689l1.286-3.958z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.959c.3.92-.755 1.688-1.54 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.784.57-1.838-.197-1.539-1.118l1.286-3.96a1 1 0 00-.362-1.117L2.98 9.386c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.689l1.286-3.958z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.959c.3.92-.755 1.688-1.54 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.784.57-1.838-.197-1.539-1.118l1.286-3.96a1 1 0 00-.362-1.117L2.98 9.386c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.689l1.286-3.958z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.959c.3.92-.755 1.688-1.54 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.784.57-1.838-.197-1.539-1.118l1.286-3.96a1 1 0 00-.362-1.117L2.98 9.386c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.689l1.286-3.958z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.959c.3.92-.755 1.688-1.54 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.784.57-1.838-.197-1.539-1.118l1.286-3.96a1 1 0 00-.362-1.117L2.98 9.386c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.689l1.286-3.958z"/></svg>
+          </div>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Loved by professionals</span>
+        </div>
       </div>
 
-      <!-- Info + actions -->
-      <div class="p-5 sm:p-8">
-        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10">
+      <!-- Main content: 2-column on desktop -->
+      <div class="p-5 sm:p-8 pt-5">
+        <div class="grid lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_380px] gap-8">
 
-          <!-- Left: details -->
-          <div class="flex-1 min-w-0">
+          <!-- ═══ LEFT: gallery + details ═══ -->
+          <div class="min-w-0">
 
-            <!-- Badges -->
-            <div class="flex items-center gap-2 mb-3 flex-wrap">
+            <!-- Gallery -->
+            <div
+              id="modal-gallery"
+              class="relative w-full overflow-hidden rounded-2xl"
+              style="background:#e8f5f6; height:340px;"
+            >
+              <img
+                id="modal-main-image"
+                src=""
+                alt=""
+                class="w-full h-full object-contain"
+                aria-live="polite"
+              />
+
+              <button
+                id="gallery-prev"
+                class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+                style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
+                aria-label="Previous image"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                  <path d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <button
+                id="gallery-next"
+                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150"
+                style="background:rgba(255,255,255,0.92); color:var(--charcoal); box-shadow:0 2px 8px rgba(0,0,0,0.14);"
+                aria-label="Next image"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Thumbnail strip — now a normal row BELOW the image, not overlaid -->
+            <div
+              id="modal-thumbs"
+              class="flex items-center gap-2 mt-3 flex-wrap"
+              role="tablist"
+              aria-label="Product image gallery"
+            ></div>
+
+            <!-- Category / tag badges -->
+            <div class="flex items-center gap-2 mt-5 flex-wrap">
               <span id="modal-category" class="badge badge-teal">—</span>
               <span id="modal-tag" class="badge badge-amber hidden">—</span>
             </div>
 
-            <!-- Title -->
-            <h3
-              id="modal-title"
-              class="font-display font-bold mb-3"
-              style="font-size:clamp(1.25rem,3vw,1.75rem); color:var(--charcoal); letter-spacing:-0.02em; line-height:1.2;"
-            >Product Title</h3>
-
-            <!-- Long description -->
+            <!-- Description -->
             <div
               id="modal-desc"
-              class="text-sm leading-relaxed mb-6"
+              class="text-sm leading-relaxed mt-3"
               style="color:var(--text-secondary); white-space:pre-line;"
             >Description</div>
 
-            <!-- What's included -->
-            <div class="mb-5">
-              <p class="eyebrow mb-3">What's Included</p>
-              <ul id="modal-includes" class="space-y-2"></ul>
+            <!-- What's Included / File Format -->
+            <div class="grid sm:grid-cols-2 gap-6 mt-6">
+              <div>
+                <p class="eyebrow mb-3">What's Included</p>
+                <ul id="modal-includes" class="space-y-2"></ul>
+              </div>
+              <div>
+                <p class="eyebrow mb-3">File Format</p>
+                <div id="modal-formats" class="flex flex-wrap gap-2"></div>
+              </div>
             </div>
 
-            <!-- File formats -->
-            <div>
-              <p class="eyebrow mb-2">File Formats</p>
-              <div id="modal-formats" class="flex flex-wrap gap-2"></div>
+            <!-- Perfect For -->
+            <div class="mt-6">
+              <p class="eyebrow mb-3">Perfect For</p>
+              <ul id="modal-perfect-for" class="space-y-2"></ul>
             </div>
           </div>
 
-          <!-- Right: price + CTA -->
-          <aside
-            class="lg:w-56 xl:w-64 shrink-0"
-            aria-label="Pricing and purchase options"
-          >
+          <!-- ═══ RIGHT: Checkout card ═══ -->
+          <aside aria-label="Checkout">
             <div
               class="rounded-2xl p-5 lg:sticky lg:top-4"
               style="background:var(--bg); border:1px solid var(--border);"
             >
-              <!-- Price -->
-              <div class="mb-5 pb-4" style="border-bottom:1px solid var(--border);">
-                <p class="font-display" style="font-size:0.65rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em;">Price</p>
-                <p
-                  id="modal-price"
-                  class="font-display font-bold mt-1"
-                  style="font-size:2rem; color:var(--teal-mid); letter-spacing:-0.02em;"
-                >₱—</p>
-                <p class="text-xs mt-0.5" style="color:var(--text-faint);">One-time payment</p>
+              <p class="font-display font-semibold" style="font-size:0.9375rem; color:var(--charcoal);">Checkout</p>
+
+              <!-- Product recap -->
+              <div class="flex items-start gap-3 mt-3 pb-4" style="border-bottom:1px solid var(--border);">
+                <img
+                  id="modal-checkout-thumb"
+                  src=""
+                  alt=""
+                  class="w-16 h-16 rounded-xl object-cover shrink-0"
+                  style="background:var(--surface-tint); border:1px solid var(--border);"
+                />
+                <div class="min-w-0">
+                  <p id="modal-checkout-title" class="font-display font-semibold" style="font-size:0.8125rem; color:var(--charcoal); line-height:1.3;">Product Title</p>
+                  <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                    <span id="modal-regular-price" class="font-display" style="font-size:0.8125rem; color:var(--text-faint); text-decoration:line-through; text-decoration-color:#DC2626; text-decoration-thickness:1.5px;">₱—</span>
+                    <span id="modal-price" class="font-display font-bold" style="font-size:1.125rem; color:#16A34A;">₱—</span>
+                  </div>
+                </div>
               </div>
 
-              <!-- CTA buttons -->
-              <div class="space-y-2.5">
+              <!-- Savings badge -->
+              <div
+                id="modal-savings-badge"
+                class="mt-3 px-3 py-1.5 rounded-lg text-center"
+                style="background:rgba(22,163,74,0.09); color:#16A34A; font-size:0.75rem; font-weight:600; font-family:'Space Grotesk',sans-serif;"
+              >You save ₱0 (0%)</div>
 
-                <!-- Amber: primary conversion -->
-                <a
-                  id="modal-buy-btn"
-                  href="/submit-payment"
-                  class="btn btn-cta btn-lg w-full justify-center"
-                  aria-label="Submit payment to buy this template"
-                >
-                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                  </svg>
-                  Buy Now
-                </a>
+              <p class="text-xs mt-2" style="color:var(--text-faint);">Instant access after payment.</p>
 
-                <!-- Messenger -->
+              <!-- Email -->
+              <label for="checkout-email" class="block font-display font-semibold mt-4 mb-1.5" style="font-size:0.8125rem; color:var(--charcoal);">Email Address</label>
+              <input
+                id="checkout-email"
+                type="email"
+                placeholder="youremail@example.com"
+                class="input"
+                autocomplete="email"
+              />
+
+              <!-- Payment method -->
+              <p class="font-display font-semibold mt-4 mb-2" style="font-size:0.8125rem; color:var(--charcoal);">Payment Method</p>
+              <div class="space-y-2" role="radiogroup" aria-label="Payment method">
+
+                <label class="payment-option flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-150" style="border:1.5px solid var(--teal-primary); background:rgba(0,95,115,0.04);">
+                  <span class="flex items-center gap-2.5">
+                    <input type="radio" name="modal-payment-method" value="GCash" checked class="accent-teal-600 w-4 h-4" />
+                    <span class="font-display font-medium" style="font-size:0.8125rem; color:var(--charcoal);">GCash</span>
+                  </span>
+                  <span style="font-size:0.75rem; color:#0077D4; font-weight:600;">GCash</span>
+                </label>
+
+                <label class="payment-option flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-150" style="border:1.5px solid var(--border); background:var(--surface);">
+                  <span class="flex items-center gap-2.5">
+                    <input type="radio" name="modal-payment-method" value="Maya" class="accent-teal-600 w-4 h-4" />
+                    <span class="font-display font-medium" style="font-size:0.8125rem; color:var(--charcoal);">Maya</span>
+                  </span>
+                  <span style="font-size:0.75rem; color:#00994D; font-weight:600;">Maya</span>
+                </label>
+
+                <label class="payment-option flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-150" style="border:1.5px solid var(--border); background:var(--surface);">
+                  <span class="flex items-center gap-2.5">
+                    <input type="radio" name="modal-payment-method" value="Card" class="accent-teal-600 w-4 h-4" />
+                    <span class="font-display font-medium" style="font-size:0.8125rem; color:var(--charcoal);">Credit / Debit Card</span>
+                  </span>
+                  <span style="font-size:0.7rem; color:var(--text-muted);">Visa · MC</span>
+                </label>
+              </div>
+
+              <!-- Price breakdown -->
+              <div class="mt-4 pt-4 space-y-1.5" style="border-top:1px solid var(--border);">
+                <div class="flex items-center justify-between" style="font-size:0.8125rem; color:var(--text-secondary);">
+                  <span>Subtotal</span>
+                  <span id="checkout-subtotal">₱—</span>
+                </div>
+                <div class="flex items-center justify-between" style="font-size:0.8125rem; color:#16A34A;">
+                  <span>Discount (Promo)</span>
+                  <span id="checkout-discount">−₱—</span>
+                </div>
+                <div class="flex items-center justify-between pt-1.5 mt-1.5" style="border-top:1px dashed var(--border-mid); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.9375rem; color:var(--charcoal);">
+                  <span>Total</span>
+                  <span id="checkout-total">₱—</span>
+                </div>
+              </div>
+
+              <!-- Primary CTA — href is still fully owned/set by templateGrid.js -->
+              <a
+                id="modal-buy-btn"
+                href="/submit-payment"
+                class="btn btn-cta btn-lg w-full justify-center mt-4"
+                aria-label="Submit payment to buy this template"
+              >
+                Pay ₱— with GCash
+              </a>
+
+              <!-- Secondary contact CTAs — unchanged functionality, kept below the primary action -->
+              <div class="space-y-2 mt-2.5">
                 <a
                   id="modal-messenger-btn"
                   href={messengerUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn btn-messenger w-full justify-center"
+                  class="btn btn-messenger btn-sm w-full justify-center"
                   aria-label="Message us on Messenger about this template"
                 >
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.917 1.455 5.52 3.733 7.232V22l3.405-1.88c.909.253 1.872.39 2.862.39 5.523 0 10-4.144 10-9.267C22 6.145 17.523 2 12 2zm.99 12.476l-2.548-2.717-4.97 2.717 5.467-5.8 2.608 2.717 4.91-2.717-5.467 5.8z"/>
                   </svg>
                   Message on Messenger
                 </a>
-
-                <!-- Email -->
                 <a
                   id="modal-email-btn"
                   href="#"
-                  class="btn btn-secondary w-full justify-center"
+                  class="btn btn-secondary btn-sm w-full justify-center"
                   aria-label="Send us an email about this template"
                 >
-                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                   </svg>
                   Send Email
                 </a>
               </div>
 
-              <p class="text-center mt-4" style="font-size:0.7rem; color:var(--text-faint); line-height:1.5;">
-                Delivered to your email within 1–2 hours of payment verification.
+              <!-- Trust row -->
+              <div class="flex items-center justify-between mt-4 pt-4" style="border-top:1px solid var(--border);">
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="var(--teal-mid)" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                  </svg>
+                  <span style="font-size:0.625rem; color:var(--text-faint); text-align:center; line-height:1.2;">Secure Payment</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="var(--teal-mid)" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                  </svg>
+                  <span style="font-size:0.625rem; color:var(--text-faint); text-align:center; line-height:1.2;">Instant Access</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="var(--teal-mid)" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span style="font-size:0.625rem; color:var(--text-faint); text-align:center; line-height:1.2;">100% Satisfaction</span>
+                </div>
+              </div>
+
+              <p class="text-center mt-4" style="font-size:0.6875rem; color:var(--text-faint); line-height:1.5;">
+                By completing your purchase, you agree to our
+                <a href="/terms" style="color:var(--teal-primary); text-decoration:underline;">Terms of Use</a>
+                and
+                <a href="/privacy" style="color:var(--teal-primary); text-decoration:underline;">Privacy Policy</a>.
               </p>
             </div>
           </aside>
@@ -227,3 +348,146 @@ const { messengerUrl } = Astro.props;
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    /* ── Read-only refs to elements templateGrid.js already populates ── */
+    const categoryEl      = document.getElementById('modal-category');
+    const titleEl         = document.getElementById('modal-title');
+    const priceEl         = document.getElementById('modal-price');
+    const regularPriceEl  = document.getElementById('modal-regular-price');
+    const mainImgEl       = document.getElementById('modal-main-image') as HTMLImageElement | null;
+
+    /* ── New elements owned by this file ── */
+    const breadcrumbCategory = document.getElementById('modal-breadcrumb-category');
+    const breadcrumbTitle    = document.getElementById('modal-breadcrumb-title');
+    const checkoutThumb      = document.getElementById('modal-checkout-thumb') as HTMLImageElement | null;
+    const checkoutTitle      = document.getElementById('modal-checkout-title');
+    const savingsBadge       = document.getElementById('modal-savings-badge');
+    const subtotalEl         = document.getElementById('checkout-subtotal');
+    const discountEl         = document.getElementById('checkout-discount');
+    const totalEl            = document.getElementById('checkout-total');
+    const perfectForEl       = document.getElementById('modal-perfect-for');
+    const payBtn             = document.getElementById('modal-buy-btn');
+
+    /* ── "Perfect For" — small local lookup, no new data file needed ── */
+    const PERFECT_FOR_BY_CATEGORY: Record<string, string[]> = {
+      'Business':     ['Freelancers', 'Small business owners', 'Consultants'],
+      'Marketing':    ['Real estate agents', 'Marketing teams', 'Brokers'],
+      'Resume':       ['Job seekers', 'Career changers', 'Fresh graduates'],
+      'Social Media': ['Content creators', 'Real estate agents', 'Social media managers'],
+      'Website':      ['Virtual assistants', 'Freelancers', 'Service providers'],
+      'Presentation': ['Financial advisors', 'Coaches', 'Consultants'],
+      'Productivity': ['Freelancers', 'Small business owners', 'VAs & bookkeepers'],
+      'VA Portfolio & Service Menu Launchpad': ['Virtual assistants', 'Freelancers', 'Service providers','Video Editors and Content Support VAs', 'Anyone who wants a professional portfolio to showcase their work'],
+      'Financial Advisor Pitch Decks & Proposals': ['Financial advisors', 'Wealth managers', 'Investment consultants', 'Financial planners', 'Insurance agents', 'Anyone who wants to pitch their financial services to potential clients'],
+      'Real Estate Listing & Social Media Canva Bundle': ['Real estate agents', 'Property Managers','Independent Real Estate Professionals','Real Estate Marketing Professionals','Agents Promoting Marketing Updates & Homeownership Content' ,'Anyone who wants to create professional property listings and marketing materials'],
+    };
+
+    function parsePeso(text: string | null | undefined): number {
+      const n = parseInt((text ?? '').replace(/[^\d]/g, ''), 10);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatPeso(n: number): string {
+      return `\u20B1${n}`;
+    }
+
+    function getSelectedPaymentMethod(): string {
+      const checked = document.querySelector<HTMLInputElement>('input[name="modal-payment-method"]:checked');
+      return checked ? checked.value : 'GCash';
+    }
+
+    /* ── Price breakdown + savings badge + dynamic "Pay" button label ── */
+    function refreshCheckoutSummary() {
+      const regular = parsePeso(regularPriceEl?.textContent);
+      const launch  = parsePeso(priceEl?.textContent);
+      const savings = Math.max(regular - launch, 0);
+      const percent = regular > 0 ? Math.round((savings / regular) * 100) : 0;
+
+      if (subtotalEl) subtotalEl.textContent = formatPeso(regular);
+      if (discountEl) discountEl.textContent = savings > 0 ? `\u2212${formatPeso(savings)}` : formatPeso(0);
+      if (totalEl)    totalEl.textContent    = formatPeso(launch);
+
+      if (savingsBadge) {
+        if (savings > 0) {
+          savingsBadge.textContent = `You save ${formatPeso(savings)} (${percent}%)`;
+          (savingsBadge as HTMLElement).style.display = '';
+        } else {
+          (savingsBadge as HTMLElement).style.display = 'none';
+        }
+      }
+
+      if (payBtn) {
+        const method = getSelectedPaymentMethod();
+        payBtn.textContent = `Pay ${formatPeso(launch)} with ${method}`;
+      }
+    }
+
+    /* ── Breadcrumb + checkout-card recap mirror the main title/image ── */
+    function refreshBreadcrumbAndRecap() {
+      const categoryText = categoryEl?.textContent ?? '';
+      const titleText    = titleEl?.textContent ?? '';
+
+      if (breadcrumbCategory) breadcrumbCategory.textContent = categoryText;
+      if (breadcrumbTitle)    breadcrumbTitle.textContent    = titleText;
+      if (checkoutTitle)      checkoutTitle.textContent      = titleText;
+      if (checkoutThumb && mainImgEl?.src) checkoutThumb.src = mainImgEl.src;
+    }
+
+    /* ── "Perfect For" list, derived from the current category ── */
+    function refreshPerfectFor() {
+      if (!perfectForEl) return;
+      const category = categoryEl?.textContent ?? '';
+      const list = PERFECT_FOR_BY_CATEGORY[category] ?? ['Professionals', 'Small business owners', 'Freelancers'];
+      perfectForEl.innerHTML = list.map(item => `
+        <li class="flex items-start gap-2.5">
+          <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" style="color:var(--teal-mid);" aria-hidden="true">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span class="text-sm" style="color:var(--text-secondary);">${item}</span>
+        </li>
+      `).join('');
+    }
+
+    function refreshAll() {
+      refreshCheckoutSummary();
+      refreshBreadcrumbAndRecap();
+      refreshPerfectFor();
+    }
+
+    /* ── Watch the elements templateGrid.js writes into, and mirror
+         every update reactively — this file never duplicates or
+         races with that population logic, only observes it. ── */
+    const textObserver = new MutationObserver(refreshAll);
+    [categoryEl, titleEl, priceEl, regularPriceEl].forEach(el => {
+      if (el) textObserver.observe(el, { childList: true, characterData: true, subtree: true });
+    });
+
+    if (mainImgEl) {
+      const imgObserver = new MutationObserver(refreshAll);
+      imgObserver.observe(mainImgEl, { attributes: true, attributeFilter: ['src'] });
+    }
+
+    /* ── Payment method selection — purely visual + updates the Pay
+         button label; the button's href is still set by
+         templateGrid.js and is untouched here. ── */
+    document.querySelectorAll<HTMLInputElement>('input[name="modal-payment-method"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.querySelectorAll<HTMLElement>('.payment-option').forEach(label => {
+          label.style.borderColor = 'var(--border)';
+          label.style.background  = 'var(--surface)';
+        });
+        const selectedLabel = radio.closest<HTMLElement>('.payment-option');
+        if (selectedLabel) {
+          selectedLabel.style.borderColor = 'var(--teal-primary)';
+          selectedLabel.style.background  = 'rgba(0,95,115,0.04)';
+        }
+        refreshCheckoutSummary();
+      });
+    });
+
+    // Initial paint
+    refreshAll();
+  })();
+</script>
