@@ -369,6 +369,7 @@ const { messengerUrl } = Astro.props;
     const totalEl            = document.getElementById('checkout-total');
     const perfectForEl       = document.getElementById('modal-perfect-for');
     const payBtn             = document.getElementById('modal-buy-btn');
+    const messengerBtn       = document.getElementById('modal-messenger-btn');
 
     /* ── "Perfect For" — small local lookup, no new data file needed ── */
     const PERFECT_FOR_BY_CATEGORY: Record<string, string[]> = {
@@ -379,9 +380,6 @@ const { messengerUrl } = Astro.props;
       'Website':      ['Virtual assistants', 'Freelancers', 'Service providers'],
       'Presentation': ['Financial advisors', 'Coaches', 'Consultants'],
       'Productivity': ['Freelancers', 'Small business owners', 'VAs & bookkeepers'],
-      'VA Portfolio & Service Menu Launchpad': ['Virtual assistants', 'Freelancers', 'Service providers','Video Editors and Content Support VAs', 'Anyone who wants a professional portfolio to showcase their work'],
-      'Financial Advisor Pitch Decks & Proposals': ['Financial advisors', 'Wealth managers', 'Investment consultants', 'Financial planners', 'Insurance agents', 'Anyone who wants to pitch their financial services to potential clients'],
-      'Real Estate Listing & Social Media Canva Bundle': ['Real estate agents', 'Property Managers','Independent Real Estate Professionals','Real Estate Marketing Professionals','Agents Promoting Marketing Updates & Homeownership Content' ,'Anyone who wants to create professional property listings and marketing materials'],
     };
 
     function parsePeso(text: string | null | undefined): number {
@@ -450,10 +448,28 @@ const { messengerUrl } = Astro.props;
       `).join('');
     }
 
+    /* ── Dynamic Messenger link — pre-fills the message with the
+         currently selected product's title and current price ── */
+    function refreshMessengerLink() {
+      if (!messengerBtn) return;
+
+      const product = titleEl?.textContent?.trim() || 'this product';
+      const price   = priceEl?.textContent?.trim() || '';
+
+      const pageUsername = 'templatedepot';
+
+      const message = `Hi! I would like to order ${product} for ${price}. I will send my payment screenshot here.`;
+
+      const messengerUrl = `https://m.me/${pageUsername}?text=${encodeURIComponent(message)}`;
+
+      messengerBtn.setAttribute('href', messengerUrl);
+    }
+
     function refreshAll() {
       refreshCheckoutSummary();
       refreshBreadcrumbAndRecap();
       refreshPerfectFor();
+      refreshMessengerLink();
     }
 
     /* ── Watch the elements templateGrid.js writes into, and mirror
