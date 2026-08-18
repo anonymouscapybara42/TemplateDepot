@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const policySections = [
+  {
+    title: 'Information We Collect',
+    text:
+      'We may collect personal information you provide directly to us, such as your name, email address, contact details, account information, and any other information you choose to share when you use our platform. We also collect technical information automatically, including device type, browser details, IP address, referral source, and usage activity, to help maintain security and improve the experience.'
+  },
+  {
+    title: 'How We Use Your Information',
+    text:
+      'We use your information to operate, maintain, and improve our services; personalize content and features; provide customer support; communicate important updates; detect fraud or abuse; and support analytics and product development. We may also use your information to comply with legal obligations and enforce our terms and policies.'
+  },
+  {
+    title: 'Cookies and Tracking',
+    text:
+      'We use cookies, pixels, and similar technologies to remember your preferences, understand traffic patterns, measure campaign performance, and improve page functionality. You can manage cookie settings in your browser, although some features of the service may not function properly if cookies are disabled.'
+  },
+  {
+    title: 'Third-Party Sharing',
+    text:
+      'We may share information with trusted service providers that help us operate our platform, process payments, provide analytics, deliver communications, or support customer care. We do not sell personal information for monetary consideration. We may also disclose information when required by law, court order, or to protect the rights, safety, and security of our users and business.'
+  },
+  {
+    title: 'Data Security',
+    text:
+      'We take reasonable administrative, technical, and organizational safeguards to protect your information against unauthorized access, loss, misuse, or disclosure. No system is completely secure, and we cannot guarantee absolute protection, but we work to maintain appropriate security controls and promptly address any suspected breach in accordance with applicable law.'
+  },
+  {
+    title: 'Your Rights and Choices',
+    text:
+      'Depending on your location, you may have rights regarding access, correction, deletion, portability, or restriction of your personal information. You may also opt out of certain marketing communications. To exercise those rights or ask questions about your data, contact us using the details listed below.'
+  },
+  {
+    title: 'Children\'s Privacy',
+    text:
+      'Our services are not intended for children under the age of 13, or the equivalent minimum age in your jurisdiction, and we do not knowingly collect personal information from children without appropriate consent or legal basis. If we become aware that we have collected information from a child without valid consent, we will take steps to delete it promptly.'
+  },
+  {
+    title: 'Changes to This Policy',
+    text:
+      'We may update this Privacy Policy from time to time to reflect changes in our services, legal requirements, or operating practices. Any updates will be posted on this page with a revised effective date. Continued use of the service after changes are made indicates your acceptance of the updated policy.'
+  },
+  {
+    title: 'Contact Us',
+    text:
+      'If you have questions, concerns, or requests related to this Privacy Policy or your personal information, please contact us at info@nightosphere.com or through the contact details available on our website.'
+  }
+];
+
+const sections = policySections.map((section) => ({
+  ...section,
+  id: section.title.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-|-$/g, ''),
+}));
+---
+
+<BaseLayout
+  title="Privacy Policy — Template Depot"
+  description="Read Template Depot's privacy policy and learn how we collect, use, protect, and manage your personal information."
+>
+  <header
+    class="sticky top-0 z-50"
+    style="background:rgba(255,255,255,0.97); backdrop-filter:blur(14px); border-bottom:1px solid var(--border);"
+  >
+    <div class="container-xl flex items-center justify-between py-4">
+      <a href="/" class="flex items-center gap-2.5" aria-label="Go to the homepage">
+        <img
+          src="/apple-touch-icon.png"
+          alt=""
+          class="w-8 h-8 rounded-lg"
+          aria-hidden="true"
+        />
+
+        <span class="font-display font-bold text-base" style="color:var(--charcoal);">
+          Template<span class="text-teal-gradient">Depot</span>
+        </span>
+      </a>
+
+      <nav class="hidden sm:flex items-center gap-5" aria-label="Primary navigation">
+        <a href="/" class="font-display font-medium text-sm" style="color:var(--text-secondary);">Home</a>
+        <a href="/terms" class="font-display font-medium text-sm" style="color:var(--text-secondary);">Terms</a>
+        <a href="/privacy" class="font-display font-semibold text-sm" style="color:var(--teal-primary);" aria-current="page">Privacy</a>
+      </nav>
+
+      <a href="/" class="btn btn-secondary btn-sm">
+        Return Home
+      </a>
+    </div>
+  </header>
+
+  <main style="background:linear-gradient(160deg, #EEF7F8 0%, var(--bg) 48%, #EAF5EB 100%);">
+    <section class="relative py-20 lg:py-28 overflow-hidden">
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[420px] rounded-full blur-3xl pointer-events-none"
+        style="background:rgba(0,95,115,0.06);"
+        aria-hidden="true"
+      ></div>
+
+      <div class="container-xl relative">
+        <div class="max-w-3xl mx-auto text-center reveal">
+          <span class="eyebrow mb-3">
+            Legal
+          </span>
+
+          <h1 class="section-heading text-4xl sm:text-5xl lg:text-6xl mb-5 whitespace-nowrap">
+            <span>Privacy</span>
+            <span class="text-teal-gradient"> Policy</span>
+          </h1>
+
+          <p class="text-base sm:text-lg leading-relaxed mx-auto" style="color:var(--text-secondary); max-width:44rem;">
+            We value your trust and are committed to protecting the personal information you share with us.
+            This policy explains what we collect, how we use it, and the choices available to you.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-20 lg:pb-28">
+      <div class="container-xl">
+        <article class="card max-w-4xl mx-auto overflow-hidden reveal reveal-delay-1" aria-label="Privacy policy details">
+          {sections.map((section) => (
+            <section
+              class="px-5 sm:px-8 py-6"
+              style="border-bottom:1px solid var(--border);"
+              aria-labelledby={section.id}
+            >
+              <h2 id={section.id} class="font-display font-bold text-xl mb-3" style="color:var(--charcoal);">
+                {section.title}
+              </h2>
+
+              <p class="text-sm sm:text-base leading-relaxed" style="color:var(--text-secondary);">
+                {section.text}
+              </p>
+            </section>
+          ))}
+        </article>
+
+        <div class="text-center mt-10 reveal reveal-delay-2">
+          <a href="/" class="btn btn-primary">
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

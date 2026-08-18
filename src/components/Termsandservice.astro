@@ -1,0 +1,326 @@
+---
+import Navbar from './Navbar.astro';
+---
+
+<Navbar />
+
+<div class="terms-page">
+  <div class="terms-shell">
+    <header class="page-header">
+      <p class="eyebrow">Template Depot</p>
+      <h1>Terms of Service</h1>
+    </header>
+
+    <div class="summary-card">
+      <h2>Summary</h2>
+      <p>
+        By purchasing or downloading a digital product from Template Depot, you agree to
+        these Terms of Service. These terms cover licensing, payment, delivery, usage,
+        refunds, intellectual property, and the support available for all digital products.
+      </p>
+      <p>
+        Our digital products are provided for personal and commercial use only within the
+        scope of the license granted below. We do not sell ownership of the product itself,
+        but rather a license to use it under the terms set forth here.
+      </p>
+    </div>
+
+    <div class="terms-content">
+      <section>
+        <h3>1. Digital Product License</h3>
+        <p>
+          Each product sold through Template Depot is licensed for use according to the
+          specific description and purchase terms shown at checkout. Unless otherwise noted,
+          purchases grant a personal or commercial-use license for the buyer and are not
+          transferable to another person or business.
+        </p>
+      </section>
+
+      <section>
+        <h3>2. Payment and Delivery</h3>
+        <p>
+          Payment must be completed before access is granted. Once payment is confirmed, the
+          digital product is delivered via the download link or access portal provided in your
+          account. Products are delivered electronically and cannot be returned in physical
+          form.
+        </p>
+      </section>
+
+      <section>
+        <h3>3. Refunds and Cancellations</h3>
+        <p>
+          Due to the digital nature of our products, all sales are final unless a product is
+          not delivered, is materially defective, or a refund is required by applicable law.
+          We reserve the right to evaluate refund requests on a case-by-case basis.
+        </p>
+      </section>
+
+      <section>
+        <h3>4. Intellectual Property</h3>
+        <p>
+          All templates, files, designs, code, and related materials remain the intellectual
+          property of Template Depot or their respective creators. You may use the product as
+          granted by the license, but you may not resell, redistribute, sublicense, or claim
+          ownership of the design assets.
+        </p>
+      </section>
+
+      <section>
+        <h3>5. Permitted Use</h3>
+        <p>
+          You may use purchased digital products for personal projects, client work, and
+          business operations when the product allows such use. You may not upload the product
+          as-is to a marketplace, distribute copies for free, or use it in a way that violates
+          copyright, intellectual property, or applicable laws.
+        </p>
+      </section>
+
+      <section>
+        <h3>6. Support and Updates</h3>
+        <p>
+          Support is available for installation and product usage questions within the scope of
+          the product description. We do not guarantee custom design work, code debugging for
+          external projects, or ongoing maintenance beyond what is listed in the product
+          details.
+        </p>
+      </section>
+
+      <section>
+        <h3>7. Limitation of Liability</h3>
+        <p>
+          Template Depot is not liable for indirect, incidental, or consequential damages
+          arising from the use or inability to use our digital products, including loss of
+          revenue, data, or business opportunities, except where prohibited by law.
+        </p>
+      </section>
+
+      <section>
+        <h3>8. Modifications</h3>
+        <p>
+          We reserve the right to update or modify these Terms of Service at any time.
+          Continued use of our products after changes are posted constitutes acceptance of the
+          updated agreement.
+        </p>
+      </section>
+    </div>
+
+    <div class="checkbox-wrap">
+      <label class="checkbox-row" for="terms-acceptance">
+        <input id="terms-acceptance" type="checkbox" />
+        <span>
+          I have read, understand, and agree to the Terms of Service and the digital product
+          license outlined above.
+        </span>
+      </label>
+
+      <div class="actions">
+        <button type="button" class="secondary-btn" onclick="if (window.history.length > 1) { window.history.back(); } else { document.dispatchEvent(new CustomEvent('close-product-modal')); }">
+          Return to Product
+        </button>
+        <button type="button" class="primary-btn" disabled>
+          Continue Purchase
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const checkbox = document.getElementById('terms-acceptance') as HTMLInputElement;
+  const continueBtn = document.querySelector('.primary-btn') as HTMLButtonElement;
+
+  if (checkbox && continueBtn) {
+    checkbox.addEventListener('change', () => {
+      continueBtn.disabled = !checkbox.checked;
+    });
+  }
+</script>
+
+<style>
+  :global(body) {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .terms-page {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--surface-tint) 100%);
+    padding: 32px 20px 60px;
+  }
+
+  .terms-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    padding: 32px 28px 26px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--teal-primary);
+    opacity: 0.5;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+    color: var(--charcoal);
+  }
+
+  .summary-card {
+    background: linear-gradient(135deg, var(--surface-tint) 0%, rgba(160, 210, 223, 0.15) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px 20px;
+    margin-bottom: 26px;
+  }
+
+  .summary-card h2 {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+    color: var(--charcoal);
+  }
+
+  .summary-card p {
+    margin: 0 0 12px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .summary-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .terms-content {
+    display: grid;
+    gap: 18px;
+  }
+
+  .terms-content section {
+    padding: 18px 18px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .terms-content section:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .terms-content h3 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    color: var(--charcoal);
+  }
+
+  .terms-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.72;
+    font-size: 0.97rem;
+  }
+
+  .checkbox-wrap {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .checkbox-row input {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--teal-mid);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-size: 0.96rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .primary-btn {
+    background: linear-gradient(135deg, var(--teal-primary) 0%, var(--teal-mid) 100%);
+    color: #fff;
+    box-shadow: 0 12px 24px rgba(10, 147, 150, 0.2);
+  }
+
+  .primary-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+  }
+
+  .secondary-btn {
+    background: var(--surface-tint);
+    color: var(--teal-primary);
+  }
+
+  .primary-btn:hover:not(:disabled),
+  .secondary-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .terms-shell {
+      padding: 24px 18px 20px;
+      border-radius: 18px;
+    }
+
+    .actions {
+      justify-content: stretch;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      width: 100%;
+    }
+  }
+</style>
