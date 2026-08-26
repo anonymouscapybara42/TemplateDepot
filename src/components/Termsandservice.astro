@@ -108,15 +108,11 @@ import Navbar from './Navbar.astro';
       <label class="checkbox-row" for="terms-acceptance">
         <input id="terms-acceptance" type="checkbox" />
         <span>
-          I have read, understand, and agree to the Terms of Service and the digital product
-          license outlined above.
+          I have agreed to the Terms of Service and the digital product license outlined above.
         </span>
       </label>
 
       <div class="actions">
-        <button type="button" class="secondary-btn" onclick="if (window.history.length > 1) { window.history.back(); } else { document.dispatchEvent(new CustomEvent('close-product-modal')); }">
-          Return to Product
-        </button>
         <button type="button" class="primary-btn" disabled>
           Continue Purchase
         </button>
@@ -132,6 +128,10 @@ import Navbar from './Navbar.astro';
   if (checkbox && continueBtn) {
     checkbox.addEventListener('change', () => {
       continueBtn.disabled = !checkbox.checked;
+    });
+
+    continueBtn.addEventListener('click', () => {
+      window.history.back();
     });
   }
 </script>
