@@ -466,7 +466,7 @@ const { messengerUrl } = Astro.props;
          GUARANTEES the message reaches the customer, via clipboard. ── */
     function refreshMessengerLink() {
       if (!messengerBtn) return;
-      const pageUsername = '61590735058749';
+      const pageUsername = 'templatedepot';
       const message = buildMessengerText();
       messengerBtn.setAttribute('href', `https://m.me/${pageUsername}?text=${encodeURIComponent(message)}`);
     }

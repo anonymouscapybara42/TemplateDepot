@@ -268,8 +268,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                 </svg>
-                Send Payment Proof
+                <span id="submit-btn-label">Send Payment Proof</span>
               </button>
+
+              <p id="submit-error-banner" class="text-xs text-center hidden" style="color:#DC2626;" role="alert"></p>
 
               <p class="text-xs text-center" style="color:var(--text-faint);">
                 By submitting, you agree your information will be used solely to process your order.
@@ -323,6 +325,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </main>
 </BaseLayout>
+
 <!-- Payment QR side modal -->
 <div
   id="payment-qr-modal"
@@ -364,18 +367,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </button>
     </div>
 
-<!-- Replaced Image Container -->
-<div
-  class="rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center"
-  style="background:#ffffff; border:1.5px solid var(--border); box-shadow: 0 4px 14px rgba(0,0,0,0.03);"
->
-  <img
-    id="payment-qr-image"
-    src=""
-    alt=""
-    class="w-full max-w-[220px] aspect-square object-contain p-4 mix-blend-multiply bg-white"
-  />
-</div>
+    <div
+      class="rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center"
+      style="background:#ffffff; border:1.5px solid var(--border); box-shadow: 0 4px 14px rgba(0,0,0,0.03);"
+    >
+      <img
+        id="payment-qr-image"
+        src=""
+        alt=""
+        class="w-full max-w-[220px] aspect-square object-contain p-4 mix-blend-multiply bg-white"
+      />
+    </div>
 
     <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">
       Scan this QR code, complete your payment, then upload the payment screenshot in the form.
@@ -396,13 +398,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     if (price) {
-      // Strip the ₱ sign and any spaces, keep only digits
       const raw = price.replace(/[^\d]/g, '');
       const amtInput = document.getElementById('amount') as HTMLInputElement | null;
       if (amtInput && raw) amtInput.value = raw;
     }
 
-    // If we got a template name, scroll the heading into view smoothly
     if (tpl || price) {
       const heading = document.querySelector('h1');
       heading?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -410,56 +410,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   })();
 
   /* ── DOM refs ── */
-  const form        = document.getElementById('payment-form') as HTMLFormElement;
-  const submitBtn   = document.getElementById('submit-btn') as HTMLButtonElement;
-  const successState = document.getElementById('success-state')!;
-  const dropZone    = document.getElementById('drop-zone')!;
-  const fileInput   = document.getElementById('screenshot') as HTMLInputElement;
-  const placeholder = document.getElementById('upload-placeholder')!;
-  const previewDiv  = document.getElementById('file-preview')!;
-  const previewImg  = document.getElementById('preview-img') as HTMLImageElement;
-  const fileName    = document.getElementById('file-name')!;
+  const form          = document.getElementById('payment-form') as HTMLFormElement;
+  const submitBtn      = document.getElementById('submit-btn') as HTMLButtonElement;
+  const submitBtnLabel = document.getElementById('submit-btn-label')!;
+  const submitErrorBanner = document.getElementById('submit-error-banner')!;
+  const successState   = document.getElementById('success-state')!;
+  const dropZone       = document.getElementById('drop-zone')!;
+  const fileInput      = document.getElementById('screenshot') as HTMLInputElement;
+  const placeholder    = document.getElementById('upload-placeholder')!;
+  const previewDiv      = document.getElementById('file-preview')!;
+  const previewImg      = document.getElementById('preview-img') as HTMLImageElement;
+  const fileName        = document.getElementById('file-name')!;
 
   /* ── Payment QR side modal ── */
-const paymentOptions = document.querySelectorAll('.payment-method-option');
-const paymentQrModal = document.getElementById('payment-qr-modal')!;
-const paymentQrBackdrop = document.getElementById('payment-qr-backdrop')!;
-const paymentQrClose = document.getElementById('payment-qr-close')!;
-const paymentQrTitle = document.getElementById('payment-qr-title')!;
-const paymentQrImage = document.getElementById('payment-qr-image') as HTMLImageElement;
+  const paymentOptions    = document.querySelectorAll('.payment-method-option');
+  const paymentQrModal    = document.getElementById('payment-qr-modal')!;
+  const paymentQrBackdrop = document.getElementById('payment-qr-backdrop')!;
+  const paymentQrClose    = document.getElementById('payment-qr-close')!;
+  const paymentQrTitle    = document.getElementById('payment-qr-title')!;
+  const paymentQrImage    = document.getElementById('payment-qr-image') as HTMLImageElement;
 
-function openPaymentQr(method: string, image: string) {
-  paymentQrTitle.textContent = `${method} QR Code`;
-  paymentQrImage.src = image;
-  paymentQrImage.alt = `${method} payment QR code`;
-  paymentQrModal.classList.remove('hidden');
-  paymentQrModal.setAttribute('aria-hidden', 'false');
-}
-
-function closePaymentQr() {
-  paymentQrModal.classList.add('hidden');
-  paymentQrModal.setAttribute('aria-hidden', 'true');
-}
-
-paymentOptions.forEach((option) => {
-  option.addEventListener('click', () => {
-    const method = option.getAttribute('data-method') || '';
-    const image = option.getAttribute('data-qr') || '';
-
-    if (method && image) {
-      openPaymentQr(method, image);
-    }
-  });
-});
-
-paymentQrBackdrop.addEventListener('click', closePaymentQr);
-paymentQrClose.addEventListener('click', closePaymentQr);
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closePaymentQr();
+  function openPaymentQr(method: string, image: string) {
+    paymentQrTitle.textContent = `${method} QR Code`;
+    paymentQrImage.src = image;
+    paymentQrImage.alt = `${method} payment QR code`;
+    paymentQrModal.classList.remove('hidden');
+    paymentQrModal.setAttribute('aria-hidden', 'false');
   }
-});
+
+  function closePaymentQr() {
+    paymentQrModal.classList.add('hidden');
+    paymentQrModal.setAttribute('aria-hidden', 'true');
+  }
+
+  paymentOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+      const method = option.getAttribute('data-method') || '';
+      const image = option.getAttribute('data-qr') || '';
+      if (method && image) openPaymentQr(method, image);
+    });
+  });
+
+  paymentQrBackdrop.addEventListener('click', closePaymentQr);
+  paymentQrClose.addEventListener('click', closePaymentQr);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closePaymentQr();
+  });
 
   /* ── File preview ── */
   function showPreview(file: File) {
@@ -509,13 +506,39 @@ document.addEventListener('keydown', (event) => {
     el.classList.add('hidden');
   }
 
-  /* Clear errors on change */
   ['fullName','email','templateName','amount'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', () => clearError(id));
   });
 
-  /* ── Form submit ── */
-  form.addEventListener('submit', e => {
+  /* ── Builds a mailto: fallback identical in spirit to the old
+       behaviour — used ONLY if the real send (below) fails, so the
+       customer is never stuck with a dead submit button. Note: a
+       mailto: link cannot carry the screenshot as a real attachment,
+       so the fallback message asks the customer to attach it manually
+       in the email draft that opens. ── */
+  function buildMailtoFallback(data: {
+    fullName: string; email: string; templateName: string;
+    paymentMethod: string; amount: string; message: string;
+  }): string {
+    const subject = encodeURIComponent(`[Template Depot Order] ${data.templateName} — ${data.fullName}`);
+    const body = encodeURIComponent(
+      `Full Name: ${data.fullName}\n` +
+      `Email: ${data.email}\n` +
+      `Template(s) Ordered: ${data.templateName}\n` +
+      `Payment Method: ${data.paymentMethod}\n` +
+      `Amount Paid: \u20B1${data.amount}\n` +
+      `\nMessage:\n${data.message || 'None'}\n` +
+      `\n---\nPlease attach your payment screenshot to this email before sending.`
+    );
+    return `mailto:info@nightospheremedia.com?subject=${subject}&body=${body}`;
+  }
+
+  /* ── Form submit — now actually SENDS via /api/submit-payment
+       (Nodemailer + SMTP, with the screenshot as a real attachment).
+       Falls back to opening a mailto: draft only if that request
+       fails for any reason (server not configured yet, no internet,
+       etc.), so the customer always has a way through. ── */
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
     const fullName     = (document.getElementById('fullName')     as HTMLInputElement).value.trim();
@@ -537,33 +560,54 @@ document.addEventListener('keydown', (event) => {
 
     if (!valid) return;
 
+    submitErrorBanner.classList.add('hidden');
+    submitErrorBanner.textContent = '';
+
     /* ── Loading state ── */
     submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25"/>
-        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity="0.85"/>
-      </svg>
-      Sending…
-    `;
+    const originalLabel = submitBtnLabel.textContent;
+    submitBtnLabel.textContent = 'Sending…';
 
-    /* ── Open prefilled mailto (triggers user's mail client) ── */
-    const subject = encodeURIComponent(`[Template Depot Order] ${templateName} — ${fullName}`);
-    const body    = encodeURIComponent(
-      `Full Name: ${fullName}\n` +
-      `Email: ${email}\n` +
-      `Template(s) Ordered: ${templateName}\n` +
-      `Payment Method: ${method}\n` +
-      `Amount Paid: ₱${amount}\n` +
-      `\nMessage:\n${message || 'None'}\n` +
-      `\n---\nPlease find the payment screenshot attached to this email.`
-    );
-    window.location.href = `mailto:hello@templatedepot.com?subject=${subject}&body=${body}`;
+    try {
+      const payload = new FormData();
+      payload.set('fullName', fullName);
+      payload.set('email', email);
+      payload.set('templateName', templateName);
+      payload.set('paymentMethod', method);
+      payload.set('amount', amount);
+      payload.set('message', message);
+      payload.set('screenshot', file as File);
 
-    /* ── Show success after short delay (mail client opened) ── */
-    setTimeout(() => {
+      const res = await fetch('/api/submit-payment', {
+        method: 'POST',
+        body: payload,
+      });
+
+      const data = await res.json().catch(() => ({ success: false }));
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Request failed');
+      }
+
       form.classList.add('hidden');
       successState.classList.remove('hidden');
-    }, 1200);
+
+    } catch (err) {
+      // Real send failed — fall back to the customer's own email app
+      // so they're never stuck, exactly as the site behaved before.
+      console.error('submit-payment failed, falling back to mailto:', err);
+
+      submitBtn.disabled = false;
+      submitBtnLabel.textContent = originalLabel;
+      submitErrorBanner.textContent = 'Couldn\u2019t send automatically — opening your email app instead. Please attach your screenshot there.';
+      submitErrorBanner.classList.remove('hidden');
+
+      window.location.href = buildMailtoFallback({ fullName, email, templateName, paymentMethod: method, amount, message });
+
+      setTimeout(() => {
+        form.classList.add('hidden');
+        successState.classList.remove('hidden');
+      }, 1200);
+    }
   });
 </script>
