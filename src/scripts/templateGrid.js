@@ -232,6 +232,7 @@ function openModal(id) {
   const t = templates.find(x => x.id === id);
   if (!t || !modal) return;
 
+  sessionStorage.setItem('selectedTemplateId', String(id));
   previouslyFocused = document.activeElement;
   populateModal(t);
 
@@ -261,6 +262,7 @@ function openModal(id) {
 function closeModal() {
   if (!modal || !panel) return;
 
+  sessionStorage.removeItem('selectedTemplateId');
   panel.style.transform = 'translateY(40px)';
   panel.style.opacity   = '0';
   if (backdrop) backdrop.style.opacity = '0';
@@ -272,6 +274,12 @@ function closeModal() {
     document.body.style.overflow = '';
     previouslyFocused?.focus();
   }, 280);
+}
+
+function restoreSelectedTemplateModal() {
+  const selectedTemplateId = Number(sessionStorage.getItem('selectedTemplateId'));
+  if (!Number.isFinite(selectedTemplateId)) return;
+  openModal(selectedTemplateId);
 }
 
 templateCards.forEach((card) => {
@@ -292,6 +300,8 @@ document.querySelectorAll('.open-modal-btn').forEach((btn) => {
     openModal(id);
   });
 });
+
+restoreSelectedTemplateModal();
 
 closeBtn?.addEventListener('click', closeModal);
 backdrop?.addEventListener('click', closeModal);
