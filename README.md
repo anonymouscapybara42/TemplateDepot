@@ -40,7 +40,7 @@ The production entry point is `dist/server/entry.mjs`.
 2. Open **Advanced** → **Node.js** (the exact menu label may be
    **Node.js Apps**).
 3. Create an application with:
-   - **Node.js version:** 22.19 or newer (use 24.x on Hostinger)
+   - **Node.js version:** 22.19.x
    - **Application mode:** Production
    - **Application root:** the directory containing this project
    - **Startup file:** `dist/server/entry.mjs` (equivalent start command:
@@ -111,7 +111,7 @@ they are not an alternative deployment for the current Hostinger build.
    - **Framework preset:** Astro
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - **Node.js version:** 22.19 or newer (use 24.x on Hostinger) (set in environment variables: `NODE_VERSION = 22`)
+   - **Node.js version:** 22.19.x (set in environment variables: `NODE_VERSION = 22`)
 6. Click **Save and Deploy**.
 
 ### Option 2: Via Wrangler CLI
