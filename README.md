@@ -18,9 +18,89 @@ npm run preview
 
 ---
 
-## ☁️ Deploying to Cloudflare Pages
+## 🚀 Deploying to Hostinger
 
-### Option 1: Via Cloudflare Dashboard (Recommended)
+This project uses Astro's Node adapter because the payment form sends its
+uploaded screenshot through `/api/submit-payment`. It must run as a Node.js
+application; do not upload only the `dist/` folder to Hostinger's static
+website directory, or the payment endpoint will not work.
+
+### 1. Build locally (optional)
+
+```bash
+npm install
+npm run build
+```
+
+The production entry point is `dist/server/entry.mjs`.
+
+### 2. Create the Node.js application in hPanel
+
+1. Open **Websites** in Hostinger and select the site.
+2. Open **Advanced** → **Node.js** (the exact menu label may be
+   **Node.js Apps**).
+3. Create an application with:
+   - **Node.js version:** 20
+   - **Application mode:** Production
+   - **Application root:** the directory containing this project
+   - **Startup file:** `dist/server/entry.mjs`
+4. Save the application and note the public URL or domain assigned to it.
+
+### 3. Upload the project
+
+Upload the repository through Git, Hostinger's file manager, or SFTP. Do not
+upload `node_modules`, and do not upload a real `.env` file. If using SFTP,
+upload the source files, `package.json`, and `package-lock.json`/`pnpm-lock.yaml`
+to the application root.
+
+In the Node.js application settings, run:
+
+```bash
+npm install
+npm run build
+```
+
+If Hostinger offers a separate **Build command** field, use
+`npm install && npm run build`; keep the startup file as
+`dist/server/entry.mjs`.
+
+### 4. Add email environment variables
+
+Add these variables in the Node.js application's **Environment variables**
+section, then restart the application:
+
+```text
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_USER=your-mailbox@your-domain.com
+SMTP_PASS=your-mailbox-password
+INQUIRY_TO_EMAIL=where-orders-should-be-delivered@example.com
+```
+
+You can use Gmail SMTP instead, but use a Gmail App Password rather than your
+normal Gmail password. Never commit or publicly upload these values.
+
+### 5. Connect the domain and test
+
+Point the domain to Hostinger if it is not already connected, enable the
+free SSL certificate, and open the site over `https://`. Test both the normal
+pages and the payment form with a small valid PNG/JPG/WEBP file. Confirm that
+the email arrives at `INQUIRY_TO_EMAIL`.
+
+If the site loads but payment submissions return an error, check the Node.js
+application logs and verify all five SMTP variables. A static-only Hostinger
+plan cannot run this payment API; use a Hostinger plan that includes Node.js
+applications or keep the site on a serverless platform that supports Astro
+server routes.
+
+## ☁️ Deploying to Cloudflare
+
+The current configuration targets Hostinger's Node.js runtime because the
+payment API needs server-side execution. The existing Cloudflare Pages
+instructions below apply only after configuring an Astro Cloudflare adapter;
+they are not an alternative deployment for the current Hostinger build.
+
+### Option 1: Via Cloudflare Dashboard
 
 1. Push your project to a GitHub repository.
 2. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com).
