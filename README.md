@@ -43,7 +43,8 @@ The production entry point is `dist/server/entry.mjs`.
    - **Node.js version:** 24.x
    - **Application mode:** Production
    - **Application root:** the directory containing this project
-   - **Startup file:** `dist/server/entry.mjs`
+   - **Startup file:** `dist/server/entry.mjs` (equivalent start command:
+     `npm start`)
 4. Save the application and note the public URL or domain assigned to it.
 
 ### 3. Upload the project
