@@ -1,4 +1,7 @@
 node_modules/
 dist/
 .astro/content.d.ts
+.env
+.env.*
+!.env.example
 .env.local
