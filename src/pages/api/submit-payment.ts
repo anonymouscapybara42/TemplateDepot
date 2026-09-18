@@ -20,6 +20,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
+import { getEmailConfig } from '../../lib/server/email-config';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB, matches the form's stated limit
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -60,29 +61,20 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ success: false, error: 'Screenshot must be a PNG, JPG, or WEBP image.' }, 400);
     }
 
-    const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-    const SMTP_PORT = Number(process.env.SMTP_PORT) || 465;
-    const SMTP_USER = process.env.SMTP_USER;
-    const SMTP_PASS = process.env.SMTP_PASS;
-    const INQUIRY_TO_EMAIL = process.env.INQUIRY_TO_EMAIL || SMTP_USER;
-
-    if (!SMTP_USER || !SMTP_PASS) {
-      console.error('submit-payment: SMTP_USER / SMTP_PASS are not set.');
-      return json({ success: false, error: 'Email is not configured on the server yet.' }, 500);
-    }
+    const { smtpHost, smtpPort, smtpUser, smtpPass, inquiryToEmail } = getEmailConfig();
 
     const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      secure: SMTP_PORT === 465,
-      auth: { user: SMTP_USER, pass: SMTP_PASS },
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: { user: smtpUser, pass: smtpPass },
     });
 
     const screenshotBuffer = Buffer.from(await screenshot.arrayBuffer());
 
     await transporter.sendMail({
-      from: `"Template Depot Website" <${SMTP_USER}>`,
-      to: INQUIRY_TO_EMAIL,
+      from: `"Template Depot Website" <${smtpUser}>`,
+      to: inquiryToEmail,
       replyTo: customerEmail,
       subject: `[Template Depot Order] ${templateName} \u2014 ${fullName}`,
       text:

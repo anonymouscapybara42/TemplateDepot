@@ -71,15 +71,16 @@ Add these variables in the Node.js application's **Environment variables**
 section, then restart the application:
 
 ```text
-SMTP_HOST=smtp.hostinger.com
+SMTP_HOST=SMTP.GMAIL.COM
 SMTP_PORT=465
-SMTP_USER=your-mailbox@your-domain.com
-SMTP_PASS=your-mailbox-password
-INQUIRY_TO_EMAIL=where-orders-should-be-delivered@example.com
+SMTP_USER=info@nightospheremedia.com
+SMTP_PASS=your-gmail-app-password
+INQUIRY_TO_EMAIL=info@nightospheremedia.com
 ```
 
-You can use Gmail SMTP instead, but use a Gmail App Password rather than your
-normal Gmail password. Never commit or publicly upload these values.
+Use a Gmail App Password rather than a normal Gmail password. Never commit or
+publicly upload these values. The repository includes `.env.example` as a
+non-secret template.
 
 ### 5. Connect the domain and test
 
