@@ -111,7 +111,7 @@ they are not an alternative deployment for the current Hostinger build.
    - **Framework preset:** Astro
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - **Node.js version:** 24.x (set in environment variables: `NODE_VERSION = 22`)
+   - **Node.js version:** 24.x (set in environment variables: `NODE_VERSION = 24`)
 6. Click **Save and Deploy**.
 
 ### Option 2: Via Wrangler CLI
